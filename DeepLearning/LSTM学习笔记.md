@@ -1,6 +1,6 @@
 # LSTM 学习笔记
 
-&emsp;&emsp;本文转自：[译] 理解 LSTM 网络
+&emsp;&emsp;本文转自：[[译] 理解 LSTM 网络](https://www.jianshu.com/p/9dc9f41f0b29)
 
 <br>
 
