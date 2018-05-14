@@ -1,0 +1,35 @@
+import pandas as pd
+
+
+# load data
+
+
+# save filepath to variable for easier access
+melbourne_file_path = "/Users/ingrid/RelatedToSchoolWork/Data/melbourne-housing-snapshot/melb_data.csv"
+
+# read the data and store data in DataFrame titled melbourne_data
+melbourne_data = pd.read_csv(melbourne_file_path)
+
+# print a summary of the data in Melbourne data
+print(melbourne_data.describe())
+
+
+
+# selecting and filtering data
+
+
+# print the columns name of the data
+print(melbourne_data.columns)
+
+# select a single column
+
+# store the series of prices separately as melbourne_price_data
+melbourne_price_data = melbourne_data.Price
+# the head command returns the top few lines of data.
+print(melbourne_price_data.head(2))
+
+# select multiple columns
+columns_of_interest = ['Landsize', 'BuildingArea']
+two_columns_of_data = melbourne_data[columns_of_interest]
+print(two_columns_of_data.head(4))
+print(two_columns_of_data.describe())

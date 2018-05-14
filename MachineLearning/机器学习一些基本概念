@@ -1,0 +1,17 @@
+# 一些机器学习基本概念
+
+## 1 模型验证（Model Validation）
+<br>
+
+## 2 模型欠拟合&过拟合（underfitting&overfitting）
+<font face="宋体" size=5>
+    <p>模型过拟合：模型能够很好地拟合训练数据集，但是在验证集和其他数据集上表现较差。</p>
+    <p>模型欠拟合：模型训练不充分，不能够清楚的捕获数据模式。</p>
+    <p>欠拟合和过拟合的关系表示如图：</p>
+</font>
+<div align="center">
+    <a href="http://i.imgur.com/2q85n9s.png"> overfitting & underfitting</a>
+</div>
+<br>
+
+## 
