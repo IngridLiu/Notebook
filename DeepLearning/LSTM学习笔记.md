@@ -167,15 +167,11 @@
 
 
 
-参考：
 
-循环神经网络（RNN）：karpathy.github.io/2015
-
-长短期记忆单元（LSTM）：Understanding LSTM Networks（翻译版）
-
- 
- <br>
- <br>
+<br> 
+<br>
+<br>
+<br>
 
 ## Reference：
 1. [LSTM（Long-Short Term Memory，长短期记忆网络）学习笔记](https://www.jianshu.com/p/ebdf394b4a4b)
