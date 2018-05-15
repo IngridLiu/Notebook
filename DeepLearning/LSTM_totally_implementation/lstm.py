@@ -31,6 +31,7 @@ def rand_arr(a, b, *args):
 #   mem_cell_ct:lstm神经元数目
 #   x_dim: 输入数据维度
 #   contact_len: mem_cell_ct与x_dim长度和
+#
 #   wg: 输入节点权重集合
 #   wi: 输入门权重矩阵
 #   wf: 忘记门权重矩阵
@@ -77,6 +78,8 @@ class LstmParam:
         self.bf_diff = np.zeros(mem_cell_ct)
         self.bo_diff = np.zeros(mem_cell_ct)
 
+    # weight and bias update
+    # 定义权重更新过程，先减损失，再把损失矩阵归零。
     def apply_diff(self, lr=1):
         self.wg -= lr * self.wg_diff
         self.wi -= lr * self.wi_diff
@@ -97,6 +100,15 @@ class LstmParam:
         self.bo_diff = np.zeros_like(self.bo)
 
 
+# LstmState存储LSTM神经元状态
+# params：
+#   g：输入节点神经元状态
+#   i：输入门神经元状态
+#   f：忘记门神经元状态
+#   o：输出门神经元状态
+#   s：
+#   h：隐藏层神经元输出矩阵
+#   s：
 class LstmState:
     def __init__(self, mem_cell_ct, x_dim):
         self.g = np.zeros(mem_cell_ct)
@@ -109,6 +121,10 @@ class LstmState:
         self.bottom_diff_s = np.zeros_like(self.s)
 
 
+# LstmNode类
+# Param：
+#   lstm_param：
+#   lstm_state:
 class LstmNode:
     def __init__(self, lstm_param, lstm_state):
         # store reference to parameters and to activations
@@ -117,6 +133,11 @@ class LstmNode:
         # non-recurrent input concatenated with recurrent input
         self.xc = None
 
+    # bottom_data_is: 前向过程，输入样本计算过程
+    # params:
+    #   x: 输入样本
+    #   s_prev：
+    #   h——prev：前一时刻隐藏层输出值h
     def bottom_data_is(self, x, s_prev=None, h_prev=None):
         # if this is the first lstm node in the network
         if s_prev is None: s_prev = np.zeros_like(self.state.s)
@@ -126,6 +147,7 @@ class LstmNode:
         self.h_prev = h_prev
 
         # concatenate x(t) and h(t-1)
+        # xc是用hstack把x和递归输入节点拼接矩阵（hstack是横拼矩阵，vstack是纵拼矩阵）
         xc = np.hstack((x, h_prev))
         self.state.g = np.tanh(np.dot(self.param.wg, xc) + self.param.bg)
         self.state.i = sigmoid(np.dot(self.param.wi, xc) + self.param.bi)
@@ -136,6 +158,10 @@ class LstmNode:
 
         self.xc = xc
 
+    # top_diff_is: 反向传导过程
+    # params：
+    #   top_diff_h: 输出值h的导数
+    #   top_diff_s: 细胞状态的导数
     def top_diff_is(self, top_diff_h, top_diff_s):
         # notice that top_diff_s is carried along the constant error carousel
         ds = self.state.o * top_diff_h + top_diff_s

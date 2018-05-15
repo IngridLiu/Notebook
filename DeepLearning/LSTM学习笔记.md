@@ -166,7 +166,7 @@
 &emsp;&emsp;注意力也不是 RNN 研究领域中唯一的发展方向。例如，Kalchbrenner,et al.(2015)提出的 Grid LSTM 看起来也是很有前途。使用生成模型的 RNN，诸如Gregor,et al.(2015)Chung,et al.(2015)和Bayer & Osendorfer (2015)提出的模型同样很有趣。在过去几年中，RNN 的研究已经相当的燃，而研究成果当然也会更加丰富！
 
 
-
+&emsp;&emsp;LSTM网络的实现可参考
 
 <br> 
 <br>
