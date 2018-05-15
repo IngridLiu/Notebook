@@ -176,3 +176,5 @@
 ## Reference：
 1. [LSTM（Long-Short Term Memory，长短期记忆网络）学习笔记](https://www.jianshu.com/p/ebdf394b4a4b)
 2. [深度学习-模型系列】长短期记忆 LSTM](https://blog.eson.org/pub/a6941437/)
+3. [人人都能用Python写出LSTM-RNN的代码！[你的神经网络学习最佳起步](代码版)](https://blog.csdn.net/zzukun/article/details/49968129)
+3. [学习笔记CB012: LSTM 简单实现、完整实现、torch、小说训练word2vec lstm机器人(详解版)](https://cloud.tencent.com/developer/article/1113752)
