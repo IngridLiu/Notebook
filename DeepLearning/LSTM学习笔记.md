@@ -166,7 +166,8 @@
 &emsp;&emsp;注意力也不是 RNN 研究领域中唯一的发展方向。例如，Kalchbrenner,et al.(2015)提出的 Grid LSTM 看起来也是很有前途。使用生成模型的 RNN，诸如Gregor,et al.(2015)Chung,et al.(2015)和Bayer & Osendorfer (2015)提出的模型同样很有趣。在过去几年中，RNN 的研究已经相当的燃，而研究成果当然也会更加丰富！
 
 
-&emsp;&emsp;LSTM网络的实现可参考
+<br>
+&emsp;&emsp;LSTM网络的实现可参考[LSTM实现的code及说明](https://github.com/IngridLiu/Notebook/tree/master/DeepLearning/LSTM_totally_implementation)。
 
 <br> 
 <br>
@@ -176,5 +177,6 @@
 ## Reference：
 1. [LSTM（Long-Short Term Memory，长短期记忆网络）学习笔记](https://www.jianshu.com/p/ebdf394b4a4b)
 2. [深度学习-模型系列】长短期记忆 LSTM](https://blog.eson.org/pub/a6941437/)
-3. [人人都能用Python写出LSTM-RNN的代码！[你的神经网络学习最佳起步](代码版)](https://blog.csdn.net/zzukun/article/details/49968129)
+3. [LSTM实现源码](https://github.com/nicodjimenez/lstm)
 3. [学习笔记CB012: LSTM 简单实现、完整实现、torch、小说训练word2vec lstm机器人(详解版)](https://cloud.tencent.com/developer/article/1113752)
+4. [LSTM实现的code及说明](https://github.com/IngridLiu/Notebook/tree/master/DeepLearning/LSTM_totally_implementation)
