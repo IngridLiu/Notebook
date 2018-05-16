@@ -155,7 +155,21 @@
 
 <br>
 
-## 5 结论
+
+## 5 LSTM的优缺点
+### 5.1 LSTM的优点
+1.在序列建模上性能优势明显
+&emsp;&emsp;此处性能主要指结果准确率。
+### 5.2 LSTM的缺点
+1. LSTM速度较慢
+&emsp;&emsp;LSTM效果很好，不过很多时候我们更愿意用GRU来替换之。很多论文都比较过两者的学习效果，是不相上下的。但是GRU的构造更简单：比LSTM少一个gate，这样就少几个矩阵乘法。在训练数据很大的情况下GRU能节省很多时间。
+&emsp;&emsp;首先LSTM不是最近的东西，不过用在NLP上确实是非常的合适。不过以我的实践经验来看，LSTM的训练时间很长，所以大家经常用GRU来作为代替。因为少了一个门以后可以提高计算速度同时又不降低精度。最近看到南大的教授们po了篇论文是用最小GRU来进行计算的，就是比GRU又少了一个门，这样子在计算速度上又提升了一个档次。总的来说感觉LSTM是现阶段比较好用的适合训练带时间维度数据的算法，然而计算的维度较高，比较吃内存。
+2. 不同时刻输出相互关联的情况无法表示
+&emsp;&emsp;像RNN、LSTM、BILSTM这些模型，它们在序列建模上很强大，它们能够capture长远的上下文信息，此外还具备神经网络拟合非线性的能力。对于t时刻来说，输出层y_t受到隐层h_t（包含上下文信息）和输入层x_t（当前的输入）的影响，但是y_t和其他时刻的y_t`是相互独立的，感觉像是一种point wise，对当前t时刻来说，我们希望找到一个概率最大的y_t，但其他时刻的y_t`对当前y_t没有影响，如果y_t之间存在较强的依赖关系的话（例如，形容词后面一般接名词，存在一定的约束），LSTM无法对这些约束进行建模，LSTM模型的性能将受到限制。
+
+
+
+## 6 结论
 
 &emsp;&emsp;刚开始，我提到通过 RNN 得到重要的结果。本质上所有这些都可以使用 LSTM 完成。对于大多数任务确实展示了更好的性能！
 
@@ -165,6 +179,7 @@
 
 &emsp;&emsp;注意力也不是 RNN 研究领域中唯一的发展方向。例如，Kalchbrenner,et al.(2015)提出的 Grid LSTM 看起来也是很有前途。使用生成模型的 RNN，诸如Gregor,et al.(2015)Chung,et al.(2015)和Bayer & Osendorfer (2015)提出的模型同样很有趣。在过去几年中，RNN 的研究已经相当的燃，而研究成果当然也会更加丰富！
 
+<br>
 
 <br>
 &emsp;&emsp;LSTM网络的实现可参考[LSTM实现的code及说明](https://github.com/IngridLiu/Notebook/tree/master/DeepLearning/LSTM_totally_implementation)。
@@ -177,6 +192,7 @@
 ## Reference：
 1. [LSTM（Long-Short Term Memory，长短期记忆网络）学习笔记](https://www.jianshu.com/p/ebdf394b4a4b)
 2. [深度学习-模型系列】长短期记忆 LSTM](https://blog.eson.org/pub/a6941437/)
+3. [LSTM 优缺点](http://keen.ml/?encyclopedia=lstm-优缺点)
 3. [LSTM实现源码](https://github.com/nicodjimenez/lstm)
 3. [学习笔记CB012: LSTM 简单实现、完整实现、torch、小说训练word2vec lstm机器人(详解版)](https://cloud.tencent.com/developer/article/1113752)
 4. [LSTM实现的code及说明](https://github.com/IngridLiu/Notebook/tree/master/DeepLearning/LSTM_totally_implementation)
