@@ -18,11 +18,11 @@
 &emsp;&emsp;将数据特征分为四类，再将每一类分为特征组（Feature Group），特征表示可以见下表1：
 
 <div align="center">
-    ![图1：特征表示](https://upload-images.jianshu.io/upload_images/10947003-4e63056f69a80f98.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/800)
+![图1：特征表示](https://upload-images.jianshu.io/upload_images/10947003-4e63056f69a80f98.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/800)
 </div>
 &emsp;&emsp;则四个类别中的特征可以表示如下图所示：
 <div>
-   ![图2：特征表示示例](https://upload-images.jianshu.io/upload_images/10947003-ca226c974b791ff6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1600)
+![图2：特征表示示例](https://upload-images.jianshu.io/upload_images/10947003-ca226c974b791ff6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1600)
 </div>
 
 
@@ -60,8 +60,9 @@
 ![图4：Deep Interest Network结构](https://upload-images.jianshu.io/upload_images/10947003-a4423b7681ec1e24.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 &emsp;&emsp;与基础模型相比较，DIN引入了新的local activation unit，保持了模型的总体结构。具体来说，activation units主要应用于用户的行为特征，主要是为了计算用户对候选广告A的表达（representation），记为<img src="http://latex.codecogs.com/gif.latex?\inline&space;\upsilon&space;_U" title="\upsilon _U" />,如公式（3）所示：
 <div align="center">
-
+    <img src="http://latex.codecogs.com/gif.latex?\upsilon&space;_U(A)=f(\upsilon_A,e_1,e_2,...,e_H)=\sum_{j=1}^Ha(e_j,\upsilon_A)e_j=\sum_{j=1}^Hw_je_j" title="\upsilon _U(A)=f(\upsilon_A,e_1,e_2,...,e_H)=\sum_{j=1}^Ha(e_j,\upsilon_A)e_j=\sum_{j=1}^Hw_je_j" />
 </div>
+&emsp;&emsp;
 
 
 ## Reference：
