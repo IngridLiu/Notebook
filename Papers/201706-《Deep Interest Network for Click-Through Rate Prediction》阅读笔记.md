@@ -28,14 +28,14 @@
 </div>
 &emsp;&emsp;则四个类别中的特征可以表示如下图所示：
 <div>
-    <img src="https://upload-images.jianshu.io/upload_images/10947003-ca226c974b791ff6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1600">图2：特征表示示例</img>
+    <img src="https://upload-images.jianshu.io/upload_images/10947003-ca226c974b791ff6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/800">图2：特征表示示例</img>
 </div>
 
 
 ### 2.2 基础模型（Base Model，Embedding&MLP）
 &emsp;&emsp;本文中的模型基于Embedding&MLP的结构，如下图3所示：
 <div align="center">
-<img src="https://upload-images.jianshu.io/upload_images/10947003-2ff62a582e2d9462.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">图3：基本模型</img>
+<img src="https://upload-images.jianshu.io/upload_images/10947003-2ff62a582e2d9462.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/800">图3：基本模型</img>
 </div>
 
 &emsp;&emsp;该结构由多个部分构成。
@@ -70,12 +70,12 @@
 
 ### 2.3 Deep Interest Network结构
 &emsp;&emsp;Deep Interest Network的结构如下图4所示。
-![图4：Deep Interest Network结构](https://upload-images.jianshu.io/upload_images/10947003-a4423b7681ec1e24.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![图4：Deep Interest Network结构](https://upload-images.jianshu.io/upload_images/10947003-a4423b7681ec1e24.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/800)
 &emsp;&emsp;与基础模型相比较，DIN引入了新的local activation unit，保持了模型的总体结构。具体来说，activation units主要应用于用户的行为特征，主要是为了计算用户对候选广告A的表达（representation），记为<img src="http://latex.codecogs.com/gif.latex?\inline&space;\upsilon&space;_U" title="\upsilon _U" />,如公式（3）所示：
 <div align="center">
     <img src="http://latex.codecogs.com/gif.latex?\upsilon&space;_U(A)=f(\upsilon_A,e_1,e_2,...,e_H)=\sum_{j=1}^Ha(e_j,\upsilon_A)e_j=\sum_{j=1}^Hw_je_j" title="\upsilon _U(A)=f(\upsilon_A,e_1,e_2,...,e_H)=\sum_{j=1}^Ha(e_j,\upsilon_A)e_j=\sum_{j=1}^Hw_je_j" />
 </div>
-&emsp;&emsp;
+&emsp;&emsp;其中<img src="http://latex.codecogs.com/gif.latex?\inline&space;\{e_1,e_2,...,e_H\}" title="\{e_1,e_2,...,e_H\}" />为用户U的长度为H的行为的嵌入式向量列表，<img src="http://latex.codecogs.com/gif.latex?\inline&space;\upsilon&space;_A" title="\upsilon _A" />为广告A的嵌入式向量。<img src="http://latex.codecogs.com/gif.latex?\inline&space;\upsilon&space;_U(A)" title="\upsilon _U(A)" />随着广告的不同而不同。<img src="http://latex.codecogs.com/gif.latex?\inline&space;a(&space;\cdot&space;)" title="a( \cdot )" />是一个将输出作为激活权重的前馈网络，从图4中可以看出。除了两个嵌入式向量，<img src="http://latex.codecogs.com/gif.latex?\inline&space;a(&space;\cdot&space;)" title="a( \cdot )" />还将它们的结果传入下一层网络，从而帮助相关性的建模。
 
 
 ## Reference：
