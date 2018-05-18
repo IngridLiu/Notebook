@@ -38,7 +38,8 @@
 ### 2.2 基础模型（Base Model，Embedding&MLP）
 &emsp;&emsp;本文中的模型基于Embedding&MLP的结构，如下图3所示：
 <div align="center">
-<img src="https://upload-images.jianshu.io/upload_images/10947003-2ff62a582e2d9462.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/800">图3：基本模型</img>
+    <img src="https://upload-images.jianshu.io/upload_images/10947003-2ff62a582e2d9462.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/800"></img>
+    <p>图3：基本模型</p>
 </div>
 
 &emsp;&emsp;该结构由多个部分构成。
@@ -52,9 +53,11 @@
 
 #### 2.2.2 Pooling层和Concat层
 &emsp;&emsp;在本文中仅有用户行为特征采取mutil-hot编码，而不同的用户会有不同数量的行为数据。因此，对于不同的用户来说，mutil-hot向量中非零数的数目是不一样的。由于全连接层智能处理定长的数据，所以需要对embedding层做一个池化，得到一个定长的向量，如公式（1）：
+
 <div align="center">
     <img src="http://latex.codecogs.com/gif.latex?\inline&space;e_i&space;=&space;pooling(e_{i_1},e_{i_2},...,e{i_k})" title="e_i = pooling(e_{i_1},e_{i_2},...,e{i_k})" />&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;公式（1）
 </div>
+
 &emsp;&emsp;较常用的pooling层为sum pooling和average pooling，pooling层对嵌入式向量的每一个元素进行sum或者average操作（apply element-wise sum/average operations to the list of embedding vectors）。
 
 &emsp;&emsp;concat层将所有的向量合并起来表示全部的特征。
@@ -73,7 +76,9 @@
 
 ### 2.3 Deep Interest Network结构
 &emsp;&emsp;Deep Interest Network的结构如下图4所示。
+
 ![图4：Deep Interest Network结构](https://upload-images.jianshu.io/upload_images/10947003-a4423b7681ec1e24.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/800)
+
 &emsp;&emsp;与基础模型相比较，DIN引入了新的local activation unit，保持了模型的总体结构。具体来说，activation units主要应用于用户的行为特征，主要是为了计算用户对候选广告A的表达（representation），记为<img src="http://latex.codecogs.com/gif.latex?\inline&space;\upsilon&space;_U" title="\upsilon _U" />,如公式（3）所示：
 <div align="center">
     <img src="http://latex.codecogs.com/gif.latex?\upsilon&space;_U(A)=f(\upsilon_A,e_1,e_2,...,e_H)=\sum_{j=1}^Ha(e_j,\upsilon_A)e_j=\sum_{j=1}^Hw_je_j" title="\upsilon _U(A)=f(\upsilon_A,e_1,e_2,...,e_H)=\sum_{j=1}^Ha(e_j,\upsilon_A)e_j=\sum_{j=1}^Hw_je_j" />
