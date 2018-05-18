@@ -27,11 +27,13 @@
 &emsp;&emsp;将数据特征分为四类，再将每一类分为特征组（Feature Group），特征表示可以见下表1：
 
 <div align="center">
-    <img src="https://upload-images.jianshu.io/upload_images/10947003-4e63056f69a80f98.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/800"><图1：特征表示/img>
+    <img src="https://upload-images.jianshu.io/upload_images/10947003-4e63056f69a80f98.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/800"></img>
+    <p>图1：特征表示</p>
 </div>
 &emsp;&emsp;则四个类别中的特征可以表示如下图所示：
 <div>
-    <img src="https://upload-images.jianshu.io/upload_images/10947003-ca226c974b791ff6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/800">图2：特征表示示例</img>
+    <img src="https://upload-images.jianshu.io/upload_images/10947003-ca226c974b791ff6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/800"></img>
+    <p>图2：特征表示示例</p>
 </div>
 
 
@@ -69,9 +71,11 @@
 
 #### 2.2.4 Loss
 &emsp;&emsp;基础模型中所用的目标函数（objective function）/损失函数（loss function）为negative log-likelihood function，表示为公式（2）：
+
 <div align="center">
     <img src="http://latex.codecogs.com/gif.latex?L=-\frac{1}{N}\sum_{(x,y)\in&space;S}(ylogp(x)&plus;(1-y)log(1-p(x)))" title="L=-\frac{1}{N}\sum_{(x,y)\in S}(ylogp(x)+(1-y)log(1-p(x)))" />&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;公式（2）
 </div>
+
 &emsp;&emsp;其中S表示大小为N的训练集S，x表示模型输入，<img src="http://latex.codecogs.com/gif.latex?\inline&space;y\in&space;\{0,1\}" title="y\in \{0,1\}" />表示标签，p(x)是经过softmax层之后的输出，表示x会被点击的概率。
 
 ### 2.3 Deep Interest Network结构
@@ -80,6 +84,7 @@
 ![图4：Deep Interest Network结构](https://upload-images.jianshu.io/upload_images/10947003-a4423b7681ec1e24.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/800)
 
 &emsp;&emsp;与基础模型相比较，DIN引入了新的local activation unit，保持了模型的总体结构。具体来说，activation units主要应用于用户的行为特征，主要是为了计算用户对候选广告A的表达（representation），记为<img src="http://latex.codecogs.com/gif.latex?\inline&space;\upsilon&space;_U" title="\upsilon _U" />,如公式（3）所示：
+
 <div align="center">
     <img src="http://latex.codecogs.com/gif.latex?\upsilon&space;_U(A)=f(\upsilon_A,e_1,e_2,...,e_H)=\sum_{j=1}^Ha(e_j,\upsilon_A)e_j=\sum_{j=1}^Hw_je_j" title="\upsilon _U(A)=f(\upsilon_A,e_1,e_2,...,e_H)=\sum_{j=1}^Ha(e_j,\upsilon_A)e_j=\sum_{j=1}^Hw_je_j" />
 </div>
