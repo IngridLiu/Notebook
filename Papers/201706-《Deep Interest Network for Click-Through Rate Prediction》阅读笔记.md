@@ -78,7 +78,9 @@
 <div align="center">
     <img src="http://latex.codecogs.com/gif.latex?\upsilon&space;_U(A)=f(\upsilon_A,e_1,e_2,...,e_H)=\sum_{j=1}^Ha(e_j,\upsilon_A)e_j=\sum_{j=1}^Hw_je_j" title="\upsilon _U(A)=f(\upsilon_A,e_1,e_2,...,e_H)=\sum_{j=1}^Ha(e_j,\upsilon_A)e_j=\sum_{j=1}^Hw_je_j" />
 </div>
+
 &emsp;&emsp;其中<img src="http://latex.codecogs.com/gif.latex?\inline&space;\{e_1,e_2,...,e_H\}" title="\{e_1,e_2,...,e_H\}" />为用户U的长度为H的行为的嵌入式向量列表，<img src="http://latex.codecogs.com/gif.latex?\inline&space;\upsilon&space;_A" title="\upsilon _A" />为广告A的嵌入式向量。<img src="http://latex.codecogs.com/gif.latex?\inline&space;\upsilon&space;_U(A)" title="\upsilon _U(A)" />随着广告的不同而不同。<img src="http://latex.codecogs.com/gif.latex?\inline&space;a(&space;\cdot&space;)" title="a( \cdot )" />是一个将输出作为激活权重的前馈网络，从图4中可以看出。除了两个嵌入式向量，<img src="http://latex.codecogs.com/gif.latex?\inline&space;a(&space;\cdot&space;)" title="a( \cdot )" />还将它们的结果传入下一层网络，从而帮助相关性的建模。
+
 &emsp;&emsp;本地激活单元（load activation unit)与attention机制有相似的思想，主要是为了改变用户兴趣的强度。与传统的attention机制不同的是取消了对<img src="http://latex.codecogs.com/gif.latex?\inline&space;a(\cdot&space;)" title="a(\cdot )" />的输出的正则化（normalization）。
 
 <br>
@@ -88,19 +90,27 @@
 
 ### 3.1 小批量感知正则化（Mini-batch Aware Regularization）
 &emsp;&emsp;在模型训练中，overfitting是一个很严重的问题，一般通过引入惩罚项来解决。通过实验作者发现，训练小批量数据集时loss下降明显，但是常用的l1、l2 norm作用不大，于是作者提出了mini-batch aware regularizer。在小批量感知的正则化中，只计算稀疏特征参数的l2 norm。
+
 &emsp;&emsp;我们用<img src="http://latex.codecogs.com/gif.latex?\inline&space;W\in&space;R^{D\times&space;K}" title="W\in R^{D\times K}" />表示整个嵌入式词典的参数，其中D表示嵌入式向量的维度，K表示特征向量的维度。我们可以在W上将l2 norm扩张为公式4：
+
 <div align="center">
     <img src="http://latex.codecogs.com/gif.latex?L_2(W)={||W||}_2^2=\sum_{j=1}^K=\sum_{(x,y)\in&space;S}\sum_{j=1}^K\frac{I(x_j\neq&space;0)}{n_j}{||w_j||_2^2}" title="L_2(W)={||W||}_2^2=\sum_{j=1}^K=\sum_{(x,y)\in S}\sum_{j=1}^K\frac{I(x_j\neq 0)}{n_j}{||w_j||_2^2}" />&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;(公式4）
 </div>
+
 &emsp;&emsp;其中<img src="http://latex.codecogs.com/gif.latex?\inline&space;w_j\in&space;R^D" title="w_j\in R^D" />为第j个嵌入式向量，<img src="http://latex.codecogs.com/gif.latex?\inline&space;I(x_j\neq&space;0)" title="I(x_j\neq 0)" />标记了实例x是否含有第j个特征，<img src="http://latex.codecogs.com/gif.latex?\inline&space;n_j" title="n_j" />是第j个特征在所有数据集中出现的频数。可以将公式4以小批量感知的方式转换为公式5：
+
 <div align="center">
     <img src="http://latex.codecogs.com/gif.latex?L_2(W)=\sum_{j=1}^K\sum_{m=1}^B\sum_{(x,y)\in&space;B_m}\frac{I(x_j\neq&space;0)}{n_j}{||w_j||}_2^2" title="L_2(W)=\sum_{j=1}^K\sum_{m=1}^B\sum_{(x,y)\in B_m}\frac{I(x_j\neq 0)}{n_j}{||w_j||}_2^2" />&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;（公式5）
 </div>
+
 &emsp;&emsp;其中B表示mini-batch的数量，<img src="http://latex.codecogs.com/gif.latex?\inline&space;B_m" title="B_m" />表示第m个mini-batch。使<img src="http://latex.codecogs.com/gif.latex?\inline&space;\alpha_{mj}=max(x,y)\in&space;B_mI(x_j\neq&space;0)" title="\alpha_{mj}=max(x,y)\in B_mI(x_j\neq 0)" />表示，若第m个mini-batch<img src="http://latex.codecogs.com/gif.latex?\inline&space;B_m" title="B_m" />中至少有一个实例有特征j，则可以将公式5近似为公式6：
+
 <div>
     <img src="http://latex.codecogs.com/gif.latex?L_2(W)\approx&space;\sum_{j=1}^K\sum_{m=1}^B\frac{\alpha_{mj}}{n_j}&space;{||w_j||_2^2}" title="L_2(W)\approx \sum_{j=1}^K\sum_{m=1}^B\frac{\alpha_{mj}}{n_j} {||w_j||_2^2}" />&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;（公式6）
 </div align="center">
+
 &emsp;&emsp;这样，就得到了mini-batch感知的l2近似正则化。对于第m个mini-batch，嵌入式向量w的第j个特征的更新如公式7所示（基于梯度下降）：
+
 <div align="center">
     <img src="http://latex.codecogs.com/gif.latex?w_j\leftarrow&space;w_j-\eta&space;\left&space;[&space;\frac{1}{|B_m|}\sum_{(x,y)\in&space;B_m}\frac{\partial&space;L(p(x),y)}{\partial{w_j}}&space;&plus;\lambda&space;\frac{\alpha&space;_{mj}}{n_j}w_j\right&space;]" title="w_j\leftarrow w_j-\eta \left [ \frac{1}{|B_m|}\sum_{(x,y)\in B_m}\frac{\partial L(p(x),y)}{\partial{w_j}} +\lambda \frac{\alpha _{mj}}{n_j}w_j\right ]" />&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;（公式7）    
 </div>
@@ -108,18 +118,25 @@
 
 ### 3.2 数据适应性的激活函数(Data Adaptive Activation Function)
 &emsp;&emsp;PReLU是常用的激活函数，如公式8所示：
+
 <div align="center">
     <img src="http://latex.codecogs.com/gif.latex?f(s)=\left\{\begin{matrix}&space;s&space;&&space;if&space;\;&space;s>0\\&space;\alpha&space;s&&space;if&space;\;&space;s\leqslant&space;0&space;\end{matrix}\right.&space;=p(s)\cdot&space;s&plus;(1-p(s))\cdot&space;\alpha&space;s" title="f(s)=\left\{\begin{matrix} s & if \; s>0\\ \alpha s& if \; s\leqslant 0 \end{matrix}\right. =p(s)\cdot s+(1-p(s))\cdot \alpha s" />&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;(公式8)    
 </div>
+
 &emsp;&emsp;其中s是激活函数f(·)的一维输入，<img src="http://latex.codecogs.com/gif.latex?\inline&space;p(s)=I(s>0)" title="p(s)=I(s>0)" />控制着选择<img src="http://latex.codecogs.com/gif.latex?\inline&space;f(s)=s" title="f(s)=s" />还是<img src="http://latex.codecogs.com/gif.latex?\inline&space;f(s)=\alpha&space;s" title="f(s)=\alpha s" />，<img src="http://latex.codecogs.com/gif.latex?\inline&space;\alpha" title="\alpha" />为需要学习的参数。将<img src="http://latex.codecogs.com/gif.latex?\inline&space;p(s)" title="p(s)" />称为控制函数。下图5的左侧表示了PReLU的形式：
+
 <div align="center">
     <img src="https://upload-images.jianshu.io/upload_images/10947003-e0f20f9bffb3406e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/400">图5：PReLU和Dice的控制函数</img>
 </div>
+
 &emsp;&emsp;PReLU的0点无法调节，当每层的输入有不同的分布时不适用。作者提出了新的适应性激活函数（Adaptive activiation function ）Dice：
+
 <div align="center">
     <img src="http://latex.codecogs.com/gif.latex?\dpi{150}&space;f(s)=p(s)\cdot&space;&plus;(1-p(s))\cdot\alpha&space;s,\;\;p(s)&space;=&space;\frac{1}{1&plus;e^{-\frac{s-E[s]}{\sqrt{Var[s]&plus;\varepsilon&space;}}}}" title="f(s)=p(s)\cdot +(1-p(s))\cdot\alpha s,\;\;p(s) = \frac{1}{1+e^{-\frac{s-E[s]}{\sqrt{Var[s]+\varepsilon }}}}" />&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;（公式9）
 </div>
+
 &emsp;&emsp;该公式使得激活函数的变换如图5右侧所示。其中<img src="http://latex.codecogs.com/gif.latex?\inline&space;\dpi{100}&space;E[s]" title="E[s]" />和<img src="http://latex.codecogs.com/gif.latex?\inline&space;\dpi{100}&space;Var[s]" title="Var[s]" />分别为每一个mini-batch中的输入数据的均值（mean）和方差（variance），<img src="http://latex.codecogs.com/gif.latex?\inline&space;\dpi{100}&space;\varepsilon" title="\varepsilon" />是提前设定的超参数，在本文使得实验中设为<img src="http://latex.codecogs.com/gif.latex?\inline&space;\dpi{100}&space;10^{-8}" title="10^{-8}" />。
+
 &emsp;&emsp;能够将Dice设为PReLU的推广。当<img src="http://latex.codecogs.com/gif.latex?\inline&space;\dpi{100}&space;E[s]=0" title="E[s]=0" />及<img src="http://latex.codecogs.com/gif.latex?\inline&space;\dpi{100}&space;Var[s]=0" title="Var[s]=0" /> 时，PReLU=Dice。
 
 <br>
@@ -128,6 +145,7 @@
 ## 4 实验
 ### 4.1 实验数据和设置（Datasets and Experimental Setup）
 &emsp;&emsp;[Amazon Dataset](http://jmcauley.ucsd.edu/data/amazon/)
+
 &emsp;&emsp;[MovieLens Dataset](https://grouplens.org/datasets/movielens/20m/)
 
 
