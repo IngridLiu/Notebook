@@ -1,4 +1,7 @@
 #《Deep Interest Network for Click-Through Rate Prediction》阅读笔记
+<br>
+<br>
+
 
 ## 1 （Motivation）Introduction
 &emsp;&emsp;在以每次点击成本（cost-per-click，CPC）衡量的广告系统中，广告根据每千米有效成本（effective cost per mille，eCPM）进行排序。每千米有效成本（effective cost per mille，eCPM）由竞价（bid price）和点击率（click-through rate，CTR）表示而成，点击率（click-through rate，CTR）由系统生成。点击率（click-through rate，CTR）的预测对于广告系统具有至关重要的意义。
