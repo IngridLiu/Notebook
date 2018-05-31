@@ -261,7 +261,9 @@
 &emsp;&emsp;α5 = ( 2 / 25 ) * 100% = 8%
 
 &emsp;&emsp;所以转盘如下：
+
 ![](https://upload-images.jianshu.io/upload_images/10947003-eae38620364d5266.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/600)
+
 &emsp;&emsp;**当指针在这个转盘上转动，停止下来时指向的个体就是天选之人啦。可以看出，适应性越高的个体被选中的概率就越大。**
 
 ### 4.5 遗传--染色体交叉(crossover)
