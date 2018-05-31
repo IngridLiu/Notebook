@@ -1,0 +1,14 @@
+# 基于树表示法的变邻域搜索算法求解考虑后进先出的取派货旅行商问题（The Tree Representation for the Pickup and Delivery Traveling Salesman Problem with LIFO Loading）
+| 转自[基于树表示法的变邻域搜索算法求解考虑后进先出的取派货旅行商问题(附C++代码和详细代码注释)](https://mp.weixin.qq.com/s?__biz=MzIyNzg5MTQ5Mg==&mid=2247484237&idx=1&sn=d6f5ea44b0eb6b8a098e362d3b4fc4ab&chksm=e85b0306df2c8a1012d6312c817fe74a0a5d964204803e559b9261d2d1ce9f7c7adf7ae33d21&scene=21#wechat_redirect)
+<br>
+<br>
+
+## 1 什么是考虑后进先出的取派货旅行商问题？（the Pickup and Delivery Traveling Salesman Problem with LIFO Loading）
+&emsp;&emsp;考虑后进先出的取派货旅行商问题是旅行商问题的一个变种，它可以描述为：假设车辆从起点（depot）出发去完成所有任务，每个任务分别对应着一个位于不同地理位置的取货点和派货点,需要制定一条路线来保证总费用最小。其中，从起点出发提供服务的车辆只有一辆；车辆必须先到达取货点获得货物才能去派货点；车辆装卸货时必须服从后进先出原则。要处理现实情况中的问题，首先要将其转化为对应的数学模型，然后研究模型，对所建立的模型进行求解。
+&emsp;&emsp;
+&emsp;&emsp;
+&emsp;&emsp;
+&emsp;&emsp;
+&emsp;&emsp;
+&emsp;&emsp;
+&emsp;&emsp;
