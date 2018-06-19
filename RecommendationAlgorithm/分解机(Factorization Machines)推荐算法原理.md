@@ -40,8 +40,6 @@
 
 ## 1.5 学习算法
 
-![](https://upload-images.jianshu.io/upload_images/10947003-1ae823c0e9823630.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-
 ![](https://upload-images.jianshu.io/upload_images/10947003-98fb977b53f6f286.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 ![](https://upload-images.jianshu.io/upload_images/10947003-049cdcb399efc0d8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
