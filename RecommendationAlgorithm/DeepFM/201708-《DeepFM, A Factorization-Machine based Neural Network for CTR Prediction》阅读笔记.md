@@ -87,5 +87,4 @@
 ## Reference:
 1. [DeepFM: A Factorization-Machine based Neural Network for CTR Prediction, IJCAI 2017](https://zhuanlan.zhihu.com/p/27999355)
 2. [DeepFM的tensorflow实现](https://github.com/ChenglongChen/tensorflow-DeepFM)
-3. [ctr预估之DeepFM](https://zhuanlan.zhihu.com/p/32563337)
 3. [deep-ctr](https://github.com/charleshm/deep-ctr)
