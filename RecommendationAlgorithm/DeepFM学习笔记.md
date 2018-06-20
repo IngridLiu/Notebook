@@ -1,7 +1,10 @@
 # DeepFM: A Factorization-Machine based Neural Network for CTR Prediction
 | IJCAI 2017
 
-## 1 Abstract
+
+## 1 DeepFM 论文内容
+
+### 1.1 Abstract
 
 &emsp;&emsp;这篇论文来自哈工大&华为诺亚方舟实验室，主要关注如何学习user behavior背后的组合特征（feature interactions），从而最大化推荐系统的CTR。但目前的方法容易得到low-或者high-order interactions。因此这篇论文提出构建一个端到端的可以同时突出低阶和高阶feature interactions的学习模型DeepFM。DeepFM是一个新的神经网络框架，结合了FM在推荐中的优势和深度学习在特征学习中的优势。
 详见：A Factorization-Machine based Neural Network for CTR Prediction
@@ -15,7 +18,7 @@
 
 <br>
 
-## 2 研究背景
+### 1.2 研究背景
 
 &emsp;&emsp;推荐系统中的CTR预估是预测用户点击推荐物品的概率。大部分推荐系统的目标是最大化点击次数，因此要推荐给用户的物品的排序策略，直接按预估的CTR大小排序即可；但在其他场景如在线广告，目标是最大化收益，因此排序策略调整为按所有候选item的CTR*bid，bid是item被user点击后系统的收益。两种场景的关键都是要准确预估CTR。
 
@@ -23,7 +26,7 @@
 
 <br>
 
-## 3 相关工作
+### 1.3 相关工作
 
 &emsp;&emsp;FTRL算法（McMahan et al. 2013），generalized linear model虽然简单，但实践中很有效果。但这类线性模型难以学习组合特征，一般需要手动构建特征向量，难以处理高阶组合或者没有出现在训练数据中的组合。
 
@@ -50,3 +53,38 @@
 &emsp;&emsp;PNN：图5中间，引入product层来捕获high-order特征组合，根据不同的product操作有三种变体IPNN（inner product）、OPNN（outer product）、PNN*（inner & outer）。缺陷：outer product丢失太多信息，不太可靠；inner product更可信，但product层输出全连接到第一隐含层的所有神经元，计算复杂度还是太高（DeepFM只在连接到最后输出层的一个神经元）；PNN和FNN一样忽视low-order特征组合。
 
 &emsp;&emsp;W&D：对于Wide部分需要人工特征工程。
+
+<br>
+
+### 1.4 DeepFM 模型
+
+#### 1.4.1 FM部分
+
+![](https://upload-images.jianshu.io/upload_images/10947003-9631ce5d8c7bf4f3.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/800)
+
+&emsp;&emsp;在FM模型中，特征i和特征j的组合通过计算各自的隐含向量Vi和Vj的inner product得到。无论i或者j是否在训练数据中出现，隐含向量Vi或Vj都可以被FM训练得到。
+
+![](https://upload-images.jianshu.io/upload_images/10947003-f6728cdd615e4430.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/800)
+
+
+#### 1.4.2 Deep部分
+
+![](https://upload-images.jianshu.io/upload_images/10947003-b12a4c4ae2874bf2.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/800)
+
+&emsp;&emsp;Deep部分是一个前馈神经网络，用于学习high-order特征。论文提到了何凯明CVPR2016的用于图像识别的深度残差网络和Boulanger-Lewandowski的识别语音的RNN，输入的向量都是连续取值、稠密的。而CTR预估的输入向量则不同，raw feature input一般是高度稀疏（每个field
+
+&emsp;&emsp;vector只有一个非零取值）、超高维度（userID的field vector就接近上亿维）、混合categorical和continuous取值、被分组到一系列field（如性别、位置、年龄）。因此需要设计一个embedding层（图4），压缩输入向量到一个低维稠密实值的向量，再feeding到第一个hidden层，否则神经网络难以训练。
+
+![embedding layer](https://upload-images.jianshu.io/upload_images/10947003-41ae64ae935e50d0.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/400)
+
+&emsp;&emsp;embedding层的设计：（1）对于不同长度的输入field向量，得到的embedding长度都是k；（2）FM中的隐含向量V现在作为神经网络的权重，被学习来压缩输入field向量到embedding向量。embedding层的输出是m个field对应的e向量，传入DNN，最后得到一个稠密实值向量，经过一个sigmoid函数得到预测的CTR。
+
+
+<br>
+<br>
+<br>
+
+## Reference:
+1. [DeepFM: A Factorization-Machine based Neural Network for CTR Prediction, IJCAI 2017](https://zhuanlan.zhihu.com/p/27999355)
+2. [DeepFM的tensorflow实现](https://github.com/ChenglongChen/tensorflow-DeepFM)
+3. [deep-ctr](https://github.com/charleshm/deep-ctr)
