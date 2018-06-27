@@ -84,7 +84,7 @@
 
 &emsp;&emsp;遗传算法并不保证你能获得问题的最优解，但是使用遗传算法的最大优点在于你不必去了解和操心如何去“找”最优解。（你不必去指导袋鼠向那边跳，跳多远。）而只要简单的“否定”一些表现不好的个体就行了。（把那些总是爱走下坡路的袋鼠射杀，这就是遗传算法的精粹！）
 
-由此我们可以得出遗传算法的一般步骤：
+&emsp;&emsp;由此我们可以得出遗传算法的一般步骤：
 
 &emsp;&emsp;1) 随机产生种群。
 
@@ -200,7 +200,7 @@
 
 &emsp;&emsp;3. 根据最优化问题的类型，由目标函数值按一定的转换规则求出个体的适应度。
 
-### 4，4 选择个体
+### 4.4 选择个体
 &emsp;&emsp;**遗传算法中的选择操作就是用来确定如何从父代群体中按某种方法选取那些个体，以便遗传到下一代群体**。选择操作用来确定重组或交叉个体，以及被选个体将产生多少个子代个体。前面说了，我们希望海拔高的袋鼠存活下来，并尽可能繁衍更多的后代。但我们都知道，在自然界中，适应度高的袋鼠越能繁衍后代，但这也是从概率上说的而已。毕竟有些适应度低的袋鼠也可能逃过我们的眼睛。
 
 
@@ -322,8 +322,8 @@
 
 
 ## Code：
-1. [用遗传算法(Genetic Algorithm)求解一元函数最大值问题](https://github.com/IngridLiu/Notebook/blob/master/OptimizationAlgorithm/GeneticAlgorithm/GA_MaxNum.cpp)
-2. [用遗传算法(Genetic Algorithm)求解TSP问题](https://github.com/IngridLiu/Notebook/tree/master/OptimizationAlgorithm/GeneticAlgorithm/TSPGeneticAlgorithm)
+1. [用遗传算法(Genetic Algorithm)求解一元函数最大值问题](https://github.com/IngridLiu/Notebook/blob/master/OptimizationAlgorithm/3.1%20Genetic%20Algorithm/GA_MaxNum.cpp)
+2. [用遗传算法(Genetic Algorithm)求解TSP问题](https://github.com/IngridLiu/Notebook/tree/master/OptimizationAlgorithm/3.1%20Genetic%20Algorithm/TSPGeneticAlgorithm)
 
 <br>
 <br>
