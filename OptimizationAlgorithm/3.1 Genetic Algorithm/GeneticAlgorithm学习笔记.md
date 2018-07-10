@@ -336,4 +336,4 @@
 ## Reference:
 1. [干货 | 遗传算法(Genetic Algorithm) （附代码及注释）](https://mp.weixin.qq.com/s?__biz=MzIyNzg5MTQ5Mg==&mid=2247484529&idx=1&sn=6137baf119a703a094283dff364a228b&chksm=e85b043adf2c8d2c2e191ac228557a6b8253b0cc5d9ae451619b902ec559c354adbef689e9b5&scene=21#wechat_redirect)
 2. [嘿！你和遗传算法的距离也许只差这一文(附C++代码和详细代码注释)](https://mp.weixin.qq.com/s?__biz=MzIyNzg5MTQ5Mg==&mid=2247484044&idx=1&sn=e55f74a4a77681d9729fda4713d3a6a8&chksm=e85b02c7df2c8bd1b7f1293032b70686daf2a61b54561c04fafb339c6895eef5a0fdcea58e55&scene=21#wechat_redirect)
-3. [遗传算法(Genetic Algorithm) Java 详细代码及注释]() 
+3. [遗传算法(Genetic Algorithm) Java 详细代码及注释](https://github.com/IngridLiu/Notebook/tree/master/OptimizationAlgorithm/3.1%20Genetic%20Algorithm/TSPGeneticAlgorithm) 
