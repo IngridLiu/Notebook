@@ -21,3 +21,77 @@
 &emsp;&emsp;按数据分组进行聚合和转换。
 &emsp;&emsp;高性能合并和数据加入。
 &emsp;&emsp;时间序列功能。
+
+<br>
+
+## 2 创建dataframe
+
+### 2.1 利用集合创建dataframe
+
+```
+d1 = pd.DataFrame(data=list([1, 2, 3]), index=list(["a", "b", "c"]))
+print(d1)
+```
+
+### 2.2 利用数组创建dataframe
+
+```
+d2 = pd.DataFrame(data=numpy.array(list([1, 2, 3, 4, 5, 6, 7])))
+print(d2)
+
+```
+
+### 2.3 利用字典创建dataframe
+
+```
+dictionary3 = {"name": "nick", "age": 12, "sex": "male"}
+d3 = pd.DataFrame(data=dictionary3, index=list([1, 2, 3]))
+print(d3)
+
+```
+
+### 2.4 利用series创建dataframe
+
+```
+dictionary4 = {"name": "nick", "age": 12, "sex": "male"}
+s4 = pd.Series(data=dictionary4)
+d4 = pd.DataFrame(data=s4)
+print(d4)
+
+```
+
+### 2.5 利用嵌套字典创建dataframe
+
+```
+dictionary5 = {"A":{"name": "nick", "age": 12, "sex": "male"},"B":{"name": "nick", "age": 12, "sex": "male"}}
+s5 = pd.DataFrame(data=dictionary5)
+print(s5)
+
+```
+
+### 2.6 利用嵌套集合创建dataframe
+
+```
+s6 = pd.DataFrame(data=list([[1, 2, 3, 4], ["a", "b", "c", "d"]]))
+print(s6)
+
+```
+
+### 2.7 利用嵌套数组创建dataframe
+
+```
+s7 = pd.DataFrame(data=numpy.array(list([[1, 2, 3, 4], ["a", "b", "c", "d"]])))
+print(s7)
+
+```
+
+### 2.8 利用字典创建dataframe
+
+```
+s8 = pd.DataFrame.from_dict(
+    data={"name": "nick", "age": 12, "sex": "male"}, orient="index")
+
+print(s8)
+
+```
+
