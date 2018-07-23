@@ -240,6 +240,3 @@ if __name_ == "main":
 
 ```
 
-### 1.1 
-
-&emsp;&emsp;
