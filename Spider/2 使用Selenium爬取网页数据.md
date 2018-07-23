@@ -242,3 +242,13 @@ if __name_ == "main":
 
 ```
 
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+## Reference:
+
+1.[Python3网络爬虫(九)：使用Selenium爬取百度文库word文章](https://blog.csdn.net/c406495762/article/details/72331737)
