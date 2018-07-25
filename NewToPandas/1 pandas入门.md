@@ -1,5 +1,11 @@
 # pandas 入门
 
+<br>
+<br>
+<br>
+<br>
+
+
 ## 1 pandas 介绍
 
 &emsp;&emsp;Pandas是一个开放源码的Python库，它使用强大的数据结构提供高性能的数据操作和分析工具。它的名字：Pandas是从Panel Data - 多维数据的计量经济学(an Econometrics from Multidimensional data)。
@@ -13,27 +19,46 @@
 &emsp;&emsp;Pandas的主要特点
 
 &emsp;&emsp;快速高效的DataFrame对象，具有默认和自定义的索引。
+
 &emsp;&emsp;将数据从不同文件格式加载到内存中的数据对象的工具。
+
 &emsp;&emsp;丢失数据的数据对齐和综合处理。
+
 &emsp;&emsp;重组和摆动日期集。
+
 &emsp;&emsp;基于标签的切片，索引和大数据集的子集。
+
 &emsp;&emsp;可以删除或插入来自数据结构的列。
+
 &emsp;&emsp;按数据分组进行聚合和转换。
+
 &emsp;&emsp;高性能合并和数据加入。
+
 &emsp;&emsp;时间序列功能。
 
 <br>
+<br>
 
-## 2 创建dataframe
+## 2 Pandas中的数据对象
 
-### 2.1 利用集合创建dataframe
+<br>
+
+### 2.1 Series对象
+
+<br>
+
+### 2.2 DataFrame对象
+
+#### 2.2.1 创建dataframe
+
+##### 2.2.1.1 利用集合创建dataframe
 
 ```
 d1 = pd.DataFrame(data=list([1, 2, 3]), index=list(["a", "b", "c"]))
 print(d1)
 ```
 
-### 2.2 利用数组创建dataframe
+##### 2.2.1.2 利用数组创建dataframe
 
 ```
 d2 = pd.DataFrame(data=numpy.array(list([1, 2, 3, 4, 5, 6, 7])))
@@ -41,7 +66,7 @@ print(d2)
 
 ```
 
-### 2.3 利用字典创建dataframe
+##### 2.2.1.3 利用字典创建dataframe
 
 ```
 dictionary3 = {"name": "nick", "age": 12, "sex": "male"}
@@ -50,7 +75,7 @@ print(d3)
 
 ```
 
-### 2.4 利用series创建dataframe
+##### 2.2.1.4 利用series创建dataframe
 
 ```
 dictionary4 = {"name": "nick", "age": 12, "sex": "male"}
@@ -60,7 +85,7 @@ print(d4)
 
 ```
 
-### 2.5 利用嵌套字典创建dataframe
+##### 2.2.1.5 利用嵌套字典创建dataframe
 
 ```
 dictionary5 = {"A":{"name": "nick", "age": 12, "sex": "male"},"B":{"name": "nick", "age": 12, "sex": "male"}}
@@ -69,7 +94,7 @@ print(s5)
 
 ```
 
-### 2.6 利用嵌套集合创建dataframe
+##### 2.2.1.6 利用嵌套集合创建dataframe
 
 ```
 s6 = pd.DataFrame(data=list([[1, 2, 3, 4], ["a", "b", "c", "d"]]))
@@ -77,7 +102,7 @@ print(s6)
 
 ```
 
-### 2.7 利用嵌套数组创建dataframe
+##### 2.2.1.7 利用嵌套数组创建dataframe
 
 ```
 s7 = pd.DataFrame(data=numpy.array(list([[1, 2, 3, 4], ["a", "b", "c", "d"]])))
@@ -85,7 +110,7 @@ print(s7)
 
 ```
 
-### 2.8 利用字典创建dataframe
+##### 2.2.1.8 利用字典创建dataframe
 
 ```
 s8 = pd.DataFrame.from_dict(
@@ -94,4 +119,40 @@ s8 = pd.DataFrame.from_dict(
 print(s8)
 
 ```
+
+#### 2.2.2 遍历DataFrame对象
+
+#### 2.2.2.1 遍历dataframe中的行
+
+方法一：
+
+```
+for index, row in df.iterrows():
+    print row["c1"], row["c2"]
+```
+
+方法二：
+
+```
+for row in df.itertuples(index=True, name='Pandas'):
+    print getattr(row, "c1"), getattr(row, "c2")
+```
+
+方法三：
+
+&emsp;&emsp;使用df.iloc函数，如下所示：
+
+```
+for i in range(0, len(df)):
+    print df.iloc[i]['c1'], df.iloc[i]['c2']
+```
+
+
+<br>
+
+## 2.3 Index对象
+
+### 2.3.1 Index对象的创建
+
+&emsp;&emsp;可以直接调用Index
 
