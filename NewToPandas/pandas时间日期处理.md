@@ -59,6 +59,14 @@ date
 
 &emsp;&emsp;df的行数一共是425行。
 
+&emsp;&emsp;将df的index设为datetime类型：
+
+```
+df.index = pd.DatetimeIndex(df.index)
+
+```
+
+
 ### 1.2 查看Dataframe的数据类型
 
 ```
