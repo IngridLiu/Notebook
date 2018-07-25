@@ -147,6 +147,12 @@ for i in range(0, len(df)):
     print df.iloc[i]['c1'], df.iloc[i]['c2']
 ```
 
+#### 2.2.2.2 遍历dataframe中的列
+
+```
+for ix, col in df.iteritems():
+
+```
 
 <br>
 
