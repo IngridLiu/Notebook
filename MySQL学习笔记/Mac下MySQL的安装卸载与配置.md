@@ -1,5 +1,10 @@
 # Mac下MySQL安装卸载与配置
 
+<br>
+<br>
+<br>
+<br>
+
 ## 1 MySQL的安装、启动及卸载
 
 ### 1.1 MySQL的安装

@@ -22,8 +22,17 @@ new-host-3:MySQL-python-1.2.4b4 iFantastic$ python setup.py install
 
 ```
 new-host-3:~ iFantastic$ sudo pip install MySQL-python
+```
+
+MySQL-python 目前还不支持python3，若需在python3下使用需下载mysqlclient：
 
 ```
+pip3 install mysqlclient
+```
+
+<br>
+<br>
+
 
 ## 2 数据库操作
 
