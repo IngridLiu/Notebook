@@ -47,3 +47,13 @@
 &emsp;&emsp;BLOB 是一个二进制大对象，可以容纳可变数量的数据。有 4 种 BLOB 类型：TINYBLOB、BLOB、MEDIUMBLOB 和 LONGBLOB。它们区别在于可容纳存储范围不同。
 
 &emsp;&emsp;有 4 种 TEXT 类型：TINYTEXT、TEXT、MEDIUMTEXT 和 LONGTEXT。对应的这 4 种 BLOB 类型，可存储的最大长度不同，可根据实际情况选择。
+
+
+<br>
+<br>
+<br>
+<br>
+
+Reference:
+
+1. [MySQL 数据类型](http://www.runoob.com/mysql/mysql-data-types.html)
