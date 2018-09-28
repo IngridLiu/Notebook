@@ -1187,10 +1187,6 @@ mysql.server start
 ```
 
 
-
-
-
-
 <br>
 <br>
 <br>
