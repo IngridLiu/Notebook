@@ -7,7 +7,7 @@
 
 ## 1 Hive对数据库的操作
 
-### 1.1 Hive对表的操作
+### 1.1 Hive对TABLE的操作
 
 ### 1.1.1 CREATE TABLE语句
 
@@ -65,6 +65,47 @@ DROP TABLE [IF EXISTS] table_name;
 
 ```
 DROP TABLE IF EXISTS employee;
+```
+
+### 1.2 Hive对TABLE中数据的操作
+
+#### 1.2.1 SELECT
+
+#### 1.2.2 Hive中的通配符
+
+&emsp;&emsp;Hive中有两个用于通配的操作符，LIKE和RLIKE。
+    
+##### 1.2.2.1 LIKE
+
+&emsp;&emsp;语法格式为:
+
+```sql
+A [NOT] LIKE B
+```
+
+&emsp;&emsp;B是sql下的简单正则表达式，也叫通配符模式，如"_"匹配一个字符，"%"可以匹配任意多个字符，A会对表达式B做匹配，如果通过返回TRUE，如果不通过则返回FALSE，举个栗子 
+
+&emsp;&emsp;举几个例子：
+
+```sql
+SELECT name LIKE '%Alice' FROM table1 -- 选择name列内以ALICE作为结尾的数据。
+
+A LIKE '%Alice%' OR A LIKE '%Ben%'  -- 匹配包含Alice或者Ben的字段
+```
+
+
+###### 1.2.2.2 RLIKE
+
+&emsp;&emsp;语法格式为
+
+```sql
+A [NOT] RLIKE B
+```
+
+&emsp;&emsp;基于java的正则表达式接口实现，如果A中有与B匹配则返回TRUE，否则返回FALSE
+
+```sql
+A LIKE '%Alice%' OR A LIKE '%Ben%'  -- 匹配包含Alice或者Ben的字段
 ```
 
 

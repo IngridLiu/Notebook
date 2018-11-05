@@ -22,7 +22,7 @@ for i in range(len(df)):
 ```python
 # 如果是创建一个DataFrame，可以直接通过dtype参数指定类型
 df = pd.DataFrame(a, dtype='float') #将所有数据设为同一类型
-df = pd.DataFrame(a, columns = cols, dtype = {})
+df = pd.DataFrame(a, columns = cols, dtype = {'col_name':str})  #对DataFrame中不同列设置不同的dtype
 
 ```
 
