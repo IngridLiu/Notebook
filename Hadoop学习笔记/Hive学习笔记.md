@@ -1,4 +1,4 @@
-# Hive学习笔记
+# Hive学习笔记（HQL语言）
 
 <br>
 <br>
@@ -209,7 +209,12 @@ hive> insert into table test
 <br>
 
 ## Reference:
-1.[Hive的几种数据导入方式](https://www.iteblog.com/archives/949.html)
 
-2.[Hive几种数据导出方式](https://www.iteblog.com/archives/955.html)
+1. [HIVE中LIKE和RLIKE的区别](https://blog.csdn.net/u013019431/article/details/78491037)
+
+2. [Java 正则表达式](http://www.runoob.com/java/java-regular-expressions.html)
+
+3. [Hive的几种数据导入方式](https://www.iteblog.com/archives/949.html)
+
+4.[Hive几种数据导出方式](https://www.iteblog.com/archives/955.html)
 
