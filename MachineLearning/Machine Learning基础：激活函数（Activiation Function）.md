@@ -102,9 +102,6 @@
 ![](http://7pn4yt.com1.z0.glb.clouddn.com/blog-leaky.png)
 
 &emsp;&emsp;关于Leaky ReLU 的效果，众说纷纭，没有清晰的定论。有些人做了实验发现 Leaky ReLU 表现的很好；有些实验则证明并不是这样。
-
-
-
  
  
 #### 3.3.2 Parametric ReLU：
@@ -115,9 +112,25 @@
 
 &emsp;&emsp;Kaiming He的论文《Delving Deep into Rectifiers: Surpassing Human-Level Performance on ImageNet Classification》指出，不仅可以训练，而且效果更好。
 
-公式非常简单，反向传播至未激活前的神经元的公式就不写了，很容易就能得到。对α的导数如下：
+&emsp;&emsp;也以此提出了P Relu：
 
-                               δy / δα = 0，(i f yi>0 ) ，else = yi 
+![](https://img-blog.csdn.net/20160923231939435)
+
+&emsp;&emsp;如果 ai=0，那么 PReLU 退化为 ReLU；如果ai是一个很小的固定值（如ai=0.01），则 PReLU 退化为 Leaky ReLU（LReLU）。 有实验证明，与ReLU相比，LReLU对最终的结果几乎没什么影响。
+
+**说明：**
+
+&emsp;&emsp;PReLU 只增加了极少量的参数，也就意味着网络的计算量以及过拟合的危险性都只增加了一点点。特别的，当不同 channels 使用相同的ai时，参数就更少了。
+
+&emsp;&emsp;BP 更新ai时，采用的是带动量的更新方式，如下图：
+
+![](![](https://upload-images.jianshu.io/upload_images/10947003-2e432f70245a9410.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/200))
+
+&emsp;&emsp;上式的两个系数分别是动量和学习率。
+
+&emsp;&emsp;需要特别注意的是：更新ai时不施加权重衰减（L2正则化），因为这会把 ai很大程度上push到0。事实上，即使不加正则化，试验中ai也很少有超过1的。
+
+&emsp;&emsp;整个论文，ai被初始化为 0.25。
 
 &emsp;&emsp;原文说使用了Parametric ReLU后，最终效果比不用提高了1.03%.
  
