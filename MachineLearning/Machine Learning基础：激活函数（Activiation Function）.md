@@ -190,5 +190,11 @@
 
 &emsp;&emsp;还有，通常来说，很少会把各种激活函数串起来在一个网络中使用的。
  
+<br>
+<br>
+<br>
+<br>
 
+ ## Reference:
  
+ 1. [深度学习基础（十二）—— ReLU vs PReLU](https://blog.csdn.net/lanchunhui/article/details/52644823)
