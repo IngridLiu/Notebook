@@ -1,4 +1,4 @@
-# Machine Learning 基础：损失函数
+# Machine Learning 基础：损失函数(Loss Function)
 
 <br>
 <br>
