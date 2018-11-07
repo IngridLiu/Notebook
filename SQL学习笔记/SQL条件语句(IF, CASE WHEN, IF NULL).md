@@ -7,9 +7,9 @@
 
 ## 1.IF
 
-表达式：IF( expr1 , expr2 , expr3 )
+&emsp;&emsp;表达式：IF( expr1 , expr2 , expr3 )
 
-expr1条件，条件为true，则值是expr2 ，false，值就是expr3 
+&emsp;&emsp;expr1条件，条件为true，则值是expr2 ，false，值就是expr3 
 
 ```sql
 SELECT 
@@ -22,17 +22,16 @@ LEFT JOIN t_user u ON u.id = o.userId
 
 ## 2. CASE WHEN
 
-表达式：
+&emsp;&emsp;表达式：
 
+```sql
 CASE 列名
-
-    WHEN 条件 THEN 结果
-    
+    WHEN 条件 THEN 结果 
     ELSE 其他结果
-    
     END 别名
+```
     
-例子：
+&emsp;&emsp;例子：
 
 ```sql
 SELECT 
@@ -51,9 +50,9 @@ LEFT JOIN t_order o ON o.id = detail.orderId
 
 ## 3. IFNULL
 
-表达式：IFNULL( expr1 , expr2)
+&emsp;&emsp;表达式：IFNULL( expr1 , expr2)
 
-在 expr1 的值不为 NULL的情况下都返回 expr1，否则返回 expr2
+&emsp;&emsp;在 expr1 的值不为 NULL的情况下都返回 expr1，否则返回 expr2
 
 ```sql
 select IFNULL(detailcode,'无') detailcode from ...
