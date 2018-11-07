@@ -7,7 +7,7 @@
 
 &emsp;&emsp;激活函数通常有如下一些性质：
 
-&emsp;&emsp;**非线性**：当激活函数是线性的时候，一个两层的神经网络就可以逼近基本上所有的函数了。但是，如果激活函数是恒等激活函数的时候（即f(x)=x)，就不满足这个性质了。如果MLP使用的是恒等激活函数，那么其实整个网络跟单层神经网络是等价的。
+&emsp;&emsp;**非线性**：当激活函数是非线性的时候，一个两层的神经网络就可以逼近基本上所有的函数了。但是，如果激活函数是恒等激活函数的时候（即f(x)=x)，就不满足这个性质了。如果MLP使用的是恒等激活函数，那么其实整个网络跟单层神经网络是等价的。
 
 &emsp;&emsp;**可微性**：当优化方法是基于梯度的时候，这个性质是必须的。
 
@@ -19,11 +19,7 @@
 
 <br>
 
-<br>
-
-## 1 Activation Functions
-
-### 1.1 Sigmoid：
+## 1 Sigmoid：
 
 ![](https://img.okay.do/00a8847d91380020d81eaf42c64d8e40_W2000_H920_G0)
 
@@ -41,9 +37,9 @@
 
 &emsp;&emsp;**Sigmoid 的 output 不是0均值**. 这是不可取的，因为这会导致后一层的神经元将得到上一层输出的非0均值的信号作为输入。 产生的一个结果就是：如果数据进入神经元的时候是正的(e.g. x>0 elementwise in f=wTx+b)，那么 w 计算出的梯度也会始终都是正的。 当然了，如果你是按batch去训练，那么那个batch可能得到不同的信号，所以这个问题还是可以缓解一下的。因此，非0均值这个问题虽然会产生一些不好的影响，不过跟上面提到的 kill gradients 问题相比还是要好很多的。
 
+<br> 
  
- 
-### 1.2 tanh：
+## 2 tanh：
 
 ![](https://img.okay.do/bd707f85eb592cdfe5ff5daa36e0869a_W1200_H661_G0)
 
@@ -51,12 +47,13 @@
                                                 tanh(x)=2sigmoid(2x)−1
 &emsp;&emsp;与 sigmoid 不同的是，tanh 是0均值的。因此，实际应用中，tanh 会比 sigmoid 更好。
 
-### 1.3 ReLU：
+<br>
+
+## 3 ReLU：
 
 ![](https://img.okay.do/1a1f925019a312490f6f1f8a45d5b55f_W1200_H680_G0)
 
 &emsp;&emsp;近年来，ReLU 变的越来越受欢迎。它的数学表达式如下：
-
 
                                                f(x)=max(0,x)
 
@@ -66,13 +63,13 @@
 
 ![](https://img.okay.do/655a1062d45d5096986bfbb0c583806f_W716_H232_G0)
 
-#### 1.3.1 ReLU 的优点：
+### 3.1 ReLU 的优点：
 
 &emsp;&emsp;Krizhevsky et al. 发现使用 ReLU 得到的SGD的收敛速度会比 sigmoid/tanh 快很多(看右图)。有人说这是因为它是linear，而且 non-saturating
 
 &emsp;&emsp;相比于 sigmoid/tanh，ReLU 只需要一个阈值就可以得到激活值，而不用去算一大堆复杂的运算。
 
-### 1.3.2 ReLU 的缺点： 
+### 3.2 ReLU 的缺点： 
 
 &emsp;&emsp;当然 ReLU 也有缺点，就是训练的时候很”脆弱”，很容易就”die”了. 什么意思呢？
 
@@ -83,9 +80,9 @@
 &emsp;&emsp;当然，如果你设置了一个合适的较小的learning rate，这个问题发生的情况其实也不会太频繁。
 
  
-### 1.3.3 Leaky-ReLU、P-ReLU、R-ReLU
+### 3.3 Leaky-ReLU、P-ReLU、R-ReLU
 
-#### 1.3.3.1 Leaky ReLUs：
+#### 3.3.1 Leaky ReLUs：
 
 &emsp;&emsp;就是用来解决这个“dying ReLU”的问题的。与 ReLU 不同的是：
                                            f(x)=αx，(x<0)                          
@@ -101,7 +98,7 @@
 
  
  
-#### 1.3.3.2 Parametric ReLU：
+#### 3.3.2 Parametric ReLU：
 
 &emsp;&emsp;对于 Leaky ReLU 中的α，通常都是通过先验知识人工赋值的。
 
@@ -115,7 +112,7 @@
 
 &emsp;&emsp;原文说使用了Parametric ReLU后，最终效果比不用提高了1.03%.
  
-#### 1.3.3.3 Randomized ReLU：
+#### 3.3.3 Randomized ReLU：
 
 &emsp;&emsp;Randomized Leaky ReLU是 leaky ReLU 的random 版本 （α是random的）.
 
@@ -136,7 +133,7 @@
 ![](http://7pn4yt.com1.z0.glb.clouddn.com/blog-per.png)
  
  
-### 1.4 Maxout
+## 4 Maxout
 
 &emsp;&emsp;Maxout出现在ICML2013上，作者Goodfellow将maxout和dropout结合后，号称在MNIST, CIFAR-10, CIFAR-100, SVHN这4个数据上都取得了start-of-art的识别率。 
 
@@ -154,7 +151,9 @@
 
 &emsp;&emsp;所以，Maxout 具有 ReLU 的优点（如：计算简单，不会 saturation），同时又没有 ReLU 的一些缺点 （如：容易 go die）。不过呢，还是有一些缺点的嘛：就是把参数double了。
  
-（五）Others：
+<br>
+
+## 5.others：
 
 ![](https://img.okay.do/39248c4ea8758822b28f9ec3fc264310_W1005_H783_G0)
 
