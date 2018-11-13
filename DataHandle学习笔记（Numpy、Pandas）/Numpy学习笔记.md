@@ -12,6 +12,7 @@
 <br>
 <br>
 
+### numpy基础
 
 ```
 import numpy as np
@@ -37,7 +38,22 @@ d = np.c_[a,b]  //数组横向合并
 # array([[1, 2, 3, 1, 1, 1],
 #        [4, 5, 6, 2, 2, 2]])
        
-  
+```
+
+### numpy计算相似度
+
+```python
+# 欧几里得相似度
+dist = np.linalg.norm(A-B)
+sim = 1.0 / (1.0 + dist)    #归一化
+
+# 余弦相似度
+num = float(A.T * B) #若为行向量则 A * B.T  
+denom = linalg.norm(A) * linalg.norm(B)  
+cos = num / denom #余弦值  
+sim = 0.5 + 0.5 * cos #归一化 
+
+```
 
 
 ## Reference:
