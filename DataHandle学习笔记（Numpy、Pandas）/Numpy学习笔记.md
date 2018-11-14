@@ -21,23 +21,28 @@ import numpy as np
 a = np.array([0, 1, 2, 3, 4])
 c = np.arange(5)
 d = np.linspace(0, 2*np.pi, 5)
-data = np.loadtxt(filepath,delimiter,usecols,unpack)    //numpy从文本中加载数据
+data = np.loadtxt(filepath,delimiter,usecols,unpack)    #numpy从文本中加载数据
 
 a = np.array([[1,2,3],[4,5,6]])
 b = np.array([[1,1,1],[2,2,2]]）
 
-c = np.vstack((a,b))    //数组纵向合并
+# np数组合并
+c = np.vstack((a,b))    #数组纵向合并
 c = np.r_[a,b]  //数组纵向合并
 # array([[1, 2, 3],
 #        [4, 5, 6],
 #        [1, 1, 1],
 #        [2, 2, 2]])
-
-d = np.hstack((a,b))    //数组横向合并
+d = np.hstack((a,b))    #数组横向合并
 d = np.c_[a,b]  //数组横向合并
 # array([[1, 2, 3, 1, 1, 1],
 #        [4, 5, 6, 2, 2, 2]])
-       
+
+data_np.astype(float)   #np数组类型转换为float
+
+np.dot(A, B)    # 计算A、B矩阵乘法
+np.multiply(A, B)   # 计算A、B矩阵对应元素相乘，结果同A*B
+
 ```
 
 ### numpy计算相似度
