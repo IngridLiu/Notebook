@@ -45,21 +45,6 @@ np.multiply(A, B)   # 计算A、B矩阵对应元素相乘，结果同A*B
 
 ```
 
-### numpy计算相似度
-
-```python
-# 欧几里得相似度
-dist = np.linalg.norm(A-B)
-sim = 1.0 / (1.0 + dist)    #归一化
-
-# 余弦相似度
-num = float(A.T * B) #若为行向量则 A * B.T  
-denom = linalg.norm(A) * linalg.norm(B)  
-cos = num / denom #余弦值  
-sim = 0.5 + 0.5 * cos #归一化 
-
-```
-
 
 ## Reference:
 

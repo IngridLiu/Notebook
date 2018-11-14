@@ -35,19 +35,6 @@
 
 ![](http://img.mp.itc.cn/upload/20160323/f1554aa4eac4468e8a78f0e0cf85f74f.jpg)
 
-&emsp;&emsp;皮尔逊相关系数的计算公式如下，结果是一个在-1与1之间的系数。该系数用来说明两个用户间联系的强弱程度。
-
-&emsp;&emsp;相关系数的分类
-
-&emsp;&emsp;0.8-1.0 极强相关
-
-&emsp;&emsp;0.6-0.8 强相关
-
-&emsp;&emsp;0.4-0.6 中等程度相关
-
-&emsp;&emsp;0.2-0.4 弱相关
-
-&emsp;&emsp;0.0-0.2 极弱相关或无相关
 
 &emsp;&emsp;通过计算5个用户对5件商品的评分我们获得了用户间的相似度数据。这里可以看到用户A&B，C&D，C&E和D&E之间相似度较高。下一步，我们可以依照相似度对用户进行商品推荐。
 
@@ -59,8 +46,6 @@
 
 ![](http://img.mp.itc.cn/upload/20160323/30c12e775fa04d868ecf537ff4f67ee3.jpg)
 
-<br>
-
 ### 1.4 算法优缺点
 
 #### 1.4.1 算法缺点
@@ -69,7 +54,129 @@
 
 &emsp;&emsp;2. 算法扩展性。最近邻居算法的计算量随着用户和物品数量的增加而增加，不适合数据量大的情况使用。
 
+### 1.5 python实现基于user的协同过滤算法：
+
+```python
+import numpy as np
+from math import sqrt
+
+class Recommender:
+
+    # data: 数据集，这里指users_rating
+    # k: 表示得出最相近的k的近邻
+    # sim_func: 表示使用计算相似度
+    # n: 表示推荐的item的个数
+
+    def __init__(self, data, k = 3, sim_func='pearson', n=12):
+
+        # 数据初始化
+        self.k = k
+        self.n = n
+        self.sim_func = sim_func
+        if self.sim_func == 'pearson':
+            self.fn = self.pearson_sim
+        if type(data).__name__ == 'dict':
+            self.data = data
+
+    #pearson相似度
+    def pearson_sim(self, rating1, rating2):
+        sum_x = 0
+        sum_y = 0
+        sum_xy = 0
+        sum_x2 = 0
+        sum_y2 = 0
+        n = 0
+        for key in rating1:
+            if key in rating2:
+                n += 1
+                x = rating1[key]
+                y = rating2[key]
+                sum_x += x
+                sum_y += y
+                sum_xy += x * y
+                sum_x2 += pow(x, 2)
+                sum_y2 += pow(y, 2)
+        if n == 0:
+            return 0
+
+        dinominator = sqrt(n * sum_x2 - pow(sum_x, 2)) * sqrt(n * sum_y2 - pow(sum_y, 2))
+        if dinominator == 0:
+            return 0
+        else:
+            return (n * sum_xy - sum_x * sum_y) / dinominator
+
+    #对用户相似度排序
+    def user_sim_sort(self, user_id):
+        distances = []
+        for instance in self.data:
+            if instance != user_id:
+                dis = self.fn(self.data[user_id], self.data[instance])
+                distances.append((instance, dis))
+
+        distances.sort(key=lambda items: items[1], reverse=True)
+        return distances
+
+    # recommand主体函数
+    def recommand(self, user_id):
+        # 定义一个字典，用来存储推荐的电影和分数
+        recommendations = {}
+        # 计算出user与其它所有用户的相似度，返回一个list
+        user_sim = self.user_sim_sort(user_id)
+        # 计算最近的k个近邻的总距离
+        total_dis = 0.0
+        for i in range(self.k):
+            total_dis += user_sim[i][1]
+        if total_dis == 0.0:
+            total_dis = 1.0
+
+        # 将与user最相近的k个人中user没有看过的书推荐给user，并且这里又做了一个分数的计算排名
+        for i in range(self.k):
+            # 第i个人的id
+            neighbor_id = user_sim[i][0]
+            # 第i个人与user的相似度转换到[0, 1]之间
+            weight = user_sim[i][1] / total_dis
+            # 第i个用户看过的书和相应的打分
+            neighbor_ratings = self.data[neighbor_id]
+            user_rating = self.data[user_id]
+
+            for item_id in neighbor_ratings:
+                if item_id not in user_rating:
+                    if item_id not in recommendations:
+                        recommendations[item_id] = neighbor_ratings[item_id] * weight
+                    else:
+                        recommendations[item_id] = recommendations[item_id] + neighbor_ratings[item_id] * weight
+        recommendations = list(recommendations.items())
+
+        # 做了一个排序
+        recommendations.sort(key=lambda items: items[1], reverse=True)
+
+        return recommendations[:self.n], user_sim
+
+if __name__ == "__main__":
+
+    # 获取数据
+    users_rating = dict()
+    data_path = "./ratings.csv"
+    with open(data_path, 'r') as file:
+        for line in file:
+            items = line.strip().split(',')
+            if items[0] not in users_rating:
+                users_rating[items[0]] = dict()
+            users_rating[items[0]][items[1]] = dict()
+            users_rating[items[0]][items[1]] = float(items[2])
+
+
+    user_id = '1'
+    recomm = Recommender(users_rating)
+    recommendations, user_sim = recomm.recommand(user_id)
+    print("movie id list:", recommendations)
+    print("near list:", user_sim[:15])
+```
+
+数据集链接:https://pan.baidu.com/s/14VwSvGHsNTqHeeuyG5Og1Q  密码:1e97
+
 <br>
+
 
 ## 2 基于物品的协同过滤算法(item-based collaborative filtering)
 
@@ -121,7 +228,76 @@
 
 ![](http://img.mp.itc.cn/upload/20160323/b25d8be4a3d14c43924d0045f56fb6a0.jpg)
 
+### 2.4 python实现基于item的协同过滤
+
+```python
+
+from math import sqrt
+
+class ItemBasedCF:
+    def __init__(self, train_file):
+        self.train_file = train_file
+        self.read_data()
+
+    # 读取文件，并生成用户-物品的评分表和测试集
+    def read_data(self):
+        self.train = dict()
+        for line in open(self.train_file):
+            user_id, item_id, score = line.strip().split(',')
+            self.train.setdefault(user_id, {})
+            self.train[user_id][item_id] = int(float(score))
+
+    # 建立物品-物品的共现矩阵
+    def item_sim(self):
+        C = dict()  #物品-物品的共现矩阵
+        N = dict()  #物品被多少个不同用户购买
+        for user, items in self.train.items():
+            for i in items.keys():
+                N.setdefault(i, 0)
+                N[i] += 1
+                C.setdefault(i, {})
+                for j in items.keys():
+                    if i == j :
+                        continue
+                    if j not in C[i].keys():
+                        C[i].setdefault(j, 0)
+                    C[i][j] += 1
+
+        #计算相似度矩阵
+        self.W = dict()
+        for i,related_items in C.items():
+            self.W.setdefault(i,{})
+            for j,cij in related_items.items():
+                # 余弦相似度
+                self.W[i][j] = cij / (sqrt(N[i] * N[j]))
+        return self.W
+
+   #给用户user推荐，前K个相关用户
+    def recommend(self,user,K=3,N=10):
+        rank = dict()
+        action_item = self.train[user]     #用户user产生过行为的item和评分
+        for item,score in action_item.items():
+            for j,wj in sorted(self.W[item].items(),key=lambda x:x[1],reverse=True)[0:K]:
+                if j in action_item.keys():
+                    continue
+                if j not in rank.keys():
+                    rank.setdefault(j,0)
+                rank[j] += score * wj
+        return dict(sorted(rank.items(),key=lambda x:x[1],reverse=True)[0:N])
+
+if __name__ == "__main__":
+
+    CF = ItemBasedCF('./ratings.csv')
+    CF.item_sim()
+    recomm_dic = CF.recommend('1')
+
+
+    for k,v in recomm_dic.iteritems():
+        print(k,"\t",v)
+```
+
 <br>
+
 
 
 ## 4. 协同过滤优缺点
@@ -148,3 +324,13 @@
 &emsp;&emsp;稀疏性问题（Sparsity）
 
 &emsp;&emsp;系统延伸性问题（Scalability）。
+
+
+<br>
+<br>
+<br>
+<br>
+
+## Reference:
+
+1.[《推荐系统》基于用户和Item的协同过滤算法的分析与实现（Python）](https://blog.csdn.net/Gamer_gyt/article/details/51346159)
