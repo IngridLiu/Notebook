@@ -54,7 +54,6 @@
 
 &emsp;&emsp;调和平均值F1_score:2*Precision*Recall/(Recall+ Precision)
 
-### 1.2 混淆矩阵的python实现
 
 ```python
 #准备数据
@@ -134,7 +133,81 @@ confusion_matrix(y_test,y_log_predict)
 from sklearn.metrics import precision_score
 precision_score(y_test,y_log_predict)
 
+#f1-score
+f1_score(y_test,y_log_predict)
 ```
+
+
+### 1.2 Precision-Recall的平衡
+
+![](https://upload-images.jianshu.io/upload_images/5420272-78b649c6851afb1f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/347)
+
+&emsp;&emsp;一般来说，决策边界为theta.T*x_b=0，即计算出p>0.5时分类为1，如果我们手动改变这个threshold，就可以平移这个决策边界，改变精准率和召回率
+
+```python
+#该函数可以得到log_reg的预测分数，未带入sigmoid
+decsion_scores = log_reg.decision_function(X_test)
+
+#将threshold由默认的0调为5
+y_predict2 = decsion_scores>=5.0
+precision_score(y_test,y_predict2)
+# 0.96
+recall_score(y_test,y_predict2)
+# 0.5333333333333333
+
+y_predict2 = decsion_scores>=-5.0
+precision_score(y_test,y_predict2)
+# 0.7272727272727273
+recall_score(y_test,y_predict2)
+# 0.8888888888888888
+```
+
+### 1.3 精准率和召回率曲线
+
+&emsp;&emsp;可以用precisions-recalls曲线与坐标轴围成的面积衡量模型的好坏
+
+```python
+from sklearn.metrics import precision_score
+from sklearn.metrics import recall_score
+
+thresholds = np.arange(np.min(decsion_scores),np.max(decsion_scores))
+precisions = []
+recalls = []
+
+for threshold in thresholds:
+    y_predict = decsion_scores>=threshold
+    precisions.append(precision_score(y_test,y_predict))
+    recalls.append(recall_score(y_test,y_predict))
+```
+
+```python
+import matplotlib.pyplot as plt
+
+plt.plot(thresholds,precisions)
+plt.plot(thresholds,recalls)
+plt.show()
+```
+![](https://upload-images.jianshu.io/upload_images/5420272-43b97801efb44677.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/458)
+
+```python
+plt.plot(precisions,recalls)
+plt.show()
+```
+![https://upload-images.jianshu.io/upload_images/5420272-a58ca7b5ef330aa6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/457]
+
+&emsp;&emsp;使用scikit-learn绘制Precision-Recall曲线
+
+```python
+from sklearn.metrics import precision_recall_curve
+precisions,recalls,thresholds = precision_recall_curve(y_test,decsion_scores)
+
+#由于precisions和recalls中比thresholds多了一个元素，因此要绘制曲线，先去掉这个元素
+plt.plot(thresholds,precisions[:-1])
+plt.plot(thresholds,recalls[:-1])
+plt.show()
+```
+
+![](https://upload-images.jianshu.io/upload_images/5420272-7fd0fde28c382aa6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/415)
 
 <br>
 
@@ -282,3 +355,5 @@ def draw_ROC(xy_arr):
 Reference:
 
 1. [模型评价(一) AUC大法](https://segmentfault.com/a/1190000010410634)
+
+2. [Python3入门机器学习 - 混淆矩阵、精准率、召回率](https://www.jianshu.com/p/28ef55b779ca)
