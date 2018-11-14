@@ -5,7 +5,7 @@
 <br>
 <br>
 
-## 1 混淆矩阵
+## 1 混淆矩阵（Confusion Matrix）
 
 &emsp;&emsp;对于二分类问题，预测模型会对每一个样本预测一个得分s或者一个概率p。 然后，可以选取一个阈值t，让得分s>t的样本预测为正，而得分s<t的样本预测为负。 这样一来，根据预测的结果和实际的标签可以把样本分为4类：
 
@@ -35,6 +35,106 @@
 &emsp;&emsp;TP，预测是正样本，预测对了
 
 &emsp;&emsp;几乎我所知道的所有评价指标，都是建立在混淆矩阵基础上的，包括准确率、精准率、召回率、F1-score，当然也包括AUC。
+
+### 1.1 混淆矩阵的评价指标
+
+&emsp;&emsp;AccuracyRate(准确率): (TP+TN)/(TP+TN+FN+FP)
+
+&emsp;&emsp;ErrorRate(误分率): (FN+FP)/(TP+TN+FN+FP)
+
+&emsp;&emsp;Recall(召回率，查全率,击中概率): TP/(TP+FN), 在所有GroundTruth为正样本中有多少被识别为正样本了;
+
+&emsp;&emsp;Precision(查准率):TP/(TP+FP),在所有识别成正样本中有多少是真正的正样本；
+
+&emsp;&emsp;TPR(TruePositive Rate): TP/(TP+FN),实际就是Recall
+
+&emsp;&emsp;FAR(FalseAcceptance Rate)或FPR(False Positive Rate)：FP/(FP+TN)， 错误接收率，误报率，在所有GroundTruth为负样本中有多少被识别为正样本了;
+
+&emsp;&emsp;FRR(FalseRejection Rate): FN/(TP+FN)，错误拒绝率，拒真率，在所有GroundTruth为正样本中有多少被识别为负样本了，它等于1-Recall
+
+&emsp;&emsp;调和平均值F1_score:2*Precision*Recall/(Recall+ Precision)
+
+### 1.2 混淆矩阵的python实现
+
+```python
+#准备数据
+import numpy as np
+from sklearn import datasets
+
+digits = datasets.load_digits()
+X = digits['data']
+y = digits['target'].copy()
+
+#手动让digits数据集9的数据偏斜
+y[digits['target']==9] = 1
+y[digits['target']!=9] = 0
+
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
+
+X_train,X_test,y_train,y_test = train_test_split(X,y,random_state=666)
+
+log_reg = LogisticRegression()
+log_reg.fit(X_train,y_train)
+log_reg.score(X_test,y_test)
+
+y_log_predict = log_reg.predict(X_test)
+
+def TN(y_true,y_predict):
+    return np.sum((y_true==0)&(y_predict==0))
+TN(y_test,y_log_predict)
+
+def FP(y_true,y_predict):
+    return np.sum((y_true==0)&(y_predict==1))
+FP(y_test,y_log_predict)
+
+def FN(y_true,y_predict):
+    return np.sum((y_true==1)&(y_predict==0))
+FN(y_test,y_log_predict)
+
+def TP(y_true,y_predict):
+    return np.sum((y_true==1)&(y_predict==1))
+TP(y_test,y_log_predict)
+
+#构建混淆矩阵
+def confusion_matrix(y_true,y_predict):
+    return np.array([
+        [TN(y_true,y_predict),FP(y_true,y_predict)],
+        [FN(y_true,y_predict),TP(y_true,y_predict)]
+    ])
+confusion_matrix(y_test,y_log_predict)
+
+#精准率
+def precision_score(y_true,y_predict):
+    tp = TP(y_true,y_predict)
+    fp = FP(y_true,y_predict)
+    try:
+        return tp/(tp+fp)
+    except:
+        return 0.0
+precision_score(y_test,y_log_predict)
+
+#召回率
+def recall_score(y_true,y_predict):
+    tp = TP(y_true,y_predict)
+    fn = FN(y_true,y_predict)
+    try:
+        return tp/(tp+fn)
+    except:
+        return 0.0
+recall_score(y_test,y_log_predict)
+
+#scikitlearn中的精准率和召回率
+
+#构建混淆矩阵
+from sklearn.metrics import confusion_matrix
+confusion_matrix(y_test,y_log_predict)
+
+#精准率
+from sklearn.metrics import precision_score
+precision_score(y_test,y_log_predict)
+
+```
 
 <br>
 
