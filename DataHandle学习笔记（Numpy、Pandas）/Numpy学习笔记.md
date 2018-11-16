@@ -22,9 +22,14 @@ a = np.array([0, 1, 2, 3, 4])
 c = np.arange(5)
 d = np.linspace(0, 2*np.pi, 5)
 data = np.loadtxt(filepath,delimiter,usecols,unpack)    #numpy从文本中加载数据
-
 a = np.array([[1,2,3],[4,5,6]])
-b = np.array([[1,1,1],[2,2,2]]）
+b = np.array([[7,8,9],[10,11,12]])
+
+np.max(a)   # 取出array中的最大值
+np.max(a, axis = 0) # 取出每一列中的最大的值，返回值为一行
+np.max(a, axis = 1) # 取出每一行中最大的值，返回值为一列
+np.min()    # 同上
+
 
 # np数组合并
 c = np.vstack((a,b))    #数组纵向合并
