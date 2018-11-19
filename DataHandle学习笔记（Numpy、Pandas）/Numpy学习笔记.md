@@ -14,7 +14,7 @@
 
 ### numpy基础
 
-```
+```python
 import numpy as np
 
 # 数组创建
