@@ -158,7 +158,8 @@ A RLIKE '.*(Alice|Ben).*'  -- 匹配包含Alice或者Ben的字段
 ### 1.3 Hive特殊查询处理语句
 
 ```sql
-get_json_object(json,'$.user_id') -- 函数可将json解析成对象，get_json_object函数第一个参数填写json对象变量，第二个参数使用$表示json变量标识，然后用 . 或 [] 读取对象或数组；
+json_object['user_id']  -- 获取json_object 中key user_id的值
+get_json_object(json_object,'$.user_id') -- 函数可将json解析成对象，get_json_object函数第一个参数填写json对象变量，第二个参数使用$表示json变量标识，然后用 . 或 [] 读取对象或数组；
 
 LATERAL VIEW explore(sid_list) sid as sid --行转多列 
 ```
