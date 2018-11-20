@@ -58,13 +58,6 @@ for ix, col in df.iteritems():
 
 ```
 
-### DataFrame排序
-
-```python
-
-```
-
-
 ### DataFrame列与索引之间的相互转化
 
 ```python
@@ -97,7 +90,7 @@ df['2013-11-06':'2013-11-06']   #获取具体某天的数据，获取具体某�
 df.truncate(after = '2013-11')  # 获取某个时期之后的数据
 df.truncate(before='2017-02')   # 获取某个时期之前的数据
 
-#
+# 按年、月、日显示数据，但不统计
 df.to_period('M')   # 按月显示，但不统计；请注意df.index的数据类型是DatetimeIndex，df_peirod的数据类型是PeriodIndex
 df.to_period('Q')   # 按季度显示，但不统计
 df.to_period('A')   #按年度显示，但不统计
