@@ -27,14 +27,11 @@ df = pd.DataFrame(a, columns = cols, dtype = {'col_name':str})  #对DataFrame中
 df.index    # 显示df的index
 df.columns  # 显示df的columns
 df.values   # 显示df中的值
-df.T        # 显示df的转置
 df.head(n)  # 显示数据的前n行
 df.tail(n)  # 显示数据的最后n行
 
 # df排序
-frame.sort_index()   # dataframe通过索引进行排序
-frame.sort_index(ascending=False) # dataframe根据行索引进行降序排序（排序时默认升序，调节ascending参数）
-frame.sort_index(axis=1)  # dataframe根据列索引进行排序
+frame.sort_index(axis=1, ascending=False) # dataframe根据列索引(axis = 0 或者省略时表示根据行索引)进行降序排序（排序时默认升序，调节ascending参数）
 frame.sort_values(by='a') # dataframe根据值进行排序
 frame.sort_values(by=['a','c'])   # 通过多个索引进行排序
 
@@ -97,6 +94,10 @@ df.to_period('A')   #按年度显示，但不统计
 
 ```
 
+# pandas dataframe计算
+```python
+df.T        # df的转置
+```
 
 
 ## Reference：
