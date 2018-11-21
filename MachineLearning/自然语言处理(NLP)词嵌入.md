@@ -39,6 +39,155 @@ P(``the"∣``loves")⋅P(``man"∣``loves")⋅P(``his"∣``loves")⋅P(``son"∣
 
 这里小于 1 和大于 T的时间步可以忽略。
 
+### 2.2 跳字模型训练
+
+跳字模型的参数是每个词所对应的中心词向量和背景词向量。训练中我们通过最大化似然函数来学习模型参数，即最大似然估计。这等价于最小化以下损失函数：
+
+![](https://upload-images.jianshu.io/upload_images/10947003-4f7cb4944c503930.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/800)
+
+如果使用随机梯度下降，那么在每一次迭代里我们随机采样一个较短的子序列来计算有关该子序列的损失，然后计算梯度来更新模型参数。梯度计算的关键是对数条件概率有关中心词向量和背景词向量的梯度。根据定义，首先看到
+
+![](https://upload-images.jianshu.io/upload_images/10947003-b27041346b051d61.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/800)
+
+通过微分，我们可以得到上式中 vc的梯度
+
+![](https://upload-images.jianshu.io/upload_images/10947003-753bb313a7e509a0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/800)
+
+它的计算需要词典中所有词以 wc为中心词的条件概率。有关其他词向量的梯度同理可得。
+
+训练结束后，对于词典中的任一索引为 i的词，我们均得到该词作为中心词和背景词的两组词向量 vi和 ui。在自然语言处理应用中，一般使用跳字模型的中心词向量作为词的表征向量。
+
+<br>
+
+## 3 连续词袋模型
+
+### 3.1 连续词袋模型训练
+
+连续词袋模型与跳字模型类似。与跳字模型最大的不同在于，连续词袋模型假设基于某中心词在文本序列前后的背景词来生成该中心词。在同样的文本序列“the”、 “man”、“loves”、“his”和“son”里，以“loves”作为中心词，且背景窗口大小为 2 时，连续词袋模型关心的是，给定背景词“the”、“man”、“his”和“son”生成中心词“loves”的条件概率（如图 10.2 所示），也就是
+
+P(``loves"∣``the",``man",``his",``son")
+
+![](https://upload-images.jianshu.io/upload_images/10947003-1b0f798de6d8259c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/800)
+
+因为连续词袋模型的背景词有多个，我们将这些背景词向量取平均，然后使用和跳字模型一样的方法来计算条件概率。设 vi∈Rd和 ui∈Rd分别表示词典中索引为 i的词作为背景词和中心词的向量（注意符号和跳字模型中是相反的）。设中心词 wc在词典中索引为 c，背景词 wo1,…,wo2m在词典中索引为 o1,…,o2m，那么给定背景词生成中心词的条件概率
+
+![](https://upload-images.jianshu.io/upload_images/10947003-da3b99673087cc2d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/800)
+
+给定一个长度为 T的文本序列，设时间步 t的词为 w(t)，背景窗口大小为 m。连续词袋模型的似然函数为由背景词生成任一中心词的概率
+
+![](https://upload-images.jianshu.io/upload_images/10947003-e5c7e9069b39dd92.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/800)
+
+### 3.2 连续词袋模型训练
+
+连续词袋模型训练同跳字模型训练基本一致。连续词袋模型的最大似然估计等价于最小化损失函数
+
+![](https://upload-images.jianshu.io/upload_images/10947003-98b86334af8c0d74.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/800)
+
+注意到
+
+![](https://upload-images.jianshu.io/upload_images/10947003-35d91654a81ee286.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/800)
+
+通过微分，我们可以计算出上式中条件概率的对数有关任一背景词向量 voi（i=1,…,2m）的梯度
+
+![](https://upload-images.jianshu.io/upload_images/10947003-beed3548ece6302e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/800)
+
+有关其他词向量的梯度同理可得。同跳字模型不一样的一点在于，我们一般使用连续词袋模型的背景词向量作为词的表征向量。
+
+<br>
+
+## 4. word2vec实现
+
+### 4.1 python-gensim
+
+```python
+from gensim.models import word2vec
+  sentences = word2vec.Text8Corpus("C:/traindataw2v.txt")  # 加载语料
+  model = word2vec.Word2Vec(sentences, size=200)  # 训练skip-gram模型; 默认window=5
+  #获取“学习”的词向量
+  print("学习：" + model["学习"])
+  # 计算两个词的相似度/相关程度
+  y1 = model.similarity("不错", "好")
+  # 计算某个词的相关词列表
+  y2 = model.most_similar("书", topn=20)  # 20个最相关的
+  # 寻找对应关系
+  print("书-不错，质量-")
+  y3 = model.most_similar(['质量', '不错'], ['书'], topn=3)
+  # 寻找不合群的词
+  y4 = model.doesnt_match("书 书籍 教材 很".split())
+  # 保存模型，以便重用
+  model.save("db.model")
+  # 对应的加载方式
+  model = word2vec.Word2Vec.load("db.model")
+
+```
+默认参数如下：
+
+```python
+sentences=None
+  size=100
+  alpha=0.025
+  window=5
+  min_count=5
+  max_vocab_size=None
+  sample=1e-3
+  seed=1
+  workers=3
+  min_alpha=0.0001
+  sg=0
+  hs=0
+  negative=5
+  cbow_mean=1
+  hashfxn=hash
+  iter=5
+  null_word=0
+  trim_rule=None
+  sorted_vocab=1
+  batch_words=MAX_WORDS_IN_BATCH
+
+```
+
+各个参数的意义:
+
+sentences：就是每一行每一行的句子，但是句子长度不要过大，简单的说就是上图的样子
+
+sg：这个是训练时用的算法，当为0时采用的是CBOW算法，当为1时会采用skip-gram
+
+size：这个是定义训练的向量的长度
+
+window：是在一个句子中，当前词和预测词的最大距离
+
+alpha：是学习率，是控制梯度下降算法的下降速度的
+
+seed：用于随机数发生器。与初始化词向量有关
+
+min_count： 字典截断.，词频少于min_count次数的单词会被丢弃掉
+
+max_vocab_size：词向量构建期间的RAM限制。如果所有不重复单词个数超过这个值，则就消除掉其中最不频繁的一个,None表示没有限制
+
+sample：高频词汇的随机负采样的配置阈值，默认为1e-3，范围是(0,1e-5)
+
+workers：设置多线程训练模型，机器的核数越多，训练越快
+
+hs：如果为1则会采用hierarchica·softmax策略，Hierarchical Softmax是一种对输出层进行优化的策略，输出层从原始模型的利用softmax计算概率值改为了利用Huffman树计算概率值。如果设置为0（默认值），则负采样策略会被使用
+
+negative：如果大于0，那就会采用负采样，此时该值的大小就表示有多少个“noise words”会被使用，通常设置在（5-20），默认是5，如果该值设置成0，那就表示不采用负采样
+
+cbow_mean：在采用cbow模型时，此值如果是0，就会使用上下文词向量的和，如果是1（默认值），就会采用均值
+
+hashfxn：hash函数来初始化权重。默认使用python的hash函数
+
+iter： 迭代次数，默认为5
+
+trim_rule： 用于设置词汇表的整理规则，指定那些单词要留下，哪些要被删除。可以设置为None（min_count会被使用）或者一个接受(word, count, min_count)并返回utils.RULE_DISCARD，utils.RULE_KEEP或者utils.RULE_DEFAULT，这个设置只会用在构建词典的时候，不会成为模型的一部分
+
+sorted_vocab： 如果为1（defau·t），则在分配word index 的时候会先对单词基于频率降序排序。
+
+batch_words：每一批传递给每个线程单词的数量，默认为10000，如果超过该值，则会被截断
+
+
+<br>
+
+## Reference:
 
 [1] Word2vec 工具。https://code.google.com/archive/p/word2vec/
 
