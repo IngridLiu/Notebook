@@ -196,3 +196,5 @@ batch_words：每一批传递给每个线程单词的数量，默认为10000，�
 [3] Mikolov, T., Chen, K., Corrado, G., & Dean, J. (2013). Efficient estimation of word representations in vector space. arXiv preprint arXiv:1301.3781.
 
 [4] [词嵌入（word2vec）](https://zh.gluon.ai/chapter_natural-language-processing/word2vec.html)
+
+[5] [word2vec的几种实现](https://www.jianshu.com/p/972d0db609f2)
