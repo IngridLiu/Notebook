@@ -27,31 +27,53 @@
 
 ## 1. Bagging
 
-&emsp;&emsp;Bagging是bootstrap aggregating的简写。
+&emsp;&emsp;Bagging即套袋法，其算法过程如下：
 
-&emsp;&emsp;在Bagging方法中，利用bootstrap方法从整体数据集中采取有放回抽样得到N个数据集，在每个数据集上学习出一个模型，最后的预测结果利用N个模型的输出得到，具体地：分类问题采用N个模型预测投票的方式，回归问题采用N个模型预测平均的方式。
+&emsp;&emsp;（1）从原始样本集中抽取训练集。每轮从原始样本集中使用Bootstraping的方法抽取n个训练样本（在训练集中，有些样本可能被多次抽取到，而有些样本可能一次都没有被抽中）。共进行k轮抽取，得到k个训练集。（k个训练集之间是相互独立的）
 
-&emsp;&emsp;例如随机森林（Random Forest）就属于Bagging。随机森林简单地来说就是用随机的方式建立一个森林，森林由很多的决策树组成，随机森林的每一棵决策树之间是没有关联的。
+&emsp;&emsp;（2）每次使用一个训练集得到一个模型，k个训练集共得到k个模型。（注：这里并没有具体的分类算法或回归方法，我们可以根据具体问题采用不同的分类或回归方法，如决策树、感知器等）
 
-&emsp;&emsp;在我们学习每一棵决策树的时候就需要用到Bootstrap方法。在随机森林中，有两个随机采样的过程：对输入数据的行（数据的数量）与列（数据的特征）都进行采样。对于行采样，采用有放回的方式，若有N个数据，则采样出N个数据（可能有重复），这样在训练的时候每一棵树都不是全部的样本，相对而言不容易出现overfitting；接着进行列采样从M个feature中选择出m个（m<<M）。最近进行决策树的学习。
-
-&emsp;&emsp;预测的时候，随机森林中的每一棵树的都对输入进行预测，最后进行投票，哪个类别多，输入样本就属于哪个类别。这就相当于前面说的，每一个分类器（每一棵树）都比较弱，但组合到一起（投票）就比较强了。
+&emsp;&emsp;（3）对分类问题：将上步得到的k个模型采用投票的方式得到分类结果；对回归问题，计算上述模型的均值作为最后的结果。（所有模型的重要性相同）
 
 <br>
 
 ## 2. Boosting
 
-&emsp;&emsp;提升方法（Boosting）是一种可以用来减小监督学习中偏差的机器学习算法。主要也是学习一系列弱分类器，并将其组合为一个强分类器。Boosting中有代表性的是AdaBoost（Adaptive boosting）算法：刚开始训练时对每一个训练例赋相等的权重，然后用该算法对训练集训练t轮，每次训练后，对训练失败的训练例赋以较大的权重，也就是让学习算法在每次学习以后更注意学错的样本，从而得到多个预测函数。具体可以参考《统计学习方法》。
+&emsp;&emsp;AdaBoosting方式每次使用的是全部的样本，每轮训练改变样本的权重。下一轮训练的目标是找到一个函数f来拟合上一轮的残差。当残差足够小或者达到设置的最大迭代次数则停止。Boosting会减小在上一轮训练正确的样本的权重，增大错误样本的权重。（对的残差小，错的残差大）。
 
 &emsp;&emsp;之前提到过的GBDT（Gradient Boost Decision Tree)也是一种Boosting的方法，与AdaBoost不同，GBDT每一次的计算是为了减少上一次的残差，GBDT在残差减少（负梯度）的方向上建立一个新的模型。
 
-### 2.1 Bagging与Boosting
+### 2.1 Bagging与Boosting二者之间的区别
 
-&emsp;&emsp;Bagging和Boosting采用的都是采样-学习-组合的方式，但在细节上有一些不同，如
+&emsp;&emsp;Bagging和Boosting的区别：
 
-&emsp;&emsp;**Bagging中每个训练集互不相关，也就是每个基分类器互不相关，而Boosting中训练集要在上一轮的结果上进行调整，也使得其不能并行计算**
+&emsp;&emsp;(1)样本选择上：
 
-&emsp;&emsp;**Bagging中预测函数是均匀平等的，但在Boosting中预测函数是加权的**
+&emsp;&emsp;Bagging：训练集是在原始集中有放回选取的，从原始集中选出的各轮训练集之间是独立的。
+
+&emsp;&emsp;Boosting：每一轮的训练集不变，只是训练集中每个样例在分类器中的权重发生变化。而权值是根据上一轮的分类结果进行调整。
+
+&emsp;&emsp;(2)样例权重：
+
+&emsp;&emsp;Bagging：使用均匀取样，每个样例的权重相等
+
+&emsp;&emsp;Boosting：根据错误率不断调整样例的权值，错误率越大则权重越大。
+
+&emsp;&emsp;(3)预测函数：
+
+&emsp;&emsp;Bagging：所有预测函数的权重相等。
+
+&emsp;&emsp;Boosting：每个弱分类器都有相应的权重，对于分类误差小的分类器会有更大的权重。
+
+&emsp;&emsp;(4)并行计算：
+
+&emsp;&emsp;Bagging：各个预测函数可以并行生成
+
+&emsp;&emsp;Boosting：各个预测函数只能顺序生成，因为后一个模型参数需要前一轮模型的结果。
+
+&emsp;&emsp;(5)bagging是减少variance，而boosting是减少bias:
+
+
 
 <br>
 
@@ -79,3 +101,5 @@
 ##Reference:
 
 1.[集成学习（Ensemble Learning)](https://zhuanlan.zhihu.com/p/27689464)
+
+2.[Bagging和Boosting的区别（面试准备）](https://www.cnblogs.com/earendil/p/8872001.html)
