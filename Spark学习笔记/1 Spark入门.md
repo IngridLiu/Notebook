@@ -1,13 +1,14 @@
 # Spark入门
 
-| [learn path](https://www.bilibili.com/video/av11075938?from=search&seid=11588279847426817997)
 
 <br>
 <br>
-<br>
-<br>
 
-&emsp;&emsp;Spark是内存计算引擎,支持scala开发，支持java scala python开发接口。
+&emsp;&emsp;Spark 是一个用来实现快速而通用的集群计算的平台。Spark是内存计算引擎,支持scala开发，支持java scala python开发接口。
+
+## 1. Spark 组件介绍
+
+Spark的各个组件如图所示，
 
 ## 1.Spark 运行模式
 
@@ -25,3 +26,9 @@
 
 
 
+
+
+
+## Reference:
+
+1. [《Spark快速大数据分析》]()

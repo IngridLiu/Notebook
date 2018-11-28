@@ -24,7 +24,7 @@ a = np.array([[1,2,3],[4,5,6]])
 b = np.array([[7,8,9],[10,11,12]])
 np.arange(5)
 np.linspace(0, 2*np.pi, 5)
-np.zeros(size)  #创建shape为size的元素为0的array
+np.zeros(size)  #创建shape为size的元素为0的array,zeros(shape, dtype=float, order='C')
 np.ones(size)   #创建shape为size的元素为1的array
 np.empty(size)  #创建shape为size的元素为空的array，注意empty创建的数组中，包含的均是无意义的数值。
 np.random.uniform(low, high, size)  #从一个均匀分布[low,high)中随机采样，注意定义域是左闭右开，即包含low，不包含high; low: 采样下界，float类型，默认值为0；high: 采样上界，float类型，默认值为1；size: 输出样本数目，为int或元组(tuple)类型，例如，size=(m,n,k), 则输出m*n*k个样本，缺省时输出1个值。
@@ -33,7 +33,10 @@ data_np.astype(float)   #np数组类型转换为float
 
 np.max(a, axis = 0) # 取出每一列中的最大的值，返回值为一行;若axis=1，取出每一行中最大的值，返回值为一列；若省略axis参数取出array中的最大值；
 np.min()    # 同上
+np.inf  # 无穷大
 
+np.matrix(A) # 创建矩阵，Numpy matrices必须是2维的,但是 numpy arrays (ndarrays) 可以是多维的；
+np.mat()    # np.mat()同np.matrix()
 
 # np数组合并
 c = np.vstack((a,b))    #数组纵向合并
@@ -63,7 +66,9 @@ A.dot(B)    #同上，计算A、B矩阵相乘
 
 np.multiply(A, B)   # 计算A、B矩阵对应元素相乘，结果同A*B
 
-np.exp(A)   #对A中每一个元素做指数计算
+np.exp(A)   # 对A中每一个元素做指数计算
+np.log(A)   # 对A中每一个元素做log计算
+np.sign(A)   # 符号函数,对A中每一个元素做sign计算,若元素<0取-1，若元素=0取0，若元素>0取1；
 
 ```
 

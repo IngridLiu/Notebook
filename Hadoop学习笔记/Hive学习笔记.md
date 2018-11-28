@@ -35,6 +35,28 @@ LINES TERMINATED BY ‘\n’
 STORED AS TEXTFILE;
 ```
 
+补充：
+
+Hive支持的数据类型如下:
+
+> 原生类型:
+> TINYINT
+> SMALLINT
+> INT
+> BIGINT
+> BOOLEAN
+> FLOAT
+> DOUBLE
+> STRING
+> BINARY (Hive 0.8.0以上才可用)
+> TIMESTAMP (Hive 0.8.0以上才可用)
+
+> 复合类型:
+> arrays: ARRAY<data_type>
+> maps: MAP<primitive_type, data_type>
+> structs: STRUCT<col_name : data_type [COMMENT col_comment], ...>
+> union: UNIONTYPE<data_type, data_type, ...>
+
 ### 1.1.2 ALTER TABLE 语句
 
 **语法**
