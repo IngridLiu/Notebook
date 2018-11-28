@@ -34,8 +34,64 @@ df.tail(n)  # 显示数据的最后n行
 frame.sort_index(axis=1, ascending=False) # dataframe根据列索引(axis = 0 或者省略时表示根据行索引)进行降序排序（排序时默认升序，调节ascending参数）
 frame.sort_values(by='a') # dataframe根据值进行排序
 frame.sort_values(by=['a','c'])   # 通过多个索引进行排序
-
 ```
+
+### pandas dataframe数据获取
+```python
+df.T    # df的转置
+
+# 通过标签选择
+df['A'] # df中A列的数据
+df['20130102':'20130104']   #切片，在index为date类型的情况下，获取20130102-20130104（包含20140104）的行的所有数据
+df.loc['20130102':'20130104', ['A', 'B']]   # 获取20130102-20130104行，A、B列的数据
+
+# 通过位置选择
+df.iloc[3:5, 0:2]   # 根据位置对数据切片
+df.iloc[[1,2,4], [0,2]] # 根据位置获取对应位置数据
+df.iloc[1:3, :] # 对行进行切片
+df.iloc[:, 1:3] # 对列进行切片
+df.iloc[1, 1]   # 获取特定位置的值
+
+# 通过位置与标签选择
+df.at['20130102', 'A'] # 结果同df.loc['20130102', 'A']，返回一个标量
+
+# 数据过滤
+df[df.A > 0]    # 使用一个单独的列值来过滤，输出df中A列值>0的所有行
+df[df > 0]  # 使用where过滤，显示出df中>0的值，未>0的值为空(NaN)
+df[df.A.isin(['two', 'four'])]  # 使用isin()方法过滤，选择满足条件的值
+
+# 设置新的值
+s1 = pd.Series([1, 2, 3, 4, 5, 6], index = pd.date_range('20130102', periods=6))
+df['F'] = s1    # 设置新的列
+df.at[dates[0], 'A']    # 通过标签设置新的值
+df.iat[0, 1]    # 通过位置舍得新的值
+df.loc[:, 'D'] = np.array([5] * len(df))    # 通过一个numpy数组设置一组新值
+df[df > 0] = -df    # 通过where操作设置新的值
+
+# 缺失值处理
+df.dropna(how = 'any')  # 去掉包含缺失值的行
+df.fillna(value = 5)    # 对缺失值进行补充
+pd.isnull(df)   # 对数据进行布尔填充
+```
+
+### pandas dataframe数据计算
+```python
+df.mean()   # 对df的每一列求平均,默认为axis = 0
+df.mean(1)  # 对df的每一行求平均
+df.sub()
+df.apply(np.cumsum)
+df.apply(lambda x: x.max() - x.min())
+
+series.value_counts()   #  形同word count，计算series中每个数的个数
+series.str.lower()  # series对象在其str属性中配备了一组字符串处理方法，可以很容易的应用到数组中的每一个元素；
+```
+
+### DataFrame合并 Merge
+```python
+pd.concat[]
+```
+
+
 ### DataFrame的遍历
 
 ```python
@@ -55,24 +111,7 @@ for ix, col in df.iteritems():
 
 ```
 
-# pandas dataframe数据获取与计算
-```python
-df.T    # df的转置
 
-df['A'] # df中A列的数据
-df[0:3] # 切片，获取0、1、2行的数据
-df['20130102':'20130104']   #切片，在index为date类型的情况下，获取20130102-20130104（包含20140104）的行的所有数据
-
-df.loc['20130102':'20130104', ['A', 'B']]   # 获取20130102-20130104行，A、B列的数据
-df.at['20130102', 'A'] # 结果同df.loc['20130102', 'A']，返回一个标量
-
-# 通过位置选择
-df.iloc[3:5, 0:2]   # 根据位置对数据切片
-df.iloc[[1,2,4], [0,2]] # 根据位置获取对应位置数据
-df.iloc[1:3, :] # 对行进行切片
-df.iloc[:, 1:3] # 对列进行切片
-
-```
 
 ### DataFrame列与索引之间的相互转化
 
