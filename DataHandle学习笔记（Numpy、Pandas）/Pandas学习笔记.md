@@ -34,6 +34,14 @@ df.tail(n)  # 显示数据的最后n行
 frame.sort_index(axis=1, ascending=False) # dataframe根据列索引(axis = 0 或者省略时表示根据行索引)进行降序排序（排序时默认升序，调节ascending参数）
 frame.sort_values(by='a') # dataframe根据值进行排序
 frame.sort_values(by=['a','c'])   # 通过多个索引进行排序
+
+# df合并merge
+pd.concat[[df1, df2, df3]]  # concat合并多个行
+pd.merge(df1, df2, on='key')    # concat合并多个行
+df.append(seris, ingore_index = True)   # 在df下添加一行
+
+# df 改变形状
+
 ```
 
 ### pandas dataframe数据获取
@@ -76,6 +84,7 @@ pd.isnull(df)   # 对数据进行布尔填充
 
 ### pandas dataframe数据计算
 ```python
+# 计算
 df.mean()   # 对df的每一列求平均,默认为axis = 0
 df.mean(1)  # 对df的每一行求平均
 df.sub()
@@ -84,12 +93,18 @@ df.apply(lambda x: x.max() - x.min())
 
 series.value_counts()   #  形同word count，计算series中每个数的个数
 series.str.lower()  # series对象在其str属性中配备了一组字符串处理方法，可以很容易的应用到数组中的每一个元素；
+
+# grouping
+df.groupby('A').sum()   # 按列A的数值求和
+df.groupby(['A,B']).sum()   # 按列A、B的多层索引求和
+
+stacked = df.stack()
+stacked.unstack(1)
+
+
 ```
 
-### DataFrame合并 Merge
-```python
-pd.concat[]
-```
+
 
 
 ### DataFrame的遍历
@@ -126,6 +141,13 @@ df.reset_index('index1', )    #将index1索引作为列
 df.reset_index()    #将df中的多级索引转换为列
 df.reset_index('index1', drop = True)   #直接删除索引index1
 df.reset_index(inplace=True)    # 直接将原dataframe对象df中索引转为列
+
+# 设置多层索引
+index = pd.MultiIndex.from_tuples(tuples, names=['first', 'second'])
+df = pd.DataFrame(np.random.randn(8, 2), index, columns=['A', 'B'])
+
+
+
 ```
 
 
