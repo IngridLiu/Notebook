@@ -98,9 +98,21 @@ series.str.lower()  # series对象在其str属性中配备了一组字符串处�
 df.groupby('A').sum()   # 按列A的数值求和
 df.groupby(['A,B']).sum()   # 按列A、B的多层索引求和
 
+# groupby与apply算法结合使用
+# 获取每个元素在group中占比
+def f(df):
+    total = df['count'].sum()
+    df['rate_sid'] = df['count'] / total
+    return df
+
+data_sid_groupby = total_data_df.groupby(['dim', 'period', 'sid']).apply(f)
+
+# stacked
 stacked = df.stack()
 stacked.unstack(1)
 
+# 生成透视表
+pd.pivot_table(df, values='D', index=['A', 'B'], columns = ['C'])
 
 ```
 
