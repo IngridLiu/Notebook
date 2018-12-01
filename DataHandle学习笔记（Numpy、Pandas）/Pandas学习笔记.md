@@ -84,6 +84,13 @@ pd.isnull(df)   # 对数据进行布尔填充
 
 ### pandas dataframe数据计算
 ```python
+# df设置小数点精度
+df.round(2) # 设置df中小数点精度为2
+df.round({'A': 1, 'C': 2})  # 设置df中A列小数点精度为1，C列中小数点精度为2
+
+# df将小数转换为百分数
+df['A'] = df['A'].apply(lambda x: format(x, '.2%')) # 将df中的A列的小数形式转换为百分数，注意此时A的类型为str
+
 # 计算
 df.mean()   # 对df的每一列求平均,默认为axis = 0
 df.mean(1)  # 对df的每一行求平均
@@ -186,6 +193,10 @@ df.to_period('A')   #按年度显示，但不统计
 
 ```
 
+### pandas 读取数据：
+```python
+df = pd.read_csv(data_path, sep = '\t', header = None)  # pandas.read_csv(filepath_or_buffer, sep=', ', delimiter=None, header='infer', names=None, index_col=None, usecols=None, squeeze=False, prefix=None, mangle_dupe_cols=True, dtype=None, engine=None, converters=None, true_values=None, false_values=None, skipinitialspace=False, skiprows=None, nrows=None, na_values=None, keep_default_na=True, na_filter=True, verbose=False, skip_blank_lines=True, parse_dates=False, infer_datetime_format=False, keep_date_col=False, date_parser=None, dayfirst=False, iterator=False, chunksize=None, compression='infer', thousands=None, decimal=b'.', lineterminator=None, quotechar='"', quoting=0, escapechar=None, comment=None, encoding=None, dialect=None, tupleize_cols=None, error_bad_lines=True, warn_bad_lines=True, skipfooter=0, doublequote=True, delim_whitespace=False, low_memory=True, memory_map=False, float_precision=None)
+```
 
 
 
@@ -196,3 +207,5 @@ df.to_period('A')   #按年度显示，但不统计
 1. [Pandas秘籍](http://docs.bdpt.net/docs/pandastutorialcn/en/latest/21.html)
 
 2. [Pandas新手入门教程](http://docs.bdpt.net/docs/pandastutorialcn/en/latest/31.html)
+
+4. [pandas.read_csv()](https://pandas.pydata.org/pandas-docs/stable/generated/pandas.read_csv.html)

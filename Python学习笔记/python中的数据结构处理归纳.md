@@ -1,6 +1,20 @@
 # python中的数据结构处理归纳
 
 
+### python中编码格式的转换
+```python
+# 转换字符串的编码
+unicodestring = u"Hello world"  # 直接定义unicode字符串，通过在字符串前加 u 的方式
+utf8string = '好人'  #可以这样直接写，是因为在py文件的开头写了 #encoding=utf-8, 这样在整个py文件中，所有的字符串的编码编码方式都设置为了utf-8
+
+ustring = unicode(utf8string, "utf-8")  # 将某种字符集编码的字符串转化为unicode字符串， 即“解码”
+
+unicodestring.encode("utf-8")   #将unicode字符串转化为某种字符集编码的字符串，即“编码”
+
+# 转换list or tuple的编码
+list = [unicode(x, 'utf-8') for x in list]
+
+```
 
 ### 小数点精度的控制
 
