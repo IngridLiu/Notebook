@@ -31,9 +31,22 @@ df.head(n)  # 显示数据的前n行
 df.tail(n)  # 显示数据的最后n行
 
 # df排序
-frame.sort_index(axis=1, ascending=False) # dataframe根据列索引(axis = 0 或者省略时表示根据行索引)进行降序排序（排序时默认升序，调节ascending参数）
-frame.sort_values(by='a') # dataframe根据值进行排序
-frame.sort_values(by=['a','c'])   # 通过多个索引进行排序
+df.sort_index(axis=1, ascending=False) # dataframe根据列索引(axis = 0 或者省略时表示根据行索引)进行降序排序（排序时默认升序，调节ascending参数）
+df.sort_values(by='a') # dataframe根据值进行排序
+df.sort_values(by=['a','c'])   # 通过多个索引进行排序
+# df 按指定的list排序, 指定的list所包含元素和Dataframe中需要排序的列的元素一样多
+order_list = ['d', 'c', 'b','a','e']
+df['A'] = df['A'].astype('category')
+df['A'].cat.reorder_categories(order_list, inplace = True)  # inplace = True，使 recorder_categories生效
+df.sort_values('A', inplace = True)
+# df 按指定的list排序, 指定的list所包含元素比Dataframe中需要排序的列的元素多
+# 将上面的df.cat.reorder_categories() 改为df.cat.set_categories()
+df['A'].cat.set_categories(list_custom_new, inplace = True)
+# df 按指定的list排序, 指定的list所包含元素比Dataframe中需要排序的列的元素少
+# 仍旧使用df.cat.set_categories()，order_list中不包含的元素记为0；
+df['A'].cat.set_categories(list_custom_new, inplace = True)
+
+
 
 # df合并merge
 pd.concat[[df1, df2, df3]]  # concat合并多个行
@@ -200,12 +213,16 @@ df = pd.read_csv(data_path, sep = '\t', header = None)  # pandas.read_csv(filepa
 
 
 
+
+
 ## Reference：
 
 1. [十分钟搞定Pandas](http://docs.bdpt.net/docs/pandastutorialcn/en/latest/10.html)
 
-1. [Pandas秘籍](http://docs.bdpt.net/docs/pandastutorialcn/en/latest/21.html)
+2. [Pandas秘籍](http://docs.bdpt.net/docs/pandastutorialcn/en/latest/21.html)
 
-2. [Pandas新手入门教程](http://docs.bdpt.net/docs/pandastutorialcn/en/latest/31.html)
+3. [Pandas新手入门教程](http://docs.bdpt.net/docs/pandastutorialcn/en/latest/31.html)
 
 4. [pandas.read_csv()](https://pandas.pydata.org/pandas-docs/stable/generated/pandas.read_csv.html)
+
+5. [Python： Pandas的DataFrame如何按指定list排序](https://www.cnblogs.com/lemonbit/p/7004505.html)
