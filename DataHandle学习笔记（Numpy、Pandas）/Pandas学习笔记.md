@@ -186,32 +186,77 @@ df = pd.DataFrame(np.random.randn(8, 2), index, columns=['A', 'B'])
 # pandas 时间日期处理
 
 ```python
-# 创建datetime类型数据
+# 转换string类型为日期类型数据
 df.columns = ['date','number']
 df['date'] = pd.to_datetime(df['date']) # 将数据类型转换为日期类型
 df.index = pd.DatetimeIndex(df.index)   # 将df的index设为datetime类型
+
 
 # 数据获取
 df['2016':'2017']   # 获取2016至2017年的数据
 df['2013-11']   # 获取某月的数据
 df['2013-11-06':'2013-11-06']   #获取具体某天的数据，获取具体某天的数据，用datafrme直接选取某天时会报错，而series的数据就没有问题，可以考虑用区间来获取某天的数据。
 # dataframe的truncate函数可以获取某个时期之前或之后的数据，或者某个时间区间的数据，但一般建议直接用切片（slice），这样更为直观，方便。
-df.truncate(after = '2013-11')  # 获取某个时期之后的数据
-df.truncate(before='2017-02')   # 获取某个时期之前的数据
+series.truncate(after = '2013-11')  # 获取某个时期之后的数据
+series.truncate(before='2017-02')   # 获取某个时期之前的数据
+df.index.weekday    # 只获取weekday数据
 
 # 按年、月、日显示数据，但不统计
-df.to_period('M')   # 按月显示，但不统计；请注意df.index的数据类型是DatetimeIndex，df_peirod的数据类型是PeriodIndex
-df.to_period('Q')   # 按季度显示，但不统计
-df.to_period('A')   #按年度显示，但不统计
+series.to_period('M')   # 按月显示，但不统计；请注意df.index的数据类型是DatetimeIndex，df_peirod的数据类型是PeriodIndex
+series.to_period('Q')   # 按季度显示，但不统计
+series.to_period('A')   # 按年度显示，但不统计
+series.to_timestamp()   # 转换为时间戳
+
+# 日期数据统计
+df.groupby('weekday').aggregate(sum)    # 按星期统计数据和
+
+# 创建时间段
+date_range_ind = pd.date_range('1/1/2012', periods=100, freq='S')    # 创建20120101 00：00：00后的100个时期的日期，时期单位为秒；date可以换书写形式；类型为DateIndex
+date_series = pd.Series(np.random.randint(0, 500, len(rng)), index = rng)   #以date_range_ind　为index，随机赋值
+date_series.resample('5Min').sum() # 计算date_series前5min的数的和
+
+# 时区表示
+date_series_utc = date_series.tz_localize('UTC')    #  转换为UTC时区时间
+date_series_utc.tz_convert('US/Eastern')    # 转换为时区时间
 
 ```
 
-### pandas 读取数据：
+### pandas 读取/存储数据：
 ```python
+# df读取/写入csv
 df = pd.read_csv(data_path, sep = '\t', header = None)  # pandas.read_csv(filepath_or_buffer, sep=', ', delimiter=None, header='infer', names=None, index_col=None, usecols=None, squeeze=False, prefix=None, mangle_dupe_cols=True, dtype=None, engine=None, converters=None, true_values=None, false_values=None, skipinitialspace=False, skiprows=None, nrows=None, na_values=None, keep_default_na=True, na_filter=True, verbose=False, skip_blank_lines=True, parse_dates=False, infer_datetime_format=False, keep_date_col=False, date_parser=None, dayfirst=False, iterator=False, chunksize=None, compression='infer', thousands=None, decimal=b'.', lineterminator=None, quotechar='"', quoting=0, escapechar=None, comment=None, encoding=None, dialect=None, tupleize_cols=None, error_bad_lines=True, warn_bad_lines=True, skipfooter=0, doublequote=True, delim_whitespace=False, low_memory=True, memory_map=False, float_precision=None)
+df.to_csv(save_path, encoding = 'gb2312')
+
+# df读取/写入hdf5
+df = pd.read_hdf('foo.h5', 'df')
+df.to_hdf(save_path, 'df')
+
+# df读取/写入excel文件
+df = pd.read_excel(data_path, 'sheet', index_col = None, na_values = ['NA'])
+df.to_excel(save_path, sheet_name = 'sheet')
+
 ```
 
+### pandas Categorical类型数据
+```python
+# 将A列数据转为category类型
+df['A'] = df['A'].astype('category')    
 
+
+# df 按指定的list排序
+# df 按指定的list排序, 指定的list所包含元素和Dataframe中需要排序的列的元素一样多
+order_list = ['d', 'c', 'b','a','e']
+df['A'] = df['A'].astype('category')
+df['A'].cat.reorder_categories(order_list, inplace = True)  # inplace = True，使 recorder_categories生效
+df.sort_values('A', inplace = True)
+# df 按指定的list排序, 指定的list所包含元素比Dataframe中需要排序的列的元素多
+# 将上面的df.cat.reorder_categories() 改为df.cat.set_categories()
+df['A'].cat.set_categories(list_custom_new, inplace = True)
+# df 按指定的list排序, 指定的list所包含元素比Dataframe中需要排序的列的元素少
+# 仍旧使用df.cat.set_categories()，order_list中不包含的元素记为0；
+df['A'].cat.set_categories(list_custom_new, inplace = True)
+
+```
 
 
 
