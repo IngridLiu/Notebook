@@ -271,3 +271,5 @@ df['A'].cat.set_categories(list_custom_new, inplace = True)
 4. [pandas.read_csv()](https://pandas.pydata.org/pandas-docs/stable/generated/pandas.read_csv.html)
 
 5. [Python： Pandas的DataFrame如何按指定list排序](https://www.cnblogs.com/lemonbit/p/7004505.html)
+
+6. [Pandas Data Visualisation](https://www.kaggle.com/learn/data-visualisation)
