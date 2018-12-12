@@ -12,7 +12,7 @@
 <br>
 <br>
 
-### numpy基础
+### numpy创建
 
 ```python
 import numpy as np
@@ -23,7 +23,7 @@ np.arange(5)
 np.arange(15).reshape(3, 5)
 a = np.array([[1,2,3],[4,5,6]])
 b = np.array([[7,8,9],[10,11,12]])
-np.linspace(0, 2*np.pi, 5)
+np.linspace(0, 2*np.pi, 5)  # 创建数组，最小值为0，最大值为2*np.pi，平均分为5份；
 
 np.zeros(size)  #创建shape为size的元素为0的array,zeros(shape, dtype=float, order='C')
 np.ones(size)   #创建shape为size的元素为1的array
@@ -40,6 +40,17 @@ np.mat()    # np.mat()同np.matrix()
 ### Numpy数组获取
 ```python
 a[2:5]  # 数据切片
+a[np.array([1, 1, 3])]  # 使用索引数组索引
+a[np.array([[1, 1, 3],
+            [2, 4, 8]])]    # 使用多维索引数组索引，每个维度的索引数组必须有相同的形状
+
+b = a > 4   # b是一个元素为bool型的shape和a一样的
+a[b]    # 取出a中b元素为True的值
+
+a[0, 0, 2] = [1, 2, 3]  # 给array指定的index赋值
+a[b] = 0    # 给a中b的元素为True的位置赋值为0
+
+
 ```
 
 ### Numpy计算
@@ -100,9 +111,25 @@ d = a.copy()    # d是a的深拷贝，d、a之间没有任何关系
 
 ```
 
+### numpy线性代数计算
+```python
+a.transpose()   # 矩阵a的转置
+np.linalg.inv(a)    # 矩阵a的逆
+np.eye(2)   # 创建2x2的对角矩阵
+np.dot(a, b)    # 矩阵a，b相乘
+np.trace(a) # 矩阵a的迹，即对角线相加
+np.linalg.solve(a, y)  # 解ax=y的特征方程
+np.linalg.eig(a)    # 计算方阵a的特征值
+```
+
 ### numpy读取/写入数据
 ```python
+from io import BytesIO
+
 data = np.loadtxt(filepath,delimiter,usecols,unpack)    #numpy从文本中加载数据
+
+data = np.genfromtxt(BytesIO(data), delimiter=',', dtype='utf-8', autostrip=True, comments = '#' , skip_header = 0, skip_footer = 0, usecols = (0, -1), names = "A, B, C")   # comments标记注释开始的符号,skip_header标记跳过行数，skip_footer标记跳过列数,usecols标记导入的列,names为每一列赋名字
+
 ```
 
 ## Reference:
