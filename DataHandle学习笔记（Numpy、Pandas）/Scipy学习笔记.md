@@ -68,6 +68,8 @@ Scipy提供了两个方法解决双样本同方差的Student t-test问题：
 '''
 scipy.stats.ttest_ind(a, b, axis=0, equal_var=True, nan_policy='propagate')[source]  # Returns:statistic, pvalue;
 scipy.stats.ttest_ind_from_stats(mean1, std1, nobs1, mean2, std2, nobs2, equal_var=True)[source] # Returns:statistic, pvalue;
+
+scipy.stats.pearsonr(x, y)  # pearson相关系数，return r，p_value
 ```
 
 
