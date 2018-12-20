@@ -6,10 +6,6 @@
 
 ## 1. DataFrame中的函数
 
-**df.show()**
-
-显示DataFrame中的值，结果和show table一样；
-
 ```scala
 DataFrame 的函数
 
@@ -80,9 +76,13 @@ df.join(ds,df("name")===ds("name") and  df("age")===ds("age"),"outer").show();
 
 #### 补充说明：
 
+**8. df.show()**
+
+&emsp;&emsp;显示DataFrame中的值，结果和show table一样；
+
 **13. df.filter()**
 
-对DataFrame中的值做过滤；
+&emsp;&emsp;对DataFrame中的值做过滤；
 
 ```scala
 // 逻辑运算符：>, <, ===
@@ -104,7 +104,7 @@ df.filter($"num" === 1 || "num"===3)
 
 **16. df.join()**
 
-对两个DataFrame做join操作；
+&emsp;&emsp;对两个DataFrame做join操作；
 
 ```scala
 // join 是DataFrame的内置函数，
@@ -123,7 +123,7 @@ df1.join(df2, Seq("num","id"), "right")
 
 **25. df.withColumn()**
 
-在df中选择一列，对其进行操作
+&emsp;&emsp;在df中选择一列，对其进行操作
 
 ```scala
 // 对df中的indicator列做操作，利用正则化用"retention"替换掉列值的"dau"字符串;"dau"可以用正则化表达式进行匹配;
