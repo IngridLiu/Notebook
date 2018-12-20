@@ -138,3 +138,5 @@ df.withColumn("indicator", regexp_replace(col("indicator"), "dau", "retention"))
 ## Reference:
 
 1.[sparkSQL:dataframe](https://blog.csdn.net/zhonglongshen/article/details/52386251)
+
+2.[Apache Spark DataFrames入门指南：操作DataFrame](https://www.iteblog.com/archives/1566.html)
