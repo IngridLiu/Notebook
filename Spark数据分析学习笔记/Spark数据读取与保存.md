@@ -57,6 +57,8 @@ peopleDF.write.partitionBy("favorite_color").format("parquet").save("namesPartBy
 <br>
 <br>
 
-[Data Sources](http://spark.apache.org/docs/latest/sql-data-sources.html)
+## Reference:
 
-[Generic Load/Save Functions](http://spark.apache.org/docs/latest/sql-data-sources-load-save-functions.html)
+1.[Data Sources](http://spark.apache.org/docs/latest/sql-data-sources.html)
+
+2.[Generic Load/Save Functions](http://spark.apache.org/docs/latest/sql-data-sources-load-save-functions.html)
