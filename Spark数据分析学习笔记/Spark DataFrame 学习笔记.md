@@ -7,10 +7,13 @@
 ## 1. DataFrame中的函数
 
 ```scala
-DataFrame 的函数
+// DataFrame 的函数
 
-Action 操作
-1、 collect() ,返回值是一个数组，返回dataframe集合所有的行
+// 创建DataFrame
+strs.split(",").toSeq.toDF("column_name")   # 将str数据转为DataFrame
+
+// Action 操作
+collect()   //返回值是一个数组，返回dataframe集合所有的行
 2、 collectAsList() 返回值是一个java类型的数组，返回dataframe集合所有的行
 3、 count() 返回一个number类型的，返回dataframe集合的行数
 4、 describe(cols: String*) 返回一个通过数学计算的类表值(count, mean, stddev, min, and max)，这个可以传多个参数，中间用逗号分隔，如果有字段为空，那么不参与运算，只这对数值类型的字段。例如df.describe("age", "height").show()
@@ -20,7 +23,8 @@ Action 操作
 8、 show()返回dataframe集合的值 默认是20行，返回类型是unit
 9、 show(n:Int)返回n行，，返回值类型是unit
 10、 table(n:Int) 返回n行  ，类型是row 类型
-dataframe的基本操作
+
+// dataframe的基本操作
 1、 cache()同步数据的内存
 2、 columns 返回一个string类型的数组，返回值是所有列的名字
 3、 dtypes返回一个string类型的二维数组，返回值是所有列的名字以及类型
