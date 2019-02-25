@@ -24,6 +24,7 @@ df = pd.DataFrame(a, dtype='float') #将所有数据设为同一类型
 df = pd.DataFrame(a, columns = cols, dtype = {'col_name':str})  #对DataFrame中不同列设置不同的dtype
 
 # 查看df信息
+df.shape    # 显示df的shape信息
 df.index    # 显示df的index
 df.columns  # 显示df的columns
 df.values   # 显示df中的值
