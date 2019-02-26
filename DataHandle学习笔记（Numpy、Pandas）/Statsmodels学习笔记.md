@@ -9,3 +9,16 @@
 ```python
 import statsmodels.api as sm
 ```
+
+
+## Errors
+
+### 1. AttributeError: 'RangeIndex' object has no attribute 'inferred_freq'
+
+原因：seasonal_decompose() expects a DateTimeIndex on your DataFrame. 
+
+示例解决：
+
+```python
+ts_log.index = pd.DatetimeIndex(freq='w', start=0, periods = 1460)
+```
