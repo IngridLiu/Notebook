@@ -22,3 +22,4 @@ import statsmodels.api as sm
 ```python
 ts_log.index = pd.DatetimeIndex(freq='w', start=0, periods = 1460)
 ```
+

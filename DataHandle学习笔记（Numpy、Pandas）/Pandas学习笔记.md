@@ -3,10 +3,6 @@
 <br>
 <br>
 
-<br>
-<br>
-<br>
-<br>
 
 ### DataFrame基本操作
 
@@ -18,6 +14,7 @@ d2 = pd.DataFrame(data=list([[1, 2, 3, 4], ["a", "b", "c", "d"]]))  # 通过list
 d3 = pd.DataFrame(data={"name": "nick", "age": 12, "sex": "male"}, index=list([1, 2, 3]))
 d4 = pd.DataFrame(data={"A":{"name": "nick", "age": 12, "sex": "male"},"B":{"name": "nick", "age": 12, "sex": "male"}})
 d5 = pd.DataFrame(data=s4)
+series.to_frame(name = None)    # 将eries转换为DataFrame类型
 
 # 指定dataframe数据类型
 df = pd.DataFrame(a, dtype='float') #将所有数据设为同一类型
@@ -47,14 +44,12 @@ df['A'].cat.set_categories(list_custom_new, inplace = True)
 # 仍旧使用df.cat.set_categories()，order_list中不包含的元素记为0；
 df['A'].cat.set_categories(list_custom_new, inplace = True)
 
-
-
 # df合并merge
 pd.concat[[df1, df2, df3]]  # concat合并多个行
 pd.merge(df1, df2, on='key')    # concat合并多个行
 df.append(seris, ingore_index = True)   # 在df下添加一行
 
-# df 改变形状
+# df改变形状
 
 ```
 
@@ -96,7 +91,10 @@ df.fillna(value = 5)    # 对缺失值进行补充
 pd.isnull(df)   # 对数据进行布尔填充
 ```
 
-### pandas dataframe数据计算
+<br> 
+
+### Pandas 数据变换
+
 ```python
 # df设置小数点精度
 df.round(2) # 设置df中小数点精度为2
@@ -105,6 +103,33 @@ df.round({'A': 1, 'C': 2})  # 设置df中A列小数点精度为1，C列中小数
 # df将小数转换为百分数
 df['A'] = df['A'].apply(lambda x: format(x, '.2%')) # 将df中的A列的小数形式转换为百分数，注意此时A的类型为str
 
+# stacked
+stacked = df.stack()
+stacked.unstack(1)
+
+# 对数据进行操作变换
+
+df.dropna(axis = 0, how = 'any', thresh = None, subset = None, inplace = False) # 删除df中为空的数据；axis = 0 or 1表示删除含有空值的行或列，how表示删除的方式，thresh表示限制非空数据的个数，subset表示寻找缺失值的咧，inplace=True表示不创建新的对象，直接对原始对象进行修改；inplace=False：对数据进行修改，创建并返回新的对象承载其修改结果。
+df.shift(periods = 1, freq = None, axis = 0, fill_value = None) # shift函数可以把数据移动指定的位数，periods指移动的位数，axis指移动的轴，1为行，0为列；
+df.rolling(window, min_periods=None, freq=None, center=False, win_type = None, axis=0, closed = None)
+"""
+    window：表示时间窗的大小，注意有两种形式（int or offset）。如果使用int，则数值表示计算统计量的观测值的数量即向前几个数据。如果是offset类型，表示时间窗的大小。
+    min_period: 至少需要有值的观测点的数量，对于int类型，默认与window相等。对于offset类型，默认为1。
+    freq：从0.18版本中已经被舍弃。
+    center：是否使用window的中间值作为label，默认为false。只能在window是int时使用。
+    win_type：窗口类型，默认为None，一般不特殊指定。
+    on：对于DataFrame如果不使用index（索引）作为rolling的列，那么用on来指定使用哪列。
+    closed：定义区间的开闭，曾经支持int类型的window，新版本已经不支持了。对于offset类型默认是左开右闭的即默认为right。可以根据情况指定为left both等。
+    axis：方向（轴），一般都是0。
+"""
+df.diff(periods = 1, axis = 0)  # 计算一阶差分，periods:periods：移动的幅度，int类型，默认值为1；axis：移动的方向，{0 or ‘index’, 1 or ‘columns’}，如果为0或者’index’，则上下移动，如果为1或者’columns’，则左右移动。
+df.ewm()
+df.ewma()
+
+```
+
+### pandas dataframe数据计算
+```python
 # 计算
 df.mean()   # 对df的每一列求平均,默认为axis = 0
 df.mean(1)  # 对df的每一行求平均
@@ -128,16 +153,12 @@ def f(df):
 
 data_sid_groupby = total_data_df.groupby(['dim', 'period', 'sid']).apply(f)
 
-# stacked
-stacked = df.stack()
-stacked.unstack(1)
+
 
 # 生成透视表
 pd.pivot_table(df, values='D', index=['A', 'B'], columns = ['C'])
 
 ```
-
-
 
 
 ### DataFrame的遍历
@@ -178,9 +199,6 @@ df.reset_index(inplace=True)    # 直接将原dataframe对象df中索引转为�
 # 设置多层索引
 index = pd.MultiIndex.from_tuples(tuples, names=['first', 'second'])
 df = pd.DataFrame(np.random.randn(8, 2), index, columns=['A', 'B'])
-
-
-
 ```
 
 
@@ -190,7 +208,7 @@ df = pd.DataFrame(np.random.randn(8, 2), index, columns=['A', 'B'])
 # 转换string类型为日期类型数据
 df.columns = ['date','number']
 df['date'] = pd.to_datetime(df['date']) # 将数据类型转换为日期类型
-df.index = pd.DatetimeIndex(df.index)   # 将df的index设为datetime类型
+df.index = pd.DatetimeIndex(data, copy=False, freq=None, start = None, periods = None, end = None, closed = None )   # 将df的index设为datetime类型
 
 
 # 数据获取
@@ -212,7 +230,7 @@ series.to_timestamp()   # 转换为时间戳
 df.groupby('weekday').aggregate(sum)    # 按星期统计数据和
 
 # 创建时间段
-date_range_ind = pd.date_range('1/1/2012', periods=100, freq='S')    # 创建20120101 00：00：00后的100个时期的日期，时期单位为秒；date可以换书写形式；类型为DateIndex
+date_range_ind = pd.date_range(start = '1/1/2012', end = '',  periods=100, freq='S')    # 创建20120101 00：00：00后的100个时期的日期，时期单位为秒；date可以换书写形式；类型为DateIndex
 date_series = pd.Series(np.random.randint(0, 500, len(rng)), index = rng)   #以date_range_ind　为index，随机赋值
 date_series.resample('5Min').sum() # 计算date_series前5min的数的和
 
@@ -274,3 +292,7 @@ df['A'].cat.set_categories(list_custom_new, inplace = True)
 5. [Python： Pandas的DataFrame如何按指定list排序](https://www.cnblogs.com/lemonbit/p/7004505.html)
 
 6. [Pandas Data Visualisation](https://www.kaggle.com/learn/data-visualisation)
+
+7. [pandas中时间窗函数rolling的使用](https://blog.csdn.net/wj1066/article/details/78853717)
+
+8. [pandas DataFrame.shift()函数](http://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.shift.html)
