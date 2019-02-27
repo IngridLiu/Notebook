@@ -123,9 +123,26 @@ df.rolling(window, min_periods=None, freq=None, center=False, win_type = None, a
     axis：方向（轴），一般都是0。
 """
 df.diff(periods = 1, axis = 0)  # 计算一阶差分，periods:periods：移动的幅度，int类型，默认值为1；axis：移动的方向，{0 or ‘index’, 1 or ‘columns’}，如果为0或者’index’，则上下移动，如果为1或者’columns’，则左右移动。
-df.ewm()
-df.ewma()
-
+df.rolling_count()   # 返回各窗口非NA观测值的量
+df.rolling_sum() # 移动窗口的和
+df.rolling_mean()    #移动窗口的平均值
+df.rolling_median()  # 移动窗口的中位数
+df.rolling_var()
+df.rolling_std() # 移动窗口的方差和标准差。分母为n-1
+df.rolling_skew()
+df.rolling_kurt()   # 移动窗口的偏度（三阶矩）和峰度（四阶矩）
+df.rolling_min()
+df.rolling_max() # 移动窗口的最小值和最大值
+df.rolling_quantile()    # 移动窗口指定百分位数/样本分位数位置的值
+df.rolling_corr()
+df.rolling_cov()    # 移动窗口的相关系数和协方差
+df.rolling_apply()   # 对移动窗口应用普通数组函数
+df.ewm(arg, com=None, span=None, halflife=None, alpha=None, min_periods=0, adjust=True, ignore_na=False, axis=0)    #com、span、halflife、alpha设定衰减系数的相关参数， min_periods最小窗口数，它以指数形式分配权重。
+df.ewma(arg, com=None, span=None, halflife=None, min_periods=0, freq=None, adjust=True, how=None, ignore_na=False)    # 指数加权移动平均
+df.ewmvar()
+df.ewmstd()   # 指数加权移动方差和标准差
+df.ewmcorr()
+df.ewmcov   # 指数加权移动相关系数和协方差
 ```
 
 ### pandas dataframe数据计算

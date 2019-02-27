@@ -10,6 +10,27 @@
 import statsmodels.api as sm
 ```
 
+## 1. 数据预处理
+```python
+# 数据分解
+from statsmodels.tsa.seasonal import seasonal_decompose  # 数据分解，分解出趋势和季节性。
+seasonal = seasonal.shift(24)
+seasonal=seasonal.reindex(index1)
+
+# acf和pacf
+from statsmodels.tsa.stattools import acf, pacf # acf和pacf方法
+
+```
+
+## 2. 回归模型
+
+```python
+from statsmodels.tsa.arima_model import ARIMA 
+model = ARIMA(ts_log, order=(0, 1, 0))
+results_AR = model.fit(disp = -1)‘
+
+```
+
 
 ## Errors
 

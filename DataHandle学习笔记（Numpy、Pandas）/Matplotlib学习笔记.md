@@ -22,6 +22,7 @@ plt.show()  # 显示图像
 ```
 
 # Matplotlib多合一显示
+
 ```python
 plt.subplot(2, 2, 1)    # 使用plt.subplot来创建小图. plt.subplot(2,2,1)表示将整个图像窗口分为2行2列, 当前位置为1。plt.subplot(2,2,1)可以简写成plt.subplot(221), matplotlib同样可以识别. 
 plt.plot([0,1],[0,1])   # 使用plt.plot([0,1],[0,1])在第1个位置创建一个小图.
@@ -29,6 +30,7 @@ plt.layout(pad = None, w_pad = None, h_pad = None)    # 自动显示多个子图
 ```
 
 ### 设定子图属性
+
 ```python
 ax = plt.subplots()
 ax.set_title(u'title')   # 设定图标title
