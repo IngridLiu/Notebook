@@ -1,136 +1,130 @@
-class Node:
-    def __init__(self, value = None, next = None):
-        self._value = value
-        self._next = next
+class Sort:
 
-    def getValue(self):
-        return self._value
+    # 插入排序
+    # 直接插入排序
+    def directInsertSort(self, s:int):
+        for i in range(1, len(s)):
+            key = s[i]
+            j = i-1
+            while s[j] > key and j >= 0:
+                s[j+1] = s[j]
+                s[j] = key
+                j -= 1
+        return s
+    # 折半插入排序
+    def binaryInsertSort(self, s:int):
+        for i in range(1, len(s)):
+            key = s[i]
+            low = 0
+            high = i - 1
+            while low <= high:
+                mid = (low + high) // 2
+                if key < s[mid] :
+                    high = mid - 1
+                else:
+                    low = mid + 1
+            j = i - 1
+            while j > high:
+                s[j + 1] = s[j]
+                s[j] = key
+                j -= 1
+        return s
+    # 希尔排序：
+    def shellSort(self, d: list, s: list):
+        for span in d:
+            for k in range(span):
+                for i in range(k, len(s), span):
+                    key = s[i]
+                    j = i - span
+                    while j > -1 and key < s[j]:
+                        s[j+span] = s[j]
+                        s[j] = key
+                        j -= span
+        return s
 
-    def getNext(self):
-        return self._next
+    # 交换排序
+    # 冒泡排序
+    def bubbleSort(self, s:list):
+        j = len(s) - 1
+        while j > 0:
+            max_key = s[0]
+            for i in range(0, j):
+                if s[i] > s[i + 1]:
+                    temp = s[i]
+                    s[i] = s[i+1]
+                    s[i+1] = temp
+            j -= 1
+        return s
+    # 快速排序
+    def quickSort(self, s:list, start, end):
+        if start < end:
+            low = start
+            high = end
+            key = s[low]
+            while low < high:
+                # 将小于key的值往前放
+                while low < high and s[high] >= key:
+                    high -= 1
+                s[low] = s[high]
+                # 将大于key的值往后放
+                while low < high and s[low] <= key:
+                    low += 1
+                s[high] = s[low]
+            s[low] = key
 
-    def setValue(self, new_value):
-        self._value = new_value
+            # 递归前后半区
+            self.quickSort(s, start, low-1)
+            self.quickSort(s, high+1, end)
+        return s
 
-    def setNext(self, new_next):
-        self._next = new_next
+    # 选择排序
+    # 直接选择排序
+    def directSelectSort(self, s: list):
+        for i in range(len(s)):
+            min_index = i
+            for j in range(i, len(s)):
+                if s[min_index] > s[j]:
+                    min_index = j
+            temp = s[min_index]
+            s[min_index] = s[i]
+            s[i] = temp
+        return s
+    # 堆排序
 
+    # 归并排序
+    # 二路归并排序
+    def merge(self, list_1: list, list_2: list):
+        i = 0
+        j = 0
+        new_list = []
+        while i < len(list_1) and j < len(list_2):
+            if list_1[i] < list_2[j]:
+                new_list.append(list_1[i])
+                i = i + 1
+            else:
+                new_list.append(list_2[j])
+                j = j + 1
+        if i == len(list_1):
+            for item in list_2[j:]:
+                new_list.append(item)
+        else:
+            for item in list_1[i:]:
+                new_list.append(item)
+        return new_list
+    def mergeSort(self, lists: list):
+        if len(lists) <= 1:
+            return lists
+        middle = len(lists) // 2
+        left = self.mergeSort(lists[:middle])
+        right = self.mergeSort(lists[middle:])
+        return self.merge(left, right)
 
-class ListNode:
-   def __init__(self, x):
-       self._head = Node()
-       self._tail = Node()
-       self._length = 0
-
-    # 判断NodeList是否为空
-   def isEmpty(self):
-       return self._head == None
-
-   # 在NodeList前添加元素
-   def add(self, value):
-       newnode = Node(value, None)
-       newnode.setNext(self._head)
-       self._head = newnode
-
-   # 在NodeList末尾添加元素
-   def append(self, value):
-       newnode = Node(value, None)
-       if self._head == None:
-           self._head = newnode
-       else:
-           curr = self._head
-           while curr.getNext() != None:
-               curr = curr.getNext()
-           curr.setNext(newnode)
-
-   # 再NodeList中删除第一个元素
-   def delete(self):
-       count = 0
-       curr = self._head
-       self._head = curr.getNext()
-
-
-
-
-    # search 元素是否在链表中
-   def search(self, value):
-       find_value = False
-       curr = self._head
-       while curr != None and not find_value:
-           if curr.getValue() == find_value:
-               find_value == True
-           else:
-               curr = curr.getNext()
-       return find_value
-
-   # index索引元素在链表中的位置：
-   def index(self, value):
-       position = 0
-       curr = self._head
-       find = False
-       if curr != None and not find:
-           position += 1
-           if curr.getValue() == value:
-               find = True
-           else:
-               curr.getNext()
-       if find:
-            return position
-       else:
-            raise ValueError("%s is not in linkedlist" %value)
-
-   # index删除链表中的某个元素
-   def remove(self, value):
-       pre = None
-       curr = self._head
-       while curr != None:
-           if curr.getValue() == value:
-               if not pre :
-                   self._head = curr.getNext()
-               else:
-                   pre = curr
-                   pre.setNext(curr.getNext())
-
-    # insert链表中插入元素
-   def insert(self, pos, value):
-       if pos <= 1:
-           self.add(value)
-       elif pos > self.size():
-           self.append(value)
-       else:
-           temp = Node(value)
-           count = 1
-           pre = None
-           current = self._head
-           while count < pos:
-               count += 1
-               pre = current
-               current = current.getNext()
-           pre.setNext(temp)
-           temp.setNext(current)
+if __name__ == "__main__":
+    s = [3, 6, 2 ,3, 4, 9, 8]
+    sort = Sort()
+    sored_s = sort.mergeSort(s)
+    print(sored_s)
 
 
 
-
-
-
-class Solution:
-    def addTwoNumbers(self, l1:ListNode, l2:ListNode) -> ListNode:
-        re = ListNode(0)
-        curr = re
-        carry = 0
-        p = l1
-        q = l2
-        while (p or q):
-            x = p.val if p else 0
-            y = q.val if q else 0
-            s = carry + x + y
-            carry = s//10
-            curr.next = ListNode(s % 10)
-            curr = curr.next
-            p = p.next if p else None
-            q = q.next if q else None
-        if carry > 0:
-            re.next = ListNode(carry)
-        return re
 
