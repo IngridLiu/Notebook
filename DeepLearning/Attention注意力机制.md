@@ -6,6 +6,7 @@
 ## 1 Encoder-Decoder
 
 ### 1.1 基本介绍
+
 &emsp;&emsp;举个翻译的例子，原始句子<a href="http://www.codecogs.com/eqnedit.php?latex=\inline&space;X&space;=&space;(x_1,&space;x_2,&space;\cdots,&space;x_m)" target="_blank"><img src="http://latex.codecogs.com/gif.latex?\inline&space;X&space;=&space;(x_1,&space;x_2,&space;\cdots,&space;x_m)" title="X = (x_1, x_2, \cdots, x_m)" /></a>，翻译成目标句子<a href="http://www.codecogs.com/eqnedit.php?latex=\inline&space;Y&space;=&space;(y_1,&space;y_2,&space;\cdots,&space;y_n)" target="_blank"><img src="http://latex.codecogs.com/gif.latex?\inline&space;Y&space;=&space;(y_1,&space;y_2,&space;\cdots,&space;y_n)" title="Y = (y_1, y_2, \cdots, y_n)" /></a>。
 
 &emsp;&emsp;现在采用Encoder-Decoder架构模型，如下图：
