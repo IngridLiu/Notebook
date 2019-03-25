@@ -84,3 +84,5 @@ Mini-batch 梯度下降综合了 batch 梯度下降与 stochastic 梯度下降�
 ## Reference:
 
 1. [Deep Learning 之 最优化方法](https://blog.csdn.net/BVL10101111/article/details/72614711)
+
+2. [深度学习必备：随机梯度下降（SGD）优化算法及可视化](https://www.cnblogs.com/bonelee/p/8392370.html)
