@@ -57,6 +57,14 @@
 
 &emsp;&emsp;概括来说，LSTM和CRU都是通过各种门函数来将重要特征保留下来，这样就保证了在long-term传播的时候也不会丢失。此外GRU相对于LSTM少了一个门函数，因此在参数的数量上也是要少于LSTM的，所以整体上GRU的训练速度要快于LSTM的。不过对于两个网络的好坏还是得看具体的应用场景。
 
+
+<br>
+
+## 4. BiGRU
+
+
+
+
 <br>
 <br>
 <br>
@@ -65,3 +73,6 @@
 ## Reference:
 
 1. [深度学习之GRU网络](https://www.cnblogs.com/jiangxinyang/p/9376021.html)
+
+2. [pytorch0.4.0实现BiGRU](https://blog.csdn.net/qq_27009517/article/details/81455362)
+
