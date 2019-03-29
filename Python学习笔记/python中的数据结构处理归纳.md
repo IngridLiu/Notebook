@@ -88,6 +88,16 @@ set_1 ^ set_2   # 返回只在set_1和set_2中只出现一次的元素
 
 ```python
 dic = {x: x**2 for x in [1 ,2 ,3]}
+
+# dic sort
+dic = {'a': 2, 'c': 3, 'b': 1}
+print(dic.items())
+new_dic = sorted(dic.items(), key=lambda x:x[0], reverse = True)  # 按第0个元素降序排列
+new_dic = sorted(dic.items(), key=lambda x:x[0], reverse = False) # 按第0个元素升序排列
+new_dic = sorted(dic.items(), key=lambda x:x[1], reverse = True)  # 按第1个元素降序排列
+new_dic = sorted(dic.items(), key=lambda x:x[1], reverse = False) # 按第1个元素升序排列
+
+
 ```
 
 ### datetime：数字日期和时间
