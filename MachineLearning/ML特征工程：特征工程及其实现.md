@@ -506,11 +506,19 @@ from sklearn.lda import LDA
 LDA(n_components=2).fit_transform(iris.data, iris.target)
 ```
 
+### 4.3 奇异值分解
+
+<br>
+
+### 4.4 Sammon映射
+
+<br>
+
 ### 4.3 回顾
 | 库 | 类 | 说明 |
 | ------------- |:-------------:| :-----:|
- | decomposition | PCA | 主成分分析法 |
- | lda | LDA | 线性判别分析法 |
+| decomposition | PCA | 主成分分析法 | 
+| lda | LDA | 线性判别分析法 |
 
 * * *
 
