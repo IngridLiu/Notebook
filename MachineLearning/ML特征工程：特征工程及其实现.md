@@ -327,6 +327,8 @@ SelectKBest(lambda X, Y: array(map(lambda x:pearsonr(x, Y), X.T)).T, k=2).fit_tr
 
 &emsp;&emsp;经典的卡方检验是检验定性自变量对定性因变量的相关性。假设自变量有N种取值，因变量有M种取值，考虑自变量等于i且因变量等于j的样本频数的观察值与期望的差距，构建统计量：
 
+&emsp;&emsp;通过给每一维的特征进行打分，然后进行排序，选择那些排名靠前的特征。
+
 ![](https://upload-images.jianshu.io/upload_images/10947003-8f92b3938dbc2793.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 
@@ -345,6 +347,8 @@ SelectKBest(chi2, k=2).fit_transform(iris.data, iris.target)
 #### 3.1.4 互信息法
 
 &emsp;&emsp;经典的互信息也是评价定性自变量对定性因变量的相关性的，互信息计算公式如下：
+
+&emsp;&emsp;通过给每一维的特征进行打分，然后进行排序，选择那些排名靠前的特征。
 
 ![](http://upload-images.jianshu.io/upload_images/10947003-6e8534021ae39f98.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
@@ -369,6 +373,8 @@ SelectKBest(lambda X, Y: array(map(lambda x:mic(x, Y), X.T)).T, k=2).fit_transfo
 #### 3.2.1 递归特征消除法
 
 &emsp;&emsp;递归消除特征法使用一个基模型来进行多轮训练，每轮训练后，消除若干权值系数的特征，再基于新的特征集进行下一轮训练。使用feature_selection库的RFE类来选择特征的代码如下：
+
+&emsp;&emsp;将子集的选择看做是一个搜索优化的问题，通过启发式的搜索优化算法来解决。
 
 ```
 from sklearn.feature_selection import RFE
