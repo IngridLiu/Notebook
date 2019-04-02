@@ -13,13 +13,13 @@
 
 &emsp;&emsp;2.1.2 区间缩放法　　　　
 
-&emsp;&emsp;2.1.3 标准化与归一化的区别　
+&emsp;&emsp;2.1.3 非线性标准化
 
 &emsp;2.2 数据编码
 
 &emsp;&emsp;2.2.1 对定量特征二值化　
 
-&emsp;&emsp;2.2.2 对分类数据进行编码（One-hot Encoding　
+&emsp;&emsp;2.2.2 对分类数据进行编码（One-hot Encoding）　
 
 &emsp;2.3 对定性特征哑编码　　
 
@@ -124,8 +124,8 @@ from sklearn.preprocessing import StandardScaler
 # 标准化，返回值为标准化后的数据
 StandardScaler().fit_transform(iris.data)
 ```
-#### 2.1.2 区间缩放法
 
+#### 2.1.2 区间缩放法
 
 &emsp;&emsp;区间缩放法的思路有多种，常见的一种为利用两个最值进行缩放，公式表达式为：
 
@@ -140,7 +140,7 @@ from sklearn.preprocessing import MinMaxScaler
 MinMaxScaler().fit_transform(iris.data)
 ```
 
-#### 2.1.4 标准化与归一化的区别
+** 标准化与归一化的区别 **
 
 &emsp;&emsp;简单来说，标准化是依照特征矩阵的列处理数据，其通过求z-score的方法，将样本的特征值转换到同一量纲下。归一化是依照特征矩阵的行处理数据，其目的在于样本向量在点乘运算或其他核函数计算相似性时，拥有统一的标准，也就是说都转化为“单位向量”。规则为l2的归一化公式如下：
 
@@ -153,6 +153,14 @@ from sklearn.preprocessing import Normalizer
 # 归一化，返回值为归一化后的数据
 Normalizer().fit_transform(iris.data)
 ```
+
+#### 2.1.3 非线性标准化
+
+&emsp;&emsp;对于数据，若数值超过了一定阈值之后，增长相同的数值，得分越来越低。一般会取用y=a*log10(x)+b的形式，通过调整a与b来根据数据调整曲线。
+
+![](http://image.woshipm.com/wp-files/2019/03/4XfUDnXspY7SJcxfqnIX.png)
+
+
 
 <br>
 
@@ -187,7 +195,7 @@ Binarizer(threshold=3).fit_transform(iris.data)
 
 &emsp;&emsp;对于某一个样本，如["male"，"US"，"Internet Explorer"]，我们需要将这个分类值的特征数字化，最直接的方法，我们可以采用序列化的方式：[0,1,3]。但是这样的特征处理并不能直接放入机器学习算法中。
 
-&emsp;&emsp;对于上述的问题，性别的属性是二维的，同理，地区是三维的，浏览器则是思维的，这样，我们可以采用One-Hot编码的方式对上述的样本“["male"，"US"，"Internet Explorer"]”编码，“male”则对应着[1，0]，同理“US”对应着[0，1，0]，“Internet Explorer”对应着[0,0,0,1]。则完整的特征数字化的结果为：[1,0,0,1,0,0,0,0,1]。这样导致的一个结果就是数据会变得非常的稀疏。实现代码如下所示：
+&emsp;&emsp;对于上述的问题，性别的属性是二维的，同理，地区是三维的，浏览器则是思维的，这样，我们可以采用One-Hot编码的方式对上述的样本“["male"，"US"，"Internet Explorer"]”编码，“male”则对应着[1，0, 0]，同理“US”对应着[0，1，0]，“Internet Explorer”对应着[0,0,0,1]。则完整的特征数字化的结果为：[1,0,0,1,0,0,0,0,1]。这样导致的一个结果就是数据会变得非常的稀疏。实现代码如下所示：
 
 ```
 from sklearn import preprocessing  
@@ -216,6 +224,7 @@ from sklearn.preprocessing import OneHotEncoder
 # 哑编码，对IRIS数据集的目标值，返回值为哑编码后的数据
 one_hot_encodered_data = OneHotEncoder().fit_transform(iris.target.reshape(-1,1))
 ```
+
 <br>
 
 ### 2.4 缺失值计算
@@ -266,7 +275,7 @@ FunctionTransformer(log1p).fit_transform(iris.data)
 
 ![数据预处理总结](https://upload-images.jianshu.io/upload_images/10947003-f52b402e422028ed.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-
+<br>
 
 ## 3 特征选择
 

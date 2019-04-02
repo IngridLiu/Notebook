@@ -96,8 +96,6 @@ new_dic = sorted(dic.items(), key=lambda x:x[0], reverse = True)  # 按第0个�
 new_dic = sorted(dic.items(), key=lambda x:x[0], reverse = False) # 按第0个元素升序排列
 new_dic = sorted(dic.items(), key=lambda x:x[1], reverse = True)  # 按第1个元素降序排列
 new_dic = sorted(dic.items(), key=lambda x:x[1], reverse = False) # 按第1个元素升序排列
-
-
 ```
 
 ### datetime：数字日期和时间
