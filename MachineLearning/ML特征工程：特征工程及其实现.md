@@ -547,4 +547,5 @@ LDA(n_components=2).fit_transform(iris.data, iris.target)
 
 7. [数据处理——One-Hot Encoding](https://blog.csdn.net/google19890102/article/details/44039761)
 
+8. [文本分类学习（三） 特征权重（TF/IDF）和特征提取](https://www.cnblogs.com/dacc123/p/8707638.html)
 
