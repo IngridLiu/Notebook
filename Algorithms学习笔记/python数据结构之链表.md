@@ -9,7 +9,7 @@
 
 ```
 
-## 2. 链表的实现
+## 2. 简单链表的操作
 
 ```python
 class Node:
@@ -31,88 +31,104 @@ class Node:
 
 
 class ListNode:
-   def __init__(self, x):
-       self._head = Node()
-       self._tail = Node()
-       self._length = 0
+    def __init__(self, x):
+        self._head = Node()
+        self._tail = Node()
 
     # 判断NodeList是否为空
-   def isEmpty(self):
-       return self._head == None
+    def isEmpty(self):
+        return self._head == None
+       
+    # 获取链表的长度
+    def nodeListLength(self):
+        length = 0
+        if self._head == None:
+            length = 0
+        else:
+            curr = self._head
+            while curr.getNext() != None:
+                curr = curr.getNext()
+                length += 1
+        return length
+                
+    
 
-   # 在NodeList前添加元素
-   def add(self, value):
-       newnode = Node(value, None)
-       newnode.setNext(self._head)
-       self._head = newnode
+    # 在NodeList前添加元素
+    def add(self, value):
+        newnode = Node(value, None)
+        newnode.setNext(self._head)
+        self._head = newnode
 
     # 在NodeList末尾添加元素
-   def append(self, value):
-       newnode = Node(value, None)
-       if self._head == None:
-           self._head = newnode
-       else:
-           curr = self._head
-           while curr.getNext() != None:
-               curr = curr.getNext()
-           curr.setNext(newnode)
+    def append(self, value):
+        newnode = Node(value, None)
+        if self._head == None:
+            self._head = newnode
+        else:
+            curr = self._head
+            while curr.getNext() != None:
+                curr = curr.getNext()
+            curr.setNext(newnode)
 
     # search 元素是否在链表中
-   def search(self, value):
-       find_value = False
-       curr = self._head
-       while curr != None and not find_value:
-           if curr.getValue() == find_value:
-               find_value == True
-           else:
-               curr = curr.getNext()
-       return find_value
+    def search(self, value):
+        find_value = False
+        curr = self._head
+        while curr != None and not find_value:
+            if curr.getValue() == find_value:
+                find_value == True
+            else:
+                curr = curr.getNext()
+        return find_value
 
-   # index索引元素在链表中的位置：
-   def index(self, value):
-       position = 0
-       curr = self._head
-       find = False
-       if curr != None and not find:
-           position += 1
-           if curr.getValue() == value:
-               find = True
-           else:
-               curr.getNext()
-       if find:
-            return position
-       else:
+    # index索引元素在链表中的位置：
+    def index(self, value):
+        position = 0
+        curr = self._head
+        find = False
+        if curr != None and not find:
+            position += 1
+            if curr.getValue() == value:
+                find = True
+            else:
+                curr.getNext()
+            if find:
+                return position
+        else:
             raise ValueError("%s is not in linkedlist" %value)
 
-   # index删除链表中的某个元素
-   def remove(self, value):
-       pre = None
-       curr = self._head
-       while curr != None:
-           if curr.getValue() == value:
-               if not pre :
-                   self._head = curr.getNext()
-               else:
-                   pre = curr
-                   pre.setNext(curr.getNext())
+    # index删除链表中的某个元素
+    def remove(self, value):
+        pre = None
+        curr = self._head
+        while curr != None:
+            if curr.getValue() == value:
+                if not pre :
+                    self._head = curr.getNext()
+                else:
+                    pre = curr
+                    pre.setNext(curr.getNext())
+            else:
+                curr = curr.getNext()
+            
 
     # insert链表中插入元素
-   def insert(self, pos, value):
-       if pos <= 1:
-           self.add(value)
-       elif pos > self.size():
-           self.append(value)
-       else:
-           temp = Node(value)
-           count = 1
-           pre = None
-           current = self._head
-           while count < pos:
-               count += 1
-               pre = current
-               current = current.getNext()
-           pre.setNext(temp)
-           temp.setNext(current)
+    def insert(self, pos, value):
+        if pos <= 1:
+            self.add(value)
+        elif pos > self.size():
+            self.append(value)
+        else:
+            temp = Node(value)
+            count = 1
+            pre = None
+            current = self._head
+            while count < pos:
+                count += 1
+                pre = current
+                current = current.getNext()
+            pre.setNext(temp)
+            temp.setNext(current)
 ```
 
 <br>

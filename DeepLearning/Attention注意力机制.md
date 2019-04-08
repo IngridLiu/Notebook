@@ -210,19 +210,24 @@ embedded = embedding(last_rnn_output)
 ```
 
 **Attention Layer**
+
 &emsp;&emsp;输入<a href="http://www.codecogs.com/eqnedit.php?latex=\inline&space;s_{i-1}" target="_blank"><img src="http://latex.codecogs.com/gif.latex?\inline&space;s_{i-1}" title="s_{i-1}" /></a>，<a href="http://www.codecogs.com/eqnedit.php?latex=\inline&space;h_j" target="_blank"><img src="http://latex.codecogs.com/gif.latex?\inline&space;h_j" title="h_j" /></a>，输出分配能量<a href="http://www.codecogs.com/eqnedit.php?latex=\inline&space;e_{ij}" target="_blank"><img src="http://latex.codecogs.com/gif.latex?\inline&space;e_{ij}" title="e_{ij}" /></a>，计算出<a href="http://www.codecogs.com/eqnedit.php?latex=\inline&space;a_{ij}" target="_blank"><img src="http://latex.codecogs.com/gif.latex?\inline&space;a_{ij}" title="a_{ij}" /></a>。
+
 ```
 attn_weights[j] = attn_layer(last_hidden, encoder_outputs[j])
 attn_weights = normalize(attn_weights)
 ```
 
 **计算语义向量**
+
 &emsp;&emsp;求语义向量<a href="http://www.codecogs.com/eqnedit.php?latex=\inline&space;c_i" target="_blank"><img src="http://latex.codecogs.com/gif.latex?\inline&space;c_i" title="c_i" /></a>，一般是加权求和。
+
 ```
 context = sum(attn_weights * encoder_outputs)
 ```
 
 **RNN Layer**
+
 &emsp;&emsp;输入<a href="http://www.codecogs.com/eqnedit.php?latex=\inline&space;s_{i-1}" target="_blank"><img src="http://latex.codecogs.com/gif.latex?\inline&space;s_{i-1}" title="s_{i-1}" /></a>，<a href="http://www.codecogs.com/eqnedit.php?latex=\inline&space;y_{i-1}" target="_blank"><img src="http://latex.codecogs.com/gif.latex?\inline&space;y_{i-1}" title="y_{i-1}" /></a>，<a href="http://www.codecogs.com/eqnedit.php?latex=\inline&space;c_i" target="_blank"><img src="http://latex.codecogs.com/gif.latex?\inline&space;c_i" title="c_i" /></a>，输出<a href="http://www.codecogs.com/eqnedit.php?latex=\inline&space;y_i" target="_blank"><img src="http://latex.codecogs.com/gif.latex?\inline&space;y_i" title="y_i" /></a>。
 ```
 output = out(embedded, rnn_output, context)
