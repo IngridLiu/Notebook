@@ -219,3 +219,5 @@ print(avg_data)
 4. [动手学深度学习第十六课：词向量（word2vec）](https://www.youtube.com/watch?v=C4X0Cb5_FSo)
 
 5. [word2vec and glove优缺点](https://blog.csdn.net/u012879957/article/details/82735057)
+
+6. [python︱gensim训练word2vec及相关函数与功能理解](https://blog.csdn.net/sinat_26917383/article/details/69803018#_29)

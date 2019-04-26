@@ -69,6 +69,8 @@
 
 见：[GloVe详解](http://www.fanyeong.com/2018/02/19/glove-in-detail/)
 
+## 6. Golve 实现
+
 
 
 <br>
