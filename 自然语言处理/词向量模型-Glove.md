@@ -9,23 +9,23 @@
 
 <br>
 
-## 2. Glove的实现
+## 2. Glove的实现K
 
 &emsp;&emsp;Glove的实现分为以下三步：
 
-&emsp;&emsp;（1）根据语料库（corpus）构建一个共现矩阵(Co-ocurrence Matrix) X。
+&emsp;&emsp;**（1）根据语料库（corpus）构建一个共现矩阵(Co-ocurrence Matrix) X。**
 
 &emsp;&emsp;共现矩阵中的每一个元素X_ij代表单词i和上下文单词j在特定大小的上下文窗口（context window）内共同出现的次数。一般而言，这个次数的最小单位是1，但是Glove不这么认为：它根据两个单词在上下文窗口的距离d，提出了一个衰减函数（decreasing weighting）：decay = 1/d用于计算权重，也就是说距离越远的两个单词所占总计数（total count）的权重越小。
 
 > In all cases we use a decreasing weighting function, so that word pairs that are d words apart contribute 1/d to the total count.
 
-&emsp;&emsp;（2）构建词向量（Word Vector）和共现矩阵（Co-ocurrence Matrix）之间的近似关系，论文的作者提出以下的公式可以近似地表达两者之间地关系：
+&emsp;&emsp;**（2）构建词向量（Word Vector）和共现矩阵（Co-ocurrence Matrix）之间的近似关系，论文的作者提出以下的公式可以近似地表达两者之间地关系：**
 
 ![](https://upload-images.jianshu.io/upload_images/10947003-d98749e561de7f1a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 &emsp;&emsp;其中，w_i和w_j是我们最终要求解的词向量；b_i和b_j分别是两个词向量的bias term。
 
-&emsp;&emsp;（3）有了公式1之后我们就可以构造它的loss function了：
+&emsp;&emsp;**（3）有了公式1之后我们就可以构造它的loss function了：**K
 
 ![](https://upload-images.jianshu.io/upload_images/10947003-46f44dd5744f1c76.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
