@@ -25,7 +25,7 @@
 
 &emsp;&emsp;其中，w_i和w_j是我们最终要求解的词向量；b_i和b_j分别是两个词向量的bias term。
 
-&emsp;&emsp;**（3）有了公式1之后我们就可以构造它的loss function了：**K
+&emsp;&emsp;**（3）有了公式1之后我们就可以构造它的loss function了：**
 
 ![](https://upload-images.jianshu.io/upload_images/10947003-46f44dd5744f1c76.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
