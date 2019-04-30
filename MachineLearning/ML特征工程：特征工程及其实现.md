@@ -209,6 +209,12 @@ print array
 
 ```
 
+Pandas实现：
+
+```python
+onehot_ts_code = pd.get_dummies(stock_data['ts_code']).astype('float')  # 设为float是因为pd.get_dummies()是将数据转为uni64位编码的。
+```
+
 
 <br>
 
