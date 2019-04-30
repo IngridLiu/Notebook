@@ -77,6 +77,10 @@ df[df > 0] = -df    # 通过where操作设置新的值
 df.dropna(how = 'any')  # 去掉包含缺失值的行
 df.fillna(value = 5)    # 对缺失值进行补充
 pd.isnull(df)   # 对数据进行布尔填充
+
+# 删除DataFrame中数据
+df.drop(df.index[len(df)-1])
+
 ```
 
 <br>
@@ -168,11 +172,40 @@ pd.pivot_table(df, values='D', index=['A', 'B'], columns = ['C'])
 
 <br>
 
-### 1.6 pandas Categorical类型数据
+### 1.6 Pandas GroupBy
+
+```python
+# 分别对groupby中的每一part进行处理
+ts_group = df.groupby('ts_code')
+for key, df_part in df:
+    print(key)
+
+```
+
+### 1.7 Pandas DataFrame索引操作
+
+```python
+# 列转化为索引：
+df.set_index('c1')  # 将c1列作为索引
+df.set_index(['c1', 'c2'])  #指定c1、c2列作为多级索引，其中c1列为一级索引
+df.set_index(['c1', 'c2'], drop=False)  #同时保留作为索引的列
+
+# 索引转化为列
+df.reset_index('index1', )    #将index1索引作为列
+df.reset_index()    #将df中的多级索引转换为列
+df.reset_index('index1', drop = True)   #直接删除索引index1
+df.reset_index(inplace=True)    # 直接将原dataframe对象df中索引转为列
+
+# 设置多层索引
+index = pd.MultiIndex.from_tuples(tuples, names=['first', 'second'])
+df = pd.DataFrame(np.random.randn(8, 2), index, columns=['A', 'B'])
+```
+
+### 1.8 pandas Categorical类型数据
+
 ```python
 # 将A列数据转为category类型
 df['A'] = df['A'].astype('category')    
-
 
 # df 按指定的list排序
 # df 按指定的list排序, 指定的list所包含元素和Dataframe中需要排序的列的元素一样多
@@ -186,30 +219,65 @@ df['A'].cat.set_categories(list_custom_new, inplace = True)
 # df 按指定的list排序, 指定的list所包含元素比Dataframe中需要排序的列的元素少
 # 仍旧使用df.cat.set_categories()，order_list中不包含的元素记为0；
 df['A'].cat.set_categories(list_custom_new, inplace = True)
-
 ```
 
 <br>
 
-### 1.7 Pandas DataFrame合并
+### 1.9 Pandas DataFrame合并
 
 ```python
+
 # df合并merge
 pd.concat[[df1, df2, df3]]  # concat合并多个行
-pd.merge(df1, df2, on='key')    # concat合并多个行
-df.append(seris, ingore_index = True)   # 在df下添加一行
+'''
+pd.concat(objs, axis=0, join='outer', join_axes=None, ignore_index=False, keys=None, levels=None, names=None, verify_integrity=False)
+params:
+    objs: series，dataframe或者是panel构成的序列lsit 
+    axis： 需要合并链接的轴，0是行，1是列 
+    join：连接的方式 inner，或者outer
+    join_axes：默认为空，可以设置值指定为其他轴上使用的索引 
+    ignore_index：忽略需要连接的frame本身的index。当原本的index没有特别意义的时候可以使用 
+    keys: 可以给每个需要连接的df一个label
+'''
+
+df.append(seris, ingore_index = True)   # 在df下添加df
+'''
+df.append(other, ignore_index=False, verify_integrity=False, sort=None)
+params:
+    other：DataFrame或Series / dict-like对象，或者这些对象的列表；要追加的数据。
+    ignore_index=False如为True不用索引标签。
+    verify_integrity=False如为True创建具有重复项索引时引发ValueError
+    sort=None bool默认排序;False不排序
+'''
+
+pd.merge(df1, df2, on='key')    # merge合并多列
+'''
+pd.merge(left, right, how=’inner’, on=None, left_on=None, right_on=None, left_index=False, right_index=False, sort=False, suffixes=(‘_x’, ‘_y’), copy=True, indicator=False, validate=None)
+params:
+    left，right:表示想要进行合并的DataFrame 
+    how,值可以是inner,left,right,outer，使用过mysql的人应该知道这是什么意思吧？就不过多翻译了，默认值是inner 
+    left_on，right_on是用来指定希望用来作用合并依据的列名，如果不指定的话会自动寻找列名相同的列进行合并 
+    left_index，right_index设置为True的话表示使用该DF的列索引作为合并的根据进行合并 
+    sort默认为False，设置为True时表示合并时会根据给定的列值(也就是前面的left_on这种指定的列的值)来进行排序后再输出 
+    suffixes是用来给重名的列增加后缀名的，可以使用默认值也可以自己修改，比如要合并df1和df2都有一个列的名字是data,那么合并后left的DF的data列名变为了data_x
+'''
+
+df.join()   # join合并多列
+'''
+df.join(other, on=None, how=’left’, lsuffix=”, rsuffix=”, sort=False)
+params:
+'''
 ```
 
 <br>
 
-### 1.8 Pandas 时间日期处理
+### 1.10 Pandas 时间日期处理
 
 ```python
 # 转换string类型为日期类型数据
 df.columns = ['date','number']
 df['date'] = pd.to_datetime(df['date']) # 将数据类型转换为日期类型
-df.index = pd.DatetimeIndex(data, copy=False, freq=None, start = None, periods = None, end = None, closed = None )   # 将df的index设为datetime类型
-
+df.index = pd.DatetimeIndex(date_data, copy=False, freq=None, start = None, periods = None, end = None, closed = None )   # 将df的index设为datetime类型
 
 # 数据获取
 df['2016':'2017']   # 获取2016至2017年的数据
@@ -237,11 +305,17 @@ date_series.resample('5Min').sum() # 计算date_series前5min的数的和
 # 时区表示
 date_series_utc = date_series.tz_localize('UTC')    #  转换为UTC时区时间
 date_series_utc.tz_convert('US/Eastern')    # 转换为时区时间
+
+# # 补充缺失日期
+ts_df.set_index('trade_date', inplace=True) # 把trade_date列设置为索引列,将日期列设为索引列；
+dt = pd.date_range('20140414', '20190401')
+idx = pd.DatetimeIndex(dt)
+ts_df = ts_df.reindex(idx)
 ```
 
 <br>
 
-### 1.9 pandas 读取/存储数据：
+### 1.10 pandas 读取/存储数据：
 
 ```python
 # df读取/写入csv
@@ -280,78 +354,29 @@ params:
     infer_datetime_format : boolean, default False;如果设定为True并且parse_dates 可用，那么pandas将尝试转换为日期类型，如果可以转换，转换方法并解析。在某些情况下会快5~10倍。
     keep_date_col : boolean, default False;如果连接多列解析日期，则保持参与连接的列。默认为False。
     date_parser : function, default None;用于解析日期的函数，默认使用dateutil.parser.parser来做转换。Pandas尝试使用三种不同的方式解析，如果遇到问题则使用下一种方式。1.使用一个或者多个arrays（由parse_dates指定）作为参数；2.连接指定多列字符串作为一个列作为参数；3.每行调用一次date_parser函数来解析一个或者多个字符串（由parse_dates指定）作为参数。
- 
-dayfirst : boolean, default False
-DD/MM格式的日期类型
- 
-iterator : boolean, default False
-返回一个TextFileReader 对象，以便逐块处理文件。
- 
-chunksize : int, default None
-文件块的大小， See IO Tools docs for more informationon iterator and chunksize.
- 
-compression : {‘infer’, ‘gzip’, ‘bz2’, ‘zip’, ‘xz’, None}, default ‘infer’
-直接使用磁盘上的压缩文件。如果使用infer参数，则使用 gzip, bz2, zip或者解压文件名中以‘.gz’, ‘.bz2’, ‘.zip’, or ‘xz’这些为后缀的文件，否则不解压。如果使用zip，那么ZIP包中国必须只包含一个文件。设置为None则不解压。
-新版本0.18.1版本支持zip和xz解压
- 
-thousands : str, default None
-千分位分割符，如“，”或者“."
- 
-decimal : str, default ‘.’
-字符中的小数点 (例如：欧洲数据使用’，‘).
- 
-float_precision : string, default None
-Specifies which converter the C engine should use for floating-point values. The options are None for the ordinary converter, high for the high-precision converter, and round_trip for the round-trip converter.
-指定
- 
-lineterminator : str (length 1), default None
-行分割符，只在C解析器下使用。
- 
-quotechar : str (length 1), optional
-引号，用作标识开始和解释的字符，引号内的分割符将被忽略。
- 
-quoting : int or csv.QUOTE_* instance, default 0
-控制csv中的引号常量。可选 QUOTE_MINIMAL (0), QUOTE_ALL (1), QUOTE_NONNUMERIC (2) or QUOTE_NONE (3)
- 
-doublequote : boolean, default True
-双引号，当单引号已经被定义，并且quoting 参数不是QUOTE_NONE的时候，使用双引号表示引号内的元素作为一个元素使用。
- 
-escapechar : str (length 1), default None
-当quoting 为QUOTE_NONE时，指定一个字符使的不受分隔符限值。
- 
-comment : str, default None
-标识着多余的行不被解析。如果该字符出现在行首，这一行将被全部忽略。这个参数只能是一个字符，空行（就像skip_blank_lines=True）注释行被header和skiprows忽略一样。例如如果指定comment='#' 解析‘#empty\na,b,c\n1,2,3’ 以header=0 那么返回结果将是以’a,b,c'作为header。
- 
-encoding : str, default None
-指定字符集类型，通常指定为'utf-8'. List of Python standard encodings
- 
-dialect : str or csv.Dialect instance, default None
-如果没有指定特定的语言，如果sep大于一个字符则忽略。具体查看csv.Dialect 文档
- 
-tupleize_cols : boolean, default False
-Leave a list of tuples on columns as is (default is to convert to a Multi Index on the columns)
- 
-error_bad_lines : boolean, default True
-如果一行包含太多的列，那么默认不会返回DataFrame ，如果设置成false，那么会将改行剔除（只能在C解析器下使用）。
- 
-warn_bad_lines : boolean, default True
-如果error_bad_lines =False，并且warn_bad_lines =True 那么所有的“bad lines”将会被输出（只能在C解析器下使用）。
- 
-low_memory : boolean, default True
-分块加载到内存，再低内存消耗中解析。但是可能出现类型混淆。确保类型不被混淆需要设置为False。或者使用dtype 参数指定类型。注意使用chunksize 或者iterator 参数分块读入会将整个文件读入到一个Dataframe，而忽略类型（只能在C解析器中有效）
- 
-buffer_lines : int, default None
-不推荐使用，这个参数将会在未来版本移除，因为他的值在解析器中不推荐使用
- 
-compact_ints : boolean, default False
-不推荐使用，这个参数将会在未来版本移除
-如果设置compact_ints=True ，那么任何有整数类型构成的列将被按照最小的整数类型存储，是否有符号将取决于use_unsigned 参数
- 
-use_unsigned : boolean, default False
-不推荐使用：这个参数将会在未来版本移除
-如果整数列被压缩(i.e. compact_ints=True)，指定被压缩的列是有符号还是无符号的。
-memory_map : boolean, default False
-如果使用的文件在内存内，那么直接map文件使用。使用这种方式可以避免文件再次进行IO操作。
+    dayfirst : boolean, default False；DD/MM格式的日期类型。
+    iterator : boolean, default False；返回一个TextFileReader 对象，以便逐块处理文件。
+    chunksize : int, default None；文件块的大小， See IO Tools docs for more informationon iterator and chunksize.
+    compression : {‘infer’, ‘gzip’, ‘bz2’, ‘zip’, ‘xz’, None}, default ‘infer’；直接使用磁盘上的压缩文件。如果使用infer参数，则使用 gzip, bz2, zip或者解压文件名中以‘.gz’, ‘.bz2’, ‘.zip’, or ‘xz’这些为后缀的文件，否则不解压。如果使用zip，那么ZIP包中国必须只包含一个文件。设置为None则不解压。新版本0.18.1版本支持zip和xz解压
+    thousands : str, default None；千分位分割符，如“，”或者“."
+    decimal : str, default ‘.’；字符中的小数点 (例如：欧洲数据使用’，‘).
+    float_precision : string, default None；Specifies which converter the C engine should use for floating-point values. The options are None for the ordinary converter, high for the high-precision converter, and round_trip for the round-trip converter.指定
+    lineterminator : str (length 1), default None；行分割符，只在C解析器下使用。
+    quotechar : str (length 1), optional；引号，用作标识开始和解释的字符，引号内的分割符将被忽略。
+    quoting : int or csv.QUOTE_* instance, default 0；控制csv中的引号常量。可选 QUOTE_MINIMAL (0), QUOTE_ALL (1), QUOTE_NONNUMERIC (2) or QUOTE_NONE (3)
+    doublequote : boolean, default True；双引号，当单引号已经被定义，并且quoting 参数不是QUOTE_NONE的时候，使用双引号表示引号内的元素作为一个元素使用。
+    escapechar : str (length 1), default None；当quoting 为QUOTE_NONE时，指定一个字符使的不受分隔符限值。
+    comment : str, default None；标识着多余的行不被解析。如果该字符出现在行首，这一行将被全部忽略。这个参数只能是一个字符，空行（就像skip_blank_lines=True）注释行被header和skiprows忽略一样。例如如果指定comment='#' 解析‘#empty\na,b,c\n1,2,3’ 以header=0 那么返回结果将是以’a,b,c'作为header。
+    encoding : str, default None；指定字符集类型，通常指定为'utf-8'. List of Python standard encodings
+    dialect : str or csv.Dialect instance, default None；如果没有指定特定的语言，如果sep大于一个字符则忽略。具体查看csv.Dialect 文档
+    tupleize_cols : boolean, default False；Leave a list of tuples on columns as is (default is to convert to a Multi Index on the columns)
+    error_bad_lines : boolean, default True；如果一行包含太多的列，那么默认不会返回DataFrame ，如果设置成false，那么会将改行剔除（只能在C解析器下使用）。
+    warn_bad_lines : boolean, default True；如果error_bad_lines =False，并且warn_bad_lines =True 那么所有的“bad lines”将会被输出（只能在C解析器下使用）。
+    low_memory : boolean, default True；分块加载到内存，再低内存消耗中解析。但是可能出现类型混淆。确保类型不被混淆需要设置为False。或者使用dtype 参数指定类型。注意使用chunksize 或者iterator 参数分块读入会将整个文件读入到一个Dataframe，而忽略类型（只能在C解析器中有效）
+    buffer_lines : int, default None；不推荐使用，这个参数将会在未来版本移除，因为他的值在解析器中不推荐使用
+    compact_ints : boolean, default False；不推荐使用，这个参数将会在未来版本移除；如果设置compact_ints=True ，那么任何有整数类型构成的列将被按照最小的整数类型存储，是否有符号将取决于use_unsigned 参数
+    use_unsigned : boolean, default False；不推荐使用：这个参数将会在未来版本移除；如果整数列被压缩(i.e. compact_ints=True)，指定被压缩的列是有符号还是无符号的。
+    memory_map : boolean, default False；如果使用的文件在内存内，那么直接map文件使用。使用这种方式可以避免文件再次进行IO操作。
 '''
 df.to_csv(save_path, encoding = 'gb2312')
 
@@ -410,26 +435,14 @@ for ix, col in df.iteritems():
 
 ```
 
-### 2.3 DataFrame列与索引之间的相互转化
+
+
+### 2.4 缺失值处理
 
 ```python
-# 列转化为索引：
-df.set_index('c1')  # 将c1列作为索引
-df.set_index(['c1', 'c2'])  #指定c1、c2列作为多级索引，其中c1列为一级索引
-df.set_index(['c1', 'c2'], drop=False)  #同时保留作为索引的列
+ts_df = ts_df.fillna(method='ffill')    # 参考上一行的值填充
 
-# 索引转化为列
-df.reset_index('index1', )    #将index1索引作为列
-df.reset_index()    #将df中的多级索引转换为列
-df.reset_index('index1', drop = True)   #直接删除索引index1
-df.reset_index(inplace=True)    # 直接将原dataframe对象df中索引转为列
-
-# 设置多层索引
-index = pd.MultiIndex.from_tuples(tuples, names=['first', 'second'])
-df = pd.DataFrame(np.random.randn(8, 2), index, columns=['A', 'B'])
 ```
-
-### 2.4 
 
 
 

@@ -140,6 +140,13 @@ from sklearn.preprocessing import MinMaxScaler
 MinMaxScaler().fit_transform(iris.data)
 ```
 
+&emsp;&emsp;Pandas实现：
+
+```python
+# 标准化
+ts_df[num_column] = (ts_df[num_column] - ts_df[num_column].min())/(ts_df[num_column].max()-ts_df[num_column].min())
+```
+
 ** 标准化与归一化的区别 **
 
 &emsp;&emsp;简单来说，标准化是依照特征矩阵的列处理数据，其通过求z-score的方法，将样本的特征值转换到同一量纲下。归一化是依照特征矩阵的行处理数据，其目的在于样本向量在点乘运算或其他核函数计算相似性时，拥有统一的标准，也就是说都转化为“单位向量”。规则为l2的归一化公式如下：
@@ -152,6 +159,13 @@ from sklearn.preprocessing import Normalizer
 
 # 归一化，返回值为归一化后的数据
 Normalizer().fit_transform(iris.data)
+```
+
+&emsp;&emsp;Pandas实现：
+
+```python
+# 归一化
+ts_df[num_column] = ts_df[num_column] / np.sqrt((np.power(ts_df[num_column], 2)).sum())
 ```
 
 #### 2.1.3 非线性标准化
