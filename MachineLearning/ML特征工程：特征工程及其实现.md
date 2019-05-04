@@ -154,6 +154,7 @@ ts_df[num_column] = (ts_df[num_column] - ts_df[num_column].min())/(ts_df[num_col
 ![](https://upload-images.jianshu.io/upload_images/10947003-e8d267ef1bb82f26.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 &emsp;&emsp;使用preprocessing库的Normalizer类对数据进行归一化的代码如下：
+
 ```
 from sklearn.preprocessing import Normalizer
 
