@@ -116,6 +116,36 @@
 
 <br>
 
+## 4. LSTM 的Pytorch实现
+
+### 4.2 PyTorch中LSTM的输出格式
+
+![](https://pic3.zhimg.com/80/v2-187ccc1aaa229defa007fae69b6dbad2_hd.jpg)
+
+&emsp;&emsp;先上结论：
+
+&emsp;&emsp;output保存了最后一层，每个time step的输出h，如果是双向LSTM，每个time step的输出h = [h正向, h逆向] (同一个time step的正向和逆向的h连接起来)。
+
+&emsp;&emsp;h_n保存了每一层，最后一个time step的输出h，如果是双向LSTM，单独保存前向和后向的最后一个time step的输出h。
+
+&emsp;&emsp;c_n与h_n一致，只是它保存的是c的值。
+
+&emsp;&emsp;下面单独分析三个输出：
+
+&emsp;&emsp;1. output是一个三维的张量，第一维表示序列长度，第二维表示一批的样本数(batch)，第三维是 hidden_size(隐藏层大小) * num_directions ，这里是我遇到的第一个不理解的地方，hidden_sizes由我们自己定义，num_directions这是个什么鬼？翻看源码才明白，先贴出代码，从代码中可以发现num_directions根据是“否为双向”取值为1或2。因此，我们可以知道，output第三个维度的尺寸根据是否为双向而变化，如果不是双向，第三个维度等于我们定义的隐藏层大小；如果是双向的，第三个维度的大小等于2倍的隐藏层大小。为什么使用2倍的隐藏层大小？因为它把每个time step的前向和后向的输出连接起来了，后面会有一个实验，方便我们记忆。
+
+&emsp;&emsp;2. h_n是一个三维的张量，第一维是num_layers*num_directions，num_layers是我们定义的神经网络的层数，num_directions在上面介绍过，取值为1或2，表示是否为双向LSTM。第二维表示一批的样本数量(batch)。第三维表示隐藏层的大小。第一个维度是h_n难理解的地方。首先我们定义当前的LSTM为单向LSTM，则第一维的大小是num_layers，该维度表示第n层最后一个time step的输出。如果是双向LSTM，则第一维的大小是2 * num_layers，此时，该维度依旧表示每一层最后一个time step的输出，同时前向和后向的运算时最后一个time step的输出用了一个该维度。
+
+&emsp;&emsp;举个例子，我们定义一个num_layers=3的双向LSTM，h_n第一个维度的大小就等于 6 （2*3），h_n[0]表示第一层前向传播最后一个time
+
+&emsp;&emsp;step的输出，h_n[1]表示第一层后向传播最后一个time step的输出，h_n[2]表示第二层前向传播最后一个time step的输出，h_n[3]表示第二层后向传播最后一个time step的输出，h_n[4]和h_n[5]分别表示第三层前向和后向传播时最后一个time step的输出。
+
+3. c_n与h_n的结构一样，就不重复赘述了。
+
+![](https://pic1.zhimg.com/80/v2-22e624018c102a1b5828bb957afd7bc8_hd.jpg)
+
+
+
 ## 4 LSTM 的变体
 
 ### 4.1 peephole connection
@@ -155,19 +185,30 @@
 
 <br>
 
+##
+
 
 ## 5 LSTM的优缺点
+
 ### 5.1 LSTM的优点
+
 1.在序列建模上性能优势明显
+
 &emsp;&emsp;此处性能主要指结果准确率。
+
 ### 5.2 LSTM的缺点
+
 1. LSTM速度较慢
+
 &emsp;&emsp;LSTM效果很好，不过很多时候我们更愿意用GRU来替换之。很多论文都比较过两者的学习效果，是不相上下的。但是GRU的构造更简单：比LSTM少一个gate，这样就少几个矩阵乘法。在训练数据很大的情况下GRU能节省很多时间。
+
 &emsp;&emsp;首先LSTM不是最近的东西，不过用在NLP上确实是非常的合适。不过以我的实践经验来看，LSTM的训练时间很长，所以大家经常用GRU来作为代替。因为少了一个门以后可以提高计算速度同时又不降低精度。最近看到南大的教授们po了篇论文是用最小GRU来进行计算的，就是比GRU又少了一个门，这样子在计算速度上又提升了一个档次。总的来说感觉LSTM是现阶段比较好用的适合训练带时间维度数据的算法，然而计算的维度较高，比较吃内存。
+
 2. 不同时刻输出相互关联的情况无法表示
+
 &emsp;&emsp;像RNN、LSTM、BILSTM这些模型，它们在序列建模上很强大，它们能够capture长远的上下文信息，此外还具备神经网络拟合非线性的能力。对于t时刻来说，输出层y_t受到隐层h_t（包含上下文信息）和输入层x_t（当前的输入）的影响，但是y_t和其他时刻的y_t`是相互独立的，感觉像是一种point wise，对当前t时刻来说，我们希望找到一个概率最大的y_t，但其他时刻的y_t`对当前y_t没有影响，如果y_t之间存在较强的依赖关系的话（例如，形容词后面一般接名词，存在一定的约束），LSTM无法对这些约束进行建模，LSTM模型的性能将受到限制。
 
-
+<br>
 
 ## 6 结论
 
