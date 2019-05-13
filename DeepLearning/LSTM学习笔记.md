@@ -118,6 +118,20 @@
 
 ## 4. LSTM 的Pytorch实现
 
+### 4.1 Pytorch中LSTM的输入
+
+重要参数
+
+input_size: 每一个时步(time_step)输入到lstm单元的维度.(实际输入的数据size为[batch_size, input_size])
+
+hidden_size: 确定了隐含状态hidden_state的维度. 可以简单的看成: 构造了一个权重W_{input\_size*hidden\_size} , 隐含状态 h_{batch\_size*hidden\_size}=x_{batch\_size*input\_size}*W_{input\_size*hidden\_size}
+
+num_layers: 叠加的层数。如图所示num_layers为3
+
+![](https://upload-images.jianshu.io/upload_images/7311123-72b702b7e152fe32.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/685/format/webp)
+
+batch_first: 输入数据的size为[batch_size, time_step, input_size]还是[time_step, batch_size, input_size]
+
 ### 4.2 PyTorch中LSTM的输出格式
 
 ![](https://pic3.zhimg.com/80/v2-187ccc1aaa229defa007fae69b6dbad2_hd.jpg)
@@ -132,7 +146,7 @@
 
 &emsp;&emsp;下面单独分析三个输出：
 
-&emsp;&emsp;1. output是一个三维的张量，第一维表示序列长度，第二维表示一批的样本数(batch)，第三维是 hidden_size(隐藏层大小) * num_directions ，这里是我遇到的第一个不理解的地方，hidden_sizes由我们自己定义，num_directions这是个什么鬼？翻看源码才明白，先贴出代码，从代码中可以发现num_directions根据是“否为双向”取值为1或2。因此，我们可以知道，output第三个维度的尺寸根据是否为双向而变化，如果不是双向，第三个维度等于我们定义的隐藏层大小；如果是双向的，第三个维度的大小等于2倍的隐藏层大小。为什么使用2倍的隐藏层大小？因为它把每个time step的前向和后向的输出连接起来了，后面会有一个实验，方便我们记忆。
+&emsp;&emsp;1. output是一个三维的张量，第一维表示序列长度，第二维表示一批的样本数(batch)，第三维是 hidden_size(隐藏层大小) * num_directions ，num_directions根据是“否为双向”取值为1或2。因此，我们可以知道，output第三个维度的尺寸根据是否为双向而变化，如果不是双向，第三个维度等于我们定义的隐藏层大小；如果是双向的，第三个维度的大小等于2倍的隐藏层大小。为什么使用2倍的隐藏层大小？因为它把每个time step的前向和后向的输出连接起来了，后面会有一个实验，方便我们记忆。
 
 &emsp;&emsp;2. h_n是一个三维的张量，第一维是num_layers*num_directions，num_layers是我们定义的神经网络的层数，num_directions在上面介绍过，取值为1或2，表示是否为双向LSTM。第二维表示一批的样本数量(batch)。第三维表示隐藏层的大小。第一个维度是h_n难理解的地方。首先我们定义当前的LSTM为单向LSTM，则第一维的大小是num_layers，该维度表示第n层最后一个time step的输出。如果是双向LSTM，则第一维的大小是2 * num_layers，此时，该维度依旧表示每一层最后一个time step的输出，同时前向和后向的运算时最后一个time step的输出用了一个该维度。
 
@@ -146,9 +160,9 @@
 
 
 
-## 4 LSTM 的变体
+## 5 LSTM 的变体
 
-### 4.1 peephole connection
+### 5.1 peephole connection
 
 &emsp;&emsp;我们到目前为止都还在介绍正常的 LSTM。但是不是所有的 LSTM 都长成一个样子的。实际上，几乎所有包含 LSTM 的论文都采用了微小的变体。差异非常小，但是也值得拿出来讲一下。
 
@@ -158,18 +172,15 @@
 
 &emsp;&emsp;上面的图例中，我们增加了 peephole 到每个门上，但是许多论文会加入部分的 peephole 而非所有都加。
 
-### 4.2 coupled 忘记门和输入门
+### 5.2 coupled 忘记门和输入门
 
 &emsp;&emsp;另一个变体是通过使用 coupled 忘记和输入门。不同于之前是分开确定什么忘记和需要添加什么新的信息，这里是一同做出决定。我们仅仅会当我们将要输入在当前位置时忘记。我们仅仅输入新的值到那些我们已经忘记旧的信息的那些状态 。
 
-
 ![coupled 忘记门和输入门](https://upload-images.jianshu.io/upload_images/42741-bd2f1feaea22630e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700)
 
-
-### 4.3 GRU
+### 5.3 GRU
 
 &emsp;&emsp;另一个改动较大的变体是 Gated Recurrent Unit (GRU)，这是由Cho, et al. (2014)提出。它将忘记门和输入门合成了一个单一的 更新门。同样还混合了细胞状态和隐藏状态，和其他一些改动。最终的模型比标准的 LSTM 模型要简单，也是非常流行的变体。
-
 
 ![GRU](https://upload-images.jianshu.io/upload_images/42741-dd3d241fa44a71c0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700)
 
@@ -179,24 +190,21 @@
 
 &emsp;&emsp;要问哪个变体是最好的？其中的差异性真的重要吗？Greff, et al. (2015)给出了流行变体的比较，结论是他们基本上是一样的。Jozefowicz, et al. (2015)则在超过 1 万种 RNN 架构上进行了测试，发现一些架构在某些任务上也取得了比 LSTM 更好的结果。
 
-
 ![Jozefowicz等人论文截图](https://upload-images.jianshu.io/upload_images/42741-acd4c079d94803d8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/330)
 
 
 <br>
 
-##
 
+## 6 LSTM的优缺点
 
-## 5 LSTM的优缺点
-
-### 5.1 LSTM的优点
+### 6.1 LSTM的优点
 
 1.在序列建模上性能优势明显
 
 &emsp;&emsp;此处性能主要指结果准确率。
 
-### 5.2 LSTM的缺点
+### 6.2 LSTM的缺点
 
 1. LSTM速度较慢
 
@@ -210,7 +218,7 @@
 
 <br>
 
-## 6 结论
+## 7 结论
 
 &emsp;&emsp;刚开始，我提到通过 RNN 得到重要的结果。本质上所有这些都可以使用 LSTM 完成。对于大多数任务确实展示了更好的性能！
 
@@ -220,20 +228,23 @@
 
 &emsp;&emsp;注意力也不是 RNN 研究领域中唯一的发展方向。例如，Kalchbrenner,et al.(2015)提出的 Grid LSTM 看起来也是很有前途。使用生成模型的 RNN，诸如Gregor,et al.(2015)Chung,et al.(2015)和Bayer & Osendorfer (2015)提出的模型同样很有趣。在过去几年中，RNN 的研究已经相当的燃，而研究成果当然也会更加丰富！
 
-<br>
-
-<br>
-&emsp;&emsp;LSTM网络的实现可参考[LSTM实现的code及说明](https://github.com/IngridLiu/Notebook/tree/master/DeepLearning/LSTM_totally_implementation)。
-
 <br> 
 <br>
 <br>
 <br>
 
 ## Reference：
+
 1. [LSTM（Long-Short Term Memory，长短期记忆网络）学习笔记](https://www.jianshu.com/p/ebdf394b4a4b)
+
 2. [深度学习-模型系列】长短期记忆 LSTM](https://blog.eson.org/pub/a6941437/)
+
 3. [LSTM 优缺点](http://keen.ml/?encyclopedia=lstm-优缺点)
-3. [LSTM实现源码](https://github.com/nicodjimenez/lstm)
-3. [学习笔记CB012: LSTM 简单实现、完整实现、torch、小说训练word2vec lstm机器人(详解版)](https://cloud.tencent.com/developer/article/1113752)
-4. [LSTM实现的code及说明](https://github.com/IngridLiu/Notebook/tree/master/DeepLearning/LSTM_totally_implementation)
+
+4. [LSTM实现源码](https://github.com/nicodjimenez/lstm)
+
+5. [学习笔记CB012: LSTM 简单实现、完整实现、torch、小说训练word2vec lstm机器人(详解版)](https://cloud.tencent.com/developer/article/1113752)
+
+6. [LSTM实现的code及说明](https://github.com/IngridLiu/Notebook/tree/master/DeepLearning/LSTM_totally_implementation)
+
+7. [聊一聊PyTorch中LSTM的输出格式](https://zhuanlan.zhihu.com/p/39191116)
