@@ -51,7 +51,15 @@ class Sort:
                         s[j] = key
                         j -= span
         return s
+```
 
+## 2. 交换排序
+
+### 2.1 冒泡排序
+
+### 2.2 快速排序
+
+```python
     # 交换排序
     # 冒泡排序
     def bubbleSort(self, s:list):
@@ -86,7 +94,17 @@ class Sort:
             self.quickSort(s, start, low-1)
             self.quickSort(s, high+1, end)
         return s
+```
 
+### 3. 选择排序
+
+### 3.1 简单选择排序
+
+### 3.2 堆排序
+
+### 3.3 树形选择排序
+
+```python
     # 选择排序
     # 直接选择排序
     def directSelectSort(self, s: list):
@@ -100,6 +118,14 @@ class Sort:
             s[i] = temp
         return s
     # 堆排序
+    
+    # 树形选择排序
+    
+```
+
+### 4. 归并排序
+
+```python
 
     # 归并排序
     # 二路归并排序
@@ -128,7 +154,16 @@ class Sort:
         left = self.mergeSort(lists[:middle])
         right = self.mergeSort(lists[middle:])
         return self.merge(left, right)
+        
+```
 
+## 5. 分配排序
+
+### 5.1 桶排序
+
+### 5.2 基数排序
+
+```python
 if __name__ == "__main__":
     s = [3, 6, 2 ,3, 4, 9, 8]
     sort = Sort()
