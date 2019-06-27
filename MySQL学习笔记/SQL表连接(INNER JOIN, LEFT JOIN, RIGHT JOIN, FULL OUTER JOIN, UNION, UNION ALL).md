@@ -13,7 +13,7 @@
 
 &emsp;&emsp;SELECT * FROM TableA INNER JOIN TableB ON TableA.name = TableB.name
 
-![](https://images0.cnblogs.com/blog/407365/201405/231634011991982.png)
+![](http://justcode.ikeepstudying.com/wp-content/uploads/2016/08/20133181224183.png)
 
 <br>
 
@@ -23,16 +23,24 @@
 
 &emsp;&emsp;SELECT * FROM TableA FULL OUTER JOIN TableB ON TableA.name = TableB.name
 
-![](https://images0.cnblogs.com/blog/407365/201405/231634027315181.png)
+![](http://justcode.ikeepstudying.com/wp-content/uploads/2016/08/2013318122434269.png)
 
+(2) SELECT * FROM TableA FULL OUTER JOIN TableB ON TableA.name = TableB.name
+WHERE TableA.id IS null OR TableB.id IS null
 
-![](https://images0.cnblogs.com/blog/407365/201405/231634045743650.png)
+![](http://justcode.ikeepstudying.com/wp-content/uploads/2016/08/2013318122921410.png)
 
 <br>
 
 ## 3. LEFT [OUTER] JOIN
 
-![](https://images0.cnblogs.com/blog/407365/201405/231634072774691.png)
+(1) SELECT * FROM TableA LEFT OUTER JOIN TableB ON TableA.name = TableB.name
+
+![](http://justcode.ikeepstudying.com/wp-content/uploads/2016/08/2013318122936847.png)
+
+(2) SELECT * FROM TableA LEFT OUTER JOIN TableB ON TableA.name = TableB.name WHERE TableB.id IS null
+
+![](http://justcode.ikeepstudying.com/wp-content/uploads/2016/08/201331812295082.png)
 
 <br>
 
