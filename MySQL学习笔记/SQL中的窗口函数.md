@@ -5,7 +5,7 @@
 <br>
 <br>
 
-## 1. 窗口函数介绍
+## 1. 窗口调用函数介绍
 
 &emsp;&emsp;窗口函数是 SQL 中一类特别的函数。和聚合函数相似，窗口函数的输入也是多行记录。不 同的是，聚合函数的作用于由 GROUP BY 子句聚合的组，而窗口函数则作用于一个窗口， 这里，窗口是由一个 OVER 子句 定义的多行记录。聚合函数对其所作用的每一组记录输 出一条结果，而窗口函数对其所作用的窗口中的每一行记录输出一条结果。一些聚合函 数，如 sum, max, min, avg,count 等也可以当作窗口函数使用。
 
@@ -16,10 +16,15 @@
 &emsp;&emsp;窗口函数语法形式如下：
 
 ```sql
-Function(arg1, ..., argn) OVER([PARTITION BY <...>] [ORDER BY <...>] [window_clause])
+function_name ([expression [, expression ... ]]) OVER ( window_definition )
+function_name ([expression [, expression ... ]]) OVER window_name
+function_name ( * ) OVER ( window_definition )
+function_name ( * ) OVER window_name
 ```
 
-## 2. 窗口函数中的子句
+
+
+## 2. function_name窗口函数
 
 **窗口函数：**
 
@@ -28,7 +33,7 @@ Function(arg1, ..., argn) OVER([PARTITION BY <...>] [ORDER BY <...>] [window_cla
 |FIRST_VALUE|取出分组内排序后，截止到当前行，第一个值|
 |LAST_VALUE|取出分组内排序后，截止到当前行，最后一个值|
 |LEAD(col, n, DEFAULT)|用于统计窗口内往下第n行的值。第一个参数为列名，第二个参数为往下第n行（可选，默认为1），第三个参数为默认值（当往下第n行为NULL时，取默认值）|
-|LAG(col, n, DEFAULT)|与lead相反，用于统计窗口内网上第n个值。第一个参数为列名，第二个参数往上为第n行(可选，默认为1)|
+|LAG(col, n, DEFAULT)|与lead相反，用于统计窗口内往上第n个值。第一个参数为列名，第二个参数往上为第n行(可选，默认为1)|
 
 **分析函数：**
 
@@ -40,33 +45,59 @@ Function(arg1, ..., argn) OVER([PARTITION BY <...>] [ORDER BY <...>] [window_cla
 |CUME_DIST()|小于等于当前值的行数除以分组内总行数。比如，统计小于等于当前薪水的人数所占总人数的比例|
 |PERCENT_RANK()|（分组内当前行的RANK值-1）/（分组内总行数）|
 
-**OVER从句：**
+## 3. window_definition OVER从句
 
-1. 使用标准的聚合函数COUNT、SUM、MIN、MAX、AVG。
-
-2. 使用PARTITION BY语句，使用一个或者多个原始数据类型的列。
-
-3. 使用PARTITION BY与ORDER BY语句，使用一个或者多个数据类型的分区或者排序列。
-
-4. 使用窗口规范，窗口规范支持一下格式：
+&emsp;&emsp;这里的window_definition具有如下语法：
 
 ```sql
-(ROW | RANGE) BETWEEN (UNBOUNDED | [num]) PRECEDING AND ([num] PRECEDING | CURRENT ROW | (UNBOUNDED | [num]) FOLLOWING)
-(ROW | RANGE) BETWEEN CURRENT ROW AND (CURRENT ROW | (UNBOUNDED | [num]) FOLLOWING)
-(ROW | RANGE) BETWEEN [num] PRECEDING AND (UNBOUNDED | [num]) FOLLOWING
+[ existing_window_name ]
+[ PARTITION BY expression [, ...] ]
+[ ORDER BY expression [ ASC | DESC | USING operator ] [ NULLS { FIRST | LAST } ] [, ...] ]
+[ frame_clause ]
 ```
 
-&emsp;&emsp;当ORDER BY后面缺少窗口从句条件，窗口规范默认是:
+### 3.1 existing_window_name子句
+
+&emsp;&emsp;window_name引用的是查询语句中WINDOW 子句定义的命名窗口规范。命名窗口规范通常只是用OVER window_name 来引用，但它也可以在括号里写一个窗口名，并且可以有选择的使用排序和/或框架(frame）子句 （如果应用这些子句的话，那么被引用的窗口必须不能有这些子句）。 后者语法遵循相同的规则（修改WINDOW子句中已有的窗口名）。
+
+### 3.2 PARTITION BY 子句
+
+&emsp;&emsp;PARTITION BY选项将查询的行分为一组进入partitions， 这些行在窗口函数中单独处理。PARTITION BY和查询级别GROUP BY 子句做相似的工作，除了它的表达式只能作为表达式不能作为输出列的名字或数。 没有PARTITION BY，所有由查询产生的行被视为一个单独的分区。
+
+### 3.3 ORDER BY 子句
+
+&emsp;&emsp;ORDER BY 选项决定分区中的行被窗口函数处理的顺序。它和查询级别ORDER BY子句做相似的工作， 但是同样的它不能作为输出列的名字或数。没有ORDER BY，行以一个不被预知的顺序处理。
+
+### 3.4 frame_clause 子句
+
+&emsp;&emsp;对这些窗口函数（在这个框架而不是整个分区上的）， frame_clause指定构成window frame的行， 他们是当前分区的一个子集。框架可以用RANGE 或 ROWS模式声明；不管哪种情况， 它的变化范围是从frame_start到frame_end。如果省略了frame_end 默认为CURRENT ROW。
+
+&emsp;&emsp;选项frame_clause可以是：
 
 ```sql
-RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+[ RANGE | ROWS ] frame_start
+[ RANGE | ROWS ] BETWEEN frame_start AND frame_end
 ```
 
-&emsp;&emsp;当ORDER BY和窗口从句都缺失，窗口规范默认是：
+&emsp;&emsp;frame_start 和 frame_end可以是：
 
 ```sql
-ROW BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+UNBOUNDED PRECEDING
+value PRECEDING
+CURRENT ROW
+UNBOUNDED FOLLOWING
+value FOLLOWING
 ```
+
+&emsp;&emsp;一个frame_start的UNBOUNDED PRECEDING意味着框架从分区中的第一行开始， 相似的，一个frame_end的UNBOUNDED FOLLOWING意味着框架从分区中的最后一行结束。
+
+&emsp;&emsp;在RANGE模式中，frame_start的CURRENT ROW 意味着框架从当前行的第一个peer行开始（ORDER BY 认为等于当前行的行），而frame_end的CURRENT ROW 意味着框架从最后一个同等的行结束。在ROWS模式中， CURRENT ROW 简单的意味着当前行。
+
+&emsp;&emsp;value PRECEDING和value FOLLOWING 当前只允许ROWS模式。这也就意味着，框架从当前行之前或之后指定的行数启动或结束。 value必须是整型表达式，而不能包含变量，聚合函数，或者窗口函数。 该值不能为空或负，但可以是零，表示只选择当前行本身。
+
+&emsp;&emsp;默认的框架选项是RANGE UNBOUNDED PRECEDING，该选项与 RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW相同。有ORDER BY， 它设置框架从分区的开始一直到与当前行相同的最后一行。没有ORDER BY， 那么就是当前分区的所有行都包含在框架中，因为所有行都会成为当前行的相同行。
+
+&emsp;&emsp;限制条件是frame_start不能为UNBOUNDED FOLLOWING， frame_end不能为UNBOUNDED PRECEDING，并且frame_end 选项不能在上面的列表中出现的比frame_start选项早—例如 RANGE BETWEEN CURRENT ROW AND value PRECEDING是不被允许的。
 
 &emsp;&emsp;窗口规范示例：
 
@@ -134,3 +165,5 @@ WINDOW w AS (PARTITION BY depname ORDER BY salary DESC);
 2. [Hive分析函数和窗口函数](https://www.jianshu.com/p/acc8b158daef)
 
 3. [窗口函数](http://www.postgres.cn/docs/10/tutorial-window.html)
+
+4. [值表达式](http://www.postgres.cn/docs/9.3/sql-expressions.html#SYNTAX-WINDOW-FUNCTIONS))
