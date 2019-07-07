@@ -126,7 +126,7 @@ sum(sales) over(partition by user_type) as sales_10
 
  <br>
  
- ## 2. 窗口函数做筛选
+ ## 4. 窗口函数做筛选
  
 &emsp;&emsp;窗口函数只允许出现在查询的SELECT列表和ORDER BY子句中。它们不允许出现在其他地方，例如GROUP BY、HAVING和WHERE子句中。这是因为窗口函数的执行逻辑是在处理完这些子句之后。另外，窗口函数在非窗口聚集函数之后执行。这意味着可以在窗口函数的参数中包括一个聚集函数，但反过来不行。
 
